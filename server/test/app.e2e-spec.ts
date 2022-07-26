@@ -1,10 +1,19 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
+import { PrismaClient } from '@prisma/client';
 import * as request from 'supertest';
 import { AppModule } from '../src/app/app.module';
+import { PrismaService } from '../src/app/shared/prisma/prisma.service';
+
+const dropDatabase = async (prismaClient: PrismaClient) => Promise.all([
+  prismaClient.food.deleteMany()
+])
+
+const findAllFoods = async (prisma: PrismaClient) => prisma.food.findMany()
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
+  let prismaClient: PrismaClient
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -12,6 +21,8 @@ describe('AppController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    prismaClient = moduleFixture.get<PrismaService>(PrismaService)
+    await dropDatabase(prismaClient)
     await app.init();
   });
 
@@ -33,6 +44,13 @@ describe('AppController (e2e)', () => {
       expect(response.body).toBeDefined()
       expect(response.body).toHaveProperty('id')
       expect(response.body).toHaveProperty('name', 'Banana')
+
+      const foods = await findAllFoods(prismaClient)
+      
+      expect(foods).toBeDefined()
+      expect(foods).toHaveLength(1)
+      expect(foods[0]).toHaveProperty('id', response.body.id)
+      expect(foods[0]).toHaveProperty('name', response.body.name)
     })
   })
 });
