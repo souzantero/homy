@@ -46,11 +46,33 @@ describe('AppController (e2e)', () => {
       expect(response.body).toHaveProperty('name', 'Banana')
 
       const foods = await findAllFoods(prismaClient)
-      
+
       expect(foods).toBeDefined()
       expect(foods).toHaveLength(1)
       expect(foods[0]).toHaveProperty('id', response.body.id)
       expect(foods[0]).toHaveProperty('name', response.body.name)
+    })
+
+    it('should be fail when name is empty', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/foods')
+        .send({
+          name: ''
+        })
+
+      expect(response.status).toBe(400)
+      expect(response.body).toHaveProperty('message', ['name should not be empty'])
+    })
+
+    it('should be fail when name is a number', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/foods')
+        .send({
+          name: 10
+        })
+
+      expect(response.status).toBe(400)
+      expect(response.body).toHaveProperty('message', ['name must be a string'])
     })
   })
 });

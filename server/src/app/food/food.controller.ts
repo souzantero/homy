@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, ValidationPipe } from '@nestjs/common';
 import { AddFood } from '../../domain/usecases/add-food';
 import { LoadFoods } from '../../domain/usecases/load-foods';
 import { CreateFoodData } from './dtos/create-food.dto';
@@ -16,7 +16,7 @@ export class FoodController {
   }
 
   @Post()
-  createFood(@Body() data: CreateFoodData) {
+  createFood(@Body(ValidationPipe) data: CreateFoodData) {
     return this.addFood.add(data)
   }
 }
