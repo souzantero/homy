@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, ValidationPipe } from '@nestjs/common';
 import { AddFood } from '../../domain/usecases/add-food';
 import { LoadFoods } from '../../domain/usecases/load-foods';
-import { CreateFoodData } from './dtos/create-food.dto';
+import { CreateFoodInput } from './dtos/create-food-input';
 
 @Controller('foods')
 export class FoodController {
@@ -16,7 +16,7 @@ export class FoodController {
   }
 
   @Post()
-  createFood(@Body(ValidationPipe) data: CreateFoodData) {
+  createFood(@Body(ValidationPipe) data: CreateFoodInput) {
     return this.addFood.add(data)
   }
 }
