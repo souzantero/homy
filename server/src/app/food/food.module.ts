@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AddFood } from '../../domain/usecases/add-food';
 import { LoadFoods } from '../../domain/usecases/load-foods';
+import { UuidAdapter } from '../../infra/adapters/uuid-adapter';
 import { FoodPrismaRepository } from '../../infra/repositories/prisma/food-prisma-repository';
 import { PrismaModule } from '../shared/prisma/prisma.module';
 import { PrismaService } from '../shared/prisma/prisma.service';
@@ -23,7 +24,7 @@ import { FoodController } from './food.controller';
     {
       provide: AddFood,
       inject: [FoodPrismaRepository],
-      useFactory: (foodPrismaRepository: FoodPrismaRepository) => new AddFood(foodPrismaRepository)
+      useFactory: (foodPrismaRepository: FoodPrismaRepository) => new AddFood(new UuidAdapter(), foodPrismaRepository)
     }
   ]
 })

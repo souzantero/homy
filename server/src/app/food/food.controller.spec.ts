@@ -3,6 +3,7 @@ import { LoadFoods } from '../../domain/usecases/load-foods';
 import { AddFood } from '../../domain/usecases/add-food';
 import { FoodMemoryRepository } from '../../infra/repositories/memory/food-memory-repository';
 import { FoodController } from './food.controller';
+import { UuidAdapter } from '../../infra/adapters/uuid-adapter';
 
 describe('FoodController', () => {
   let controller: FoodController;
@@ -17,7 +18,7 @@ describe('FoodController', () => {
       providers: [
         {
           provide: AddFood,
-          useValue: new AddFood(foodRepository)
+          useValue: new AddFood(new UuidAdapter(), foodRepository)
         },
         {
           provide: LoadFoods,
