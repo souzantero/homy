@@ -37,3 +37,8 @@ lerna-debug.log*
 # Env
 
 .env
+
+# DB
+
+*.db
+*.db-journal
