@@ -1,9 +1,7 @@
-import { Injectable } from "@nestjs/common";
 import { PrismaClient } from '@prisma/client';
-import { FoodModel } from "src/domain/food/models/food";
-import { FoodRepository } from "../../domain/food/food-repository";
+import { FoodModel } from "../../../domain/models/food";
+import { FoodRepository } from "../../../domain/repositories/food-repository";
 
-@Injectable()
 export class FoodPrismaRepository implements FoodRepository {
   constructor(
     private readonly prismaClient: PrismaClient
