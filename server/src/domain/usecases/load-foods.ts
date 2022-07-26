@@ -1,9 +1,9 @@
 import { FoodModel } from "../models/food";
-import { FoodRepository } from "../repositories/food-repository";
+import { LoadFoodsRepository } from "../repositories/food/load-foods-repository";
 
 export class LoadFoods {
   constructor(
-    private foodRepository: FoodRepository
+    private foodRepository: LoadFoodsRepository
   ) { }
 
   load(): Promise<LoadFoods.Result> {

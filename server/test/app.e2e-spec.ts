@@ -19,6 +19,20 @@ describe('AppController (e2e)', () => {
     return request(app.getHttpServer())
       .get('/foods')
       .expect(200)
-      .expect([]);
   });
+
+  describe('/foods (POST)', () => {
+    it('should create a new food', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/foods')
+        .send({
+          name: 'Banana'
+        })
+
+      expect(response.status).toBe(201)
+      expect(response.body).toBeDefined()
+      expect(response.body).toHaveProperty('id')
+      expect(response.body).toHaveProperty('name', 'Banana')
+    })
+  })
 });
