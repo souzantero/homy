@@ -14,16 +14,16 @@ model Food {
   id            String          @id
   name          String          @unique
   createdAt     DateTime
-  updatedAt     DateTime
-  deletedAt     DateTime
+  updatedAt     DateTime?
+  deletedAt     DateTime?
   restockedFood RestockedFood[]
 }
 
 model FoodRestocking {
   id            String          @id
   createdAt     DateTime
-  updatedAt     DateTime
-  deletedAt     DateTime
+  updatedAt     DateTime?
+  deletedAt     DateTime?
   restockedFood RestockedFood[]
 }
 
@@ -33,8 +33,8 @@ model RestockedFood {
   foodId           String
   food             Food           @relation(fields: [foodId], references: [id])
   createdAt        DateTime
-  updatedAt        DateTime
-  deletedAt        DateTime
+  updatedAt        DateTime?
+  deletedAt        DateTime?
 
   @@id([foodRestockingId, foodId])
 }
