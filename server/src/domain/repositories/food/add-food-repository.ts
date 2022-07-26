@@ -7,7 +7,8 @@ export interface AddFoodRepository {
 export namespace AddFoodRepository {
   export type Params = {
     id: string,
-    name: string
+    name: string,
+    createdAt: Date
   }
 
   export type Result = FoodModel

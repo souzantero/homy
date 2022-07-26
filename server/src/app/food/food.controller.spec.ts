@@ -37,7 +37,7 @@ describe('FoodController', () => {
   describe('createFood', () => {
     it('should call addFood use case and return it', async () => {
       const createFoodData = { name: 'Banana' }
-      const addFoodResult = { id: Date.now().toString(), ...createFoodData }
+      const addFoodResult = { id: Date.now().toString(), createdAt: new Date(), ...createFoodData }
       const spyAddFood = jest.spyOn(addFood, 'add').mockResolvedValue(addFoodResult)
       const createFoodResult = await controller.createFood(createFoodData)
       expect(spyAddFood).toHaveBeenCalledWith(createFoodData)

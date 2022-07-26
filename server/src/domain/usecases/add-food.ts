@@ -7,13 +7,15 @@ export class AddFood {
   ) { }
 
   add(data: AddFood.Params): Promise<AddFood.Result> {
-    const id = Date.now().toString()
     const { name } = data
-    return this.foodRepository.add({ id, name })
+    const id = Date.now().toString()
+    const createdAt = new Date()
+
+    return this.foodRepository.add({ id, name, createdAt })
   }
 }
 
 export namespace AddFood {
-  export type Params = Omit<FoodModel, 'id'>
+  export type Params = Omit<FoodModel, 'id' | 'createdAt'>
   export type Result = FoodModel
 }
