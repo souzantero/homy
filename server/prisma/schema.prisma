@@ -11,6 +11,30 @@ datasource db {
 }
 
 model Food {
-  id    String @id
-  name  String
+  id            String          @id
+  name          String          @unique
+  createdAt     DateTime
+  updatedAt     DateTime
+  deletedAt     DateTime
+  restockedFood RestockedFood[]
+}
+
+model FoodRestocking {
+  id            String          @id
+  createdAt     DateTime
+  updatedAt     DateTime
+  deletedAt     DateTime
+  restockedFood RestockedFood[]
+}
+
+model RestockedFood {
+  foodRestockingId String
+  foodRestocking   FoodRestocking @relation(fields: [foodRestockingId], references: [id])
+  foodId           String
+  food             Food           @relation(fields: [foodId], references: [id])
+  createdAt        DateTime
+  updatedAt        DateTime
+  deletedAt        DateTime
+
+  @@id([foodRestockingId, foodId])
 }
