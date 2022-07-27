@@ -11,30 +11,30 @@ datasource db {
 }
 
 model Food {
-  id            String          @id
-  name          String          @unique
-  createdAt     DateTime
-  updatedAt     DateTime?
-  deletedAt     DateTime?
-  restockedFood RestockedFood[]
+  id           String         @id
+  name         String         @unique
+  createdAt    DateTime
+  updatedAt    DateTime?
+  deletedAt    DateTime?
+  suppliedFood SuppliedFood[]
 }
 
-model FoodRestocking {
-  id            String          @id
-  createdAt     DateTime
-  updatedAt     DateTime?
-  deletedAt     DateTime?
-  restockedFood RestockedFood[]
+model FoodSupply {
+  id           String         @id
+  createdAt    DateTime
+  updatedAt    DateTime?
+  deletedAt    DateTime?
+  suppliedFood SuppliedFood[]
 }
 
-model RestockedFood {
-  foodRestockingId String
-  foodRestocking   FoodRestocking @relation(fields: [foodRestockingId], references: [id])
-  foodId           String
-  food             Food           @relation(fields: [foodId], references: [id])
-  createdAt        DateTime
-  updatedAt        DateTime?
-  deletedAt        DateTime?
+model SuppliedFood {
+  foodSupplyId String
+  foodSupply   FoodSupply @relation(fields: [foodSupplyId], references: [id])
+  foodId       String
+  food         Food       @relation(fields: [foodId], references: [id])
+  createdAt    DateTime
+  updatedAt    DateTime?
+  deletedAt    DateTime?
 
-  @@id([foodRestockingId, foodId])
+  @@id([foodSupplyId, foodId])
 }
