@@ -1,9 +1,9 @@
 import { Type } from "class-transformer";
-import { ArrayNotEmpty, ArrayUnique, IsArray, IsNotEmpty, IsString, Length, MinLength, ValidateNested } from "class-validator";
+import { ArrayNotEmpty, ArrayUnique, IsArray, IsNotEmpty, IsString, IsUUID, Length, MinLength, ValidateNested } from "class-validator";
 
 export class CreateFoodSupplyItem {
 
-  @IsString()
+  @IsUUID(4)
   @IsNotEmpty()
   foodId: string
 }

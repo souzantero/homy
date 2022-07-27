@@ -10,7 +10,7 @@ export class AddFood {
 
   async add(data: AddFood.Params): Promise<AddFood.Result> {
     const { name } = data
-    const id = await this.identifier.identify()
+    const id = this.identifier.identify()
     const createdAt = new Date()
 
     return this.foodRepository.add({ id, name, createdAt })

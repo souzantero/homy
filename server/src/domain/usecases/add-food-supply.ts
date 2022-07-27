@@ -9,7 +9,7 @@ export class AddFoodSupply {
   ) { }
 
   async add(data: AddFoodSupply.Params): Promise<AddFoodSupply.Result> {
-    const id = await this.identifier.identify()
+    const id = this.identifier.identify()
     const createdAt = new Date()
     const suppliedFoods = data.map(item => ({
       foodId: item.foodId,

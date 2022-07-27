@@ -4,6 +4,7 @@ import { PrismaClient } from '@prisma/client';
 import * as request from 'supertest';
 import { AppModule } from '../src/app/app.module';
 import { PrismaService } from '../src/app/shared/prisma/prisma.service';
+import { UuidAdapter } from '../src/infra/adapters/uuid-adapter';
 
 const dropDatabase = async (prismaClient: PrismaClient) => prismaClient.$transaction([
   prismaClient.suppliedFood.deleteMany(),
@@ -82,10 +83,12 @@ describe('App (e2e)', () => {
 
   describe('/foods/supplies (POST)', () => {
     it('should create a new food supply', async () => {
+      const identifier = new UuidAdapter()
+      
       const createdFoods = await prismaClient.$transaction([
-        prismaClient.food.create({ data: { id: '1a', name: 'Banana', createdAt: new Date() } }),
-        prismaClient.food.create({ data: { id: '2b', name: 'Maçã', createdAt: new Date() } }),
-        prismaClient.food.create({ data: { id: '3c', name: 'Mamão', createdAt: new Date() } })
+        prismaClient.food.create({ data: { id: identifier.identify(), name: 'Banana', createdAt: new Date() } }),
+        prismaClient.food.create({ data: { id: identifier.identify(), name: 'Maçã', createdAt: new Date() } }),
+        prismaClient.food.create({ data: { id: identifier.identify(), name: 'Mamão', createdAt: new Date() } })
       ])
 
       const { status, body } = await request(app.getHttpServer())
@@ -93,6 +96,11 @@ describe('App (e2e)', () => {
         .send({
           suppliedFoods: createdFoods.map(food => ({ foodId: food.id }))
         })
+
+      expect(status).toBe(201)
+      expect(body).toBeDefined()
+      expect(body).toHaveProperty('id')
+      expect(body).toHaveProperty('createdAt')
 
       const foodSupplies = await findAllFoodSupplies(prismaClient)
       expect(foodSupplies).toHaveLength(1)
@@ -106,13 +114,8 @@ describe('App (e2e)', () => {
         expect(suppliedFood).toHaveProperty('foodSupplyId', body.id)
         expect(suppliedFood).toHaveProperty('createdAt')
       })
-
-      expect(status).toBe(201)
-      expect(body).toBeDefined()
-      expect(body).toHaveProperty('id')
-      expect(body).toHaveProperty('createdAt')
     })
-    
+
     it.skip('should fail when a food not exists', () => { })
   })
 });
