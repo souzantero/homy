@@ -58,11 +58,11 @@ describe('FoodController', () => {
 
   describe('createFoodSupply', () => {
     it('should call addFoodSupply use case and return it', async () => {
-      const createFoodSupplyInput = []
+      const createFoodSupplyInput = { suppliedFoods: [] }
       const addFoodSupplyResult = { id: Date.now().toString(), createdAt: new Date() }
       const spyAddFoodSupply = jest.spyOn(addFoodSupply, 'add').mockResolvedValue(addFoodSupplyResult)
       const createFoodSupplyResult = await controller.createFoodSupply(createFoodSupplyInput)
-      expect(spyAddFoodSupply).toHaveBeenCalledWith(createFoodSupplyInput)
+      expect(spyAddFoodSupply).toHaveBeenCalledWith(createFoodSupplyInput.suppliedFoods)
       expect(createFoodSupplyResult).toBe(addFoodSupplyResult)
     })
   })

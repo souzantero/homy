@@ -25,6 +25,6 @@ export class FoodController {
 
   @Post('supplies')
   createFoodSupply(@Body(ValidationPipe) data: CreateFoodSupplyInput) {
-    return this.addFoodSupply.add(data)
+    return this.addFoodSupply.add(data.suppliedFoods)
   }
 }

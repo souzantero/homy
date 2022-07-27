@@ -57,7 +57,7 @@ describe('App (e2e)', () => {
       expect(foods[0]).toHaveProperty('name', response.body.name)
     })
 
-    it('should be fail when name is empty', async () => {
+    it('should fail when name is empty', async () => {
       const response = await request(app.getHttpServer())
         .post('/foods')
         .send({
@@ -68,7 +68,7 @@ describe('App (e2e)', () => {
       expect(response.body).toHaveProperty('message', ['name should not be empty'])
     })
 
-    it('should be fail when name is a number', async () => {
+    it('should fail when name is a number', async () => {
       const response = await request(app.getHttpServer())
         .post('/foods')
         .send({
@@ -90,7 +90,9 @@ describe('App (e2e)', () => {
 
       const { status, body } = await request(app.getHttpServer())
         .post('/foods/supplies')
-        .send(createdFoods.map(food => ({ foodId: food.id })))
+        .send({
+          suppliedFoods: createdFoods.map(food => ({ foodId: food.id }))
+        })
 
       const foodSupplies = await findAllFoodSupplies(prismaClient)
       expect(foodSupplies).toHaveLength(1)
@@ -110,5 +112,7 @@ describe('App (e2e)', () => {
       expect(body).toHaveProperty('id')
       expect(body).toHaveProperty('createdAt')
     })
+    
+    it.skip('should fail when a food not exists', () => { })
   })
 });
