@@ -5,11 +5,12 @@ import * as request from 'supertest';
 import { AppModule } from '../src/app/app.module';
 import { PrismaService } from '../src/app/shared/prisma/prisma.service';
 import { UuidAdapter } from '../src/infra/adapters/uuid-adapter';
+import { Identifier } from 'src/domain/protocols/identifier';
 
-const dropDatabase = async (prismaClient: PrismaClient) => prismaClient.$transaction([
-  prismaClient.suppliedFood.deleteMany(),
-  prismaClient.foodSupply.deleteMany(),
-  prismaClient.food.deleteMany()
+const dropDatabase = async (prisma: PrismaClient) => prisma.$transaction([
+  prisma.suppliedFood.deleteMany(),
+  prisma.foodSupply.deleteMany(),
+  prisma.food.deleteMany()
 ])
 
 const findAllFoods = async (prisma: PrismaClient) => prisma.food.findMany()
@@ -18,16 +19,19 @@ const findAllSuppliedFoods = (prisma: PrismaClient) => prisma.suppliedFood.findM
 
 describe('App (e2e)', () => {
   let app: INestApplication;
-  let prismaClient: PrismaClient
+  let prisma: PrismaClient
+  let identifier: Identifier
 
   beforeEach(async () => {
+    identifier = new UuidAdapter()
+
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
-    prismaClient = moduleFixture.get<PrismaService>(PrismaService)
-    await dropDatabase(prismaClient)
+    prisma = moduleFixture.get<PrismaService>(PrismaService)
+    await dropDatabase(prisma)
     await app.init();
   });
 
@@ -50,7 +54,7 @@ describe('App (e2e)', () => {
       expect(response.body).toHaveProperty('id')
       expect(response.body).toHaveProperty('name', 'Banana')
 
-      const foods = await findAllFoods(prismaClient)
+      const foods = await findAllFoods(prisma)
 
       expect(foods).toBeDefined()
       expect(foods).toHaveLength(1)
@@ -83,12 +87,10 @@ describe('App (e2e)', () => {
 
   describe('/foods/supplies (POST)', () => {
     it('should create a new food supply', async () => {
-      const identifier = new UuidAdapter()
-      
-      const createdFoods = await prismaClient.$transaction([
-        prismaClient.food.create({ data: { id: identifier.identify(), name: 'Banana', createdAt: new Date() } }),
-        prismaClient.food.create({ data: { id: identifier.identify(), name: 'Maçã', createdAt: new Date() } }),
-        prismaClient.food.create({ data: { id: identifier.identify(), name: 'Mamão', createdAt: new Date() } })
+      const createdFoods = await prisma.$transaction([
+        prisma.food.create({ data: { id: identifier.identify(), name: 'Banana', createdAt: new Date() } }),
+        prisma.food.create({ data: { id: identifier.identify(), name: 'Maçã', createdAt: new Date() } }),
+        prisma.food.create({ data: { id: identifier.identify(), name: 'Mamão', createdAt: new Date() } })
       ])
 
       const { status, body } = await request(app.getHttpServer())
@@ -102,10 +104,10 @@ describe('App (e2e)', () => {
       expect(body).toHaveProperty('id')
       expect(body).toHaveProperty('createdAt')
 
-      const foodSupplies = await findAllFoodSupplies(prismaClient)
+      const foodSupplies = await findAllFoodSupplies(prisma)
       expect(foodSupplies).toHaveLength(1)
 
-      const suppliedFoods = await findAllSuppliedFoods(prismaClient)
+      const suppliedFoods = await findAllSuppliedFoods(prisma)
       expect(suppliedFoods).toHaveLength(3)
 
       createdFoods.forEach(createdFood => {
