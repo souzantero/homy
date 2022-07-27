@@ -11,20 +11,20 @@ datasource db {
 }
 
 model Food {
-  id           String         @id
-  name         String         @unique
-  createdAt    DateTime
-  updatedAt    DateTime?
-  deletedAt    DateTime?
-  suppliedFood SuppliedFood[]
+  id            String         @id
+  name          String         @unique
+  createdAt     DateTime
+  updatedAt     DateTime?
+  deletedAt     DateTime?
+  suppliedFoods SuppliedFood[]
 }
 
 model FoodSupply {
-  id           String         @id
-  createdAt    DateTime
-  updatedAt    DateTime?
-  deletedAt    DateTime?
-  suppliedFood SuppliedFood[]
+  id            String         @id
+  createdAt     DateTime
+  updatedAt     DateTime?
+  deletedAt     DateTime?
+  suppliedFoods SuppliedFood[]
 }
 
 model SuppliedFood {

@@ -1,6 +1,6 @@
 import { FoodModel } from "../models/food";
 import { Identifier } from "../protocols/identifier";
-import { AddFoodRepository } from "../repositories/food/add-food-repository";
+import { AddFoodRepository } from "../repositories/add-food-repository";
 
 export class AddFood {
   constructor(

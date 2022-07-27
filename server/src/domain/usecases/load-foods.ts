@@ -1,5 +1,5 @@
 import { FoodModel } from "../models/food";
-import { LoadFoodsRepository } from "../repositories/food/load-foods-repository";
+import { LoadFoodsRepository } from "../repositories/load-foods-repository";
 
 export class LoadFoods {
   constructor(

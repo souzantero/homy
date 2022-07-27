@@ -5,13 +5,17 @@ import * as request from 'supertest';
 import { AppModule } from '../src/app/app.module';
 import { PrismaService } from '../src/app/shared/prisma/prisma.service';
 
-const dropDatabase = async (prismaClient: PrismaClient) => Promise.all([
+const dropDatabase = async (prismaClient: PrismaClient) => prismaClient.$transaction([
+  prismaClient.suppliedFood.deleteMany(),
+  prismaClient.foodSupply.deleteMany(),
   prismaClient.food.deleteMany()
 ])
 
 const findAllFoods = async (prisma: PrismaClient) => prisma.food.findMany()
+const findAllFoodSupplies = (prisma: PrismaClient) => prisma.foodSupply.findMany()
+const findAllSuppliedFoods = (prisma: PrismaClient) => prisma.suppliedFood.findMany()
 
-describe('AppController (e2e)', () => {
+describe('App (e2e)', () => {
   let app: INestApplication;
   let prismaClient: PrismaClient
 
@@ -73,6 +77,38 @@ describe('AppController (e2e)', () => {
 
       expect(response.status).toBe(400)
       expect(response.body).toHaveProperty('message', ['name must be a string'])
+    })
+  })
+
+  describe('/foods/supplies (POST)', () => {
+    it('should create a new food supply', async () => {
+      const createdFoods = await prismaClient.$transaction([
+        prismaClient.food.create({ data: { id: '1a', name: 'Banana', createdAt: new Date() } }),
+        prismaClient.food.create({ data: { id: '2b', name: 'Maçã', createdAt: new Date() } }),
+        prismaClient.food.create({ data: { id: '3c', name: 'Mamão', createdAt: new Date() } })
+      ])
+
+      const { status, body } = await request(app.getHttpServer())
+        .post('/foods/supplies')
+        .send(createdFoods.map(food => ({ foodId: food.id })))
+
+      const foodSupplies = await findAllFoodSupplies(prismaClient)
+      expect(foodSupplies).toHaveLength(1)
+
+      const suppliedFoods = await findAllSuppliedFoods(prismaClient)
+      expect(suppliedFoods).toHaveLength(3)
+
+      createdFoods.forEach(createdFood => {
+        const suppliedFood = suppliedFoods.find(suppliedFood => suppliedFood.foodId === createdFood.id)
+        expect(suppliedFood).toBeDefined()
+        expect(suppliedFood).toHaveProperty('foodSupplyId', body.id)
+        expect(suppliedFood).toHaveProperty('createdAt')
+      })
+
+      expect(status).toBe(201)
+      expect(body).toBeDefined()
+      expect(body).toHaveProperty('id')
+      expect(body).toHaveProperty('createdAt')
     })
   })
 });

@@ -1,6 +1,6 @@
 import { FoodModel } from "../../../domain/models/food";
-import { AddFoodRepository } from "../../../domain/repositories/food/add-food-repository";
-import { LoadFoodsRepository } from "../../../domain/repositories/food/load-foods-repository";
+import { AddFoodRepository } from "../../../domain/repositories/add-food-repository";
+import { LoadFoodsRepository } from "../../../domain/repositories/load-foods-repository";
 
 export class FoodMemoryRepository implements AddFoodRepository, LoadFoodsRepository {
   constructor(

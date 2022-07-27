@@ -1,4 +1,4 @@
-import { FoodModel } from "../../../domain/models/food"
+import { FoodModel } from "../models/food"
 
 export interface AddFoodRepository {
   add(food: AddFoodRepository.Params): Promise<AddFoodRepository.Result>
