@@ -1,7 +1,6 @@
 import { FoodSupplyModel } from "../models/food-supply";
 import { Identifier } from "../protocols/identifier";
 import { AddFoodSupplyRepository } from "../repositories/add-food-supply-repository";
-import { AddSuppliedFoodRepository } from "../repositories/add-supplied-food-repository";
 
 export class AddFoodSupply {
   constructor(

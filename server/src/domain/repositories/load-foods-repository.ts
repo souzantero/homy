@@ -1,4 +1,4 @@
-import { FoodModel } from "../../models/food";
+import { FoodModel } from "../models/food";
 
 export interface LoadFoodsRepository {
   loadAll(): Promise<LoadFoodsRepository.Result>
