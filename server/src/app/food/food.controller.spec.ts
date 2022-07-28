@@ -3,6 +3,7 @@ import { LoadFoods } from '../../domain/usecases/load-foods';
 import { AddFood } from '../../domain/usecases/add-food';
 import { AddFoodSupply } from '../../domain/usecases/add-food-supply';
 import { AddFoodSupplyValidator } from '../../domain/validators/add-food-supply-validator';
+import { LoadFoodSupplies } from '../../domain/usecases/load-food-supplies';
 import { FoodMemoryRepository } from '../../infra/repositories/memory/food-memory-repository';
 import { FoodController } from './food.controller';
 import { UuidAdapter } from '../../infra/adapters/uuid-adapter';
@@ -12,6 +13,7 @@ describe('FoodController', () => {
   let controller: FoodController
   let addFood: AddFood
   let addFoodSupply: AddFoodSupply
+  let loadFoodSupplies: LoadFoodSupplies
   let foodRepository: FoodMemoryRepository
   let foodSupplyRepository: FoodSupplyMemoryRepository
 
@@ -33,6 +35,10 @@ describe('FoodController', () => {
         {
           provide: LoadFoods,
           useValue: new LoadFoods(foodRepository)
+        },
+        {
+          provide: LoadFoodSupplies,
+          useValue: new LoadFoodSupplies(foodSupplyRepository)
         }
       ]
     }).compile();
@@ -40,6 +46,7 @@ describe('FoodController', () => {
     controller = module.get<FoodController>(FoodController);
     addFood = module.get<AddFood>(AddFood)
     addFoodSupply = module.get<AddFoodSupply>(AddFoodSupply)
+    loadFoodSupplies = module.get<LoadFoodSupplies>(LoadFoodSupplies)
   });
 
   it('should be defined', () => {
@@ -65,6 +72,16 @@ describe('FoodController', () => {
       const createFoodSupplyResult = await controller.createFoodSupply(createFoodSupplyInput)
       expect(spyAddFoodSupply).toHaveBeenCalledWith(createFoodSupplyInput.suppliedFoods)
       expect(createFoodSupplyResult).toBe(addFoodSupplyResult)
+    })
+  })
+
+  describe('getFoodSupplies', () => {
+    it('should call loadFoodSupplies use case and return it', async () => {
+      const loadFoodSuppliesResult = []
+      const spyLoadFoodSupplies = jest.spyOn(loadFoodSupplies, 'load').mockResolvedValue(loadFoodSuppliesResult)
+      const getFoodSuppliesResult = await controller.getFoodSupplies()
+      expect(spyLoadFoodSupplies).toHaveBeenCalled()
+      expect(getFoodSuppliesResult).toBe(loadFoodSuppliesResult)
     })
   })
 });

@@ -2,6 +2,7 @@ import { Body, Controller, Get, NotFoundException, Post, ValidationPipe } from '
 import { AddFoodSupply } from '../../domain/usecases/add-food-supply';
 import { AddFood } from '../../domain/usecases/add-food';
 import { LoadFoods } from '../../domain/usecases/load-foods';
+import { LoadFoodSupplies } from '../../domain/usecases/load-food-supplies';
 import { FoodNotFoundError } from '../../domain/errors/food-not-found-error';
 import { CreateFoodInput } from './dtos/create-food-input';
 import { CreateFoodSupplyInput } from './dtos/create-food-supply-input';
@@ -11,7 +12,8 @@ export class FoodController {
   constructor(
     private readonly addFood: AddFood,
     private readonly addFoodSupply: AddFoodSupply,
-    private readonly loadFoods: LoadFoods
+    private readonly loadFoods: LoadFoods,
+    private readonly loadFoodSupplies: LoadFoodSupplies
   ) { }
 
   @Get()
@@ -32,5 +34,10 @@ export class FoodController {
       if (error instanceof FoodNotFoundError) throw new NotFoundException(error.message)
       else throw error
     }
+  }
+
+  @Get('supplies')
+  async getFoodSupplies() {
+    return this.loadFoodSupplies.load()
   }
 }

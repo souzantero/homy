@@ -88,6 +88,27 @@ describe('App (e2e)', () => {
     })
   })
 
+  describe('/foods/supplies (GET)', () => {
+    it('should get all food supplies', async () => {
+      const createdFoodSupplies = await prisma.$transaction([
+        prisma.foodSupply.create({ data: { id: identifier.identify(), createdAt: new Date() } }),
+        prisma.foodSupply.create({ data: { id: identifier.identify(), createdAt: new Date() } }),
+        prisma.foodSupply.create({ data: { id: identifier.identify(), createdAt: new Date() } })
+      ])
+
+      const { status, body } = await request(app.getHttpServer()).get('/foods/supplies')
+
+      expect(status).toBe(200)
+      expect(body).toHaveLength(3)
+
+      createdFoodSupplies.forEach(createdFoodSupply => {
+        const foodSupply = body.find(item => item.id === createdFoodSupply.id)
+        expect(foodSupply).toBeDefined()
+        expect(foodSupply).toHaveProperty('createdAt', createdFoodSupply.createdAt.toISOString())
+      })
+    })
+  })
+
   describe('/foods/supplies (POST)', () => {
     it('should create a new food supply', async () => {
       const createdFoods = await prisma.$transaction([
