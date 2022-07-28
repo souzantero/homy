@@ -35,8 +35,11 @@ import { FoodController } from './food.controller';
     },
     {
       provide: AddFoodSupply,
-      inject: [FoodSupplyPrismaRepository],
-      useFactory: (foodSupplyPrismaRepository: FoodSupplyPrismaRepository) => new AddFoodSupply(new UuidAdapter(), foodSupplyPrismaRepository)
+      inject: [FoodSupplyPrismaRepository, FoodPrismaRepository],
+      useFactory: (
+        foodSupplyRepository: FoodSupplyPrismaRepository,
+        foodRepository: FoodPrismaRepository,
+      ) => new AddFoodSupply(new UuidAdapter(), foodSupplyRepository, foodRepository)
     }
   ]
 })

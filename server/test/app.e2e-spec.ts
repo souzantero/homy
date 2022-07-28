@@ -46,7 +46,8 @@ describe('App (e2e)', () => {
       const response = await request(app.getHttpServer())
         .post('/foods')
         .send({
-          name: 'Banana'
+          name: 'Banana',
+          expiresIn: 90
         })
 
       expect(response.status).toBe(201)
@@ -66,7 +67,8 @@ describe('App (e2e)', () => {
       const response = await request(app.getHttpServer())
         .post('/foods')
         .send({
-          name: ''
+          name: '',
+          expiresIn: 90
         })
 
       expect(response.status).toBe(400)
@@ -77,7 +79,8 @@ describe('App (e2e)', () => {
       const response = await request(app.getHttpServer())
         .post('/foods')
         .send({
-          name: 10
+          name: 10,
+          expiresIn: 90
         })
 
       expect(response.status).toBe(400)
@@ -88,9 +91,9 @@ describe('App (e2e)', () => {
   describe('/foods/supplies (POST)', () => {
     it('should create a new food supply', async () => {
       const createdFoods = await prisma.$transaction([
-        prisma.food.create({ data: { id: identifier.identify(), name: 'Banana', createdAt: new Date() } }),
-        prisma.food.create({ data: { id: identifier.identify(), name: 'Maçã', createdAt: new Date() } }),
-        prisma.food.create({ data: { id: identifier.identify(), name: 'Mamão', createdAt: new Date() } })
+        prisma.food.create({ data: { id: identifier.identify(), name: 'Banana', expiresIn: 8, createdAt: new Date() } }),
+        prisma.food.create({ data: { id: identifier.identify(), name: 'Maçã', expiresIn: 10, createdAt: new Date() } }),
+        prisma.food.create({ data: { id: identifier.identify(), name: 'Mamão', expiresIn: 90, createdAt: new Date() } })
       ])
 
       const { status, body } = await request(app.getHttpServer())
@@ -118,6 +121,14 @@ describe('App (e2e)', () => {
       })
     })
 
-    it.skip('should fail when a food not exists', () => { })
+    it.skip('should fail when a food not exists', async () => {
+      const { status, body } = await request(app.getHttpServer())
+        .post('/foods/supplies')
+        .send({
+          suppliedFoods: [{ foodId: identifier.identify() }]
+        })
+
+      expect(status).toBe(400)
+    })
   })
 });

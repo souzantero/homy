@@ -1,8 +1,13 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsInt, IsNotEmpty, IsString, Min } from "class-validator";
 
 export class CreateFoodInput {
 
-  @IsNotEmpty()
   @IsString()
+  @IsNotEmpty()
   name: string
+
+  @Min(0)
+  @IsInt()
+  @IsNotEmpty()
+  expiresIn: number
 }

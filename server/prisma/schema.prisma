@@ -11,11 +11,13 @@ datasource db {
 }
 
 model Food {
-  id            String         @id
-  name          String         @unique
-  createdAt     DateTime
-  updatedAt     DateTime?
-  deletedAt     DateTime?
+  id        String    @id
+  createdAt DateTime
+  updatedAt DateTime?
+  deletedAt DateTime?
+  name      String
+  expiresIn Int
+
   suppliedFoods SuppliedFood[]
 }
 

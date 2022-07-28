@@ -27,7 +27,7 @@ describe('FoodController', () => {
         },
         {
           provide: AddFoodSupply,
-          useValue: new AddFoodSupply(new UuidAdapter(), foodSupplyRepository)
+          useValue: new AddFoodSupply(new UuidAdapter(), foodSupplyRepository, foodRepository)
         },
         {
           provide: LoadFoods,
@@ -47,7 +47,7 @@ describe('FoodController', () => {
 
   describe('createFood', () => {
     it('should call addFood use case and return it', async () => {
-      const createFoodInput = { name: 'Banana' }
+      const createFoodInput = { name: 'Banana', expiresIn: 90 }
       const addFoodResult = { id: Date.now().toString(), createdAt: new Date(), ...createFoodInput }
       const spyAddFood = jest.spyOn(addFood, 'add').mockResolvedValue(addFoodResult)
       const createFoodResult = await controller.createFood(createFoodInput)
