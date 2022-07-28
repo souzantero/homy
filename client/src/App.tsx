@@ -1,11 +1,12 @@
 import { ChakraProvider } from '@chakra-ui/react'
+import Foods from './components/Foods';
 import Sidebar from './components/Sidebar';
 
 function App() {
   return (
     <ChakraProvider>
       <Sidebar>
-        <h1>Home</h1>
+        <Foods/>
       </Sidebar>
     </ChakraProvider>
   );
