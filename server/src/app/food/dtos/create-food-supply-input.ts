@@ -12,7 +12,7 @@ export class CreateFoodSupplyInput {
 
   @IsArray()
   @ArrayNotEmpty()
-  @ArrayUnique()
+  @ArrayUnique(({ foodId }) => foodId)
   @ValidateNested()
   @Type(() => CreateFoodSupplyItem)
   suppliedFoods: CreateFoodSupplyItem[]
