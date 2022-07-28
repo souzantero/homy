@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, NotFoundException, Post, ValidationPipe } from '@nestjs/common';
 import { AddFoodSupply } from '../../domain/usecases/add-food-supply';
 import { AddFood } from '../../domain/usecases/add-food';
 import { LoadFoods } from '../../domain/usecases/load-foods';
+import { FoodNotFoundError } from '../../domain/errors/food-not-found-error';
 import { CreateFoodInput } from './dtos/create-food-input';
 import { CreateFoodSupplyInput } from './dtos/create-food-supply-input';
 
@@ -24,7 +25,12 @@ export class FoodController {
   }
 
   @Post('supplies')
-  createFoodSupply(@Body(ValidationPipe) data: CreateFoodSupplyInput) {
-    return this.addFoodSupply.add(data.suppliedFoods)
+  async createFoodSupply(@Body(ValidationPipe) data: CreateFoodSupplyInput) {
+    try {
+      return await this.addFoodSupply.add(data.suppliedFoods)
+    } catch (error) {
+      if (error instanceof FoodNotFoundError) throw new NotFoundException(error.message)
+      else throw error
+    }
   }
 }

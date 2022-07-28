@@ -1,3 +1,4 @@
+import { FoodNotFoundError } from "../errors/food-not-found-error";
 import { FoodSupplyModel } from "../models/food-supply";
 import { Identifier } from "../protocols/identifier";
 import { AddFoodSupplyRepository } from "../repositories/add-food-supply-repository";
@@ -10,21 +11,27 @@ export class AddFoodSupply {
     private readonly loadFoodsRepository: LoadFoodsRepository
   ) { }
 
-  async add(data: AddFoodSupply.Params): Promise<AddFoodSupply.Result> {
+  async add(suppliedFoods: AddFoodSupply.Params): Promise<AddFoodSupply.Result> {
     const foods = await this.loadFoodsRepository.loadAll()
+    const foodIds = foods.map(food => food.id)
 
-    if (!data.some(item => foods.some(food => food.id === item.foodId))) {
-      throw new Error('some food not exit')
+    for (const suppliedFood of suppliedFoods) {
+      if (!foodIds.includes(suppliedFood.foodId)) {
+        throw new FoodNotFoundError(suppliedFood.foodId)
+      }
     }
 
     const id = this.identifier.identify()
     const createdAt = new Date()
-    const suppliedFoods = data.map(item => ({
-      foodId: item.foodId,
-      createdAt: new Date()
-    }))
 
-    return this.addFoodSupplyRepository.add({ id, createdAt, suppliedFoods })
+    return this.addFoodSupplyRepository.add({
+      id,
+      createdAt,
+      suppliedFoods: suppliedFoods.map(suppliedFood => ({
+        ...suppliedFood,
+        createdAt: new Date()
+      }))
+    })
   }
 }
 

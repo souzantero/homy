@@ -121,14 +121,17 @@ describe('App (e2e)', () => {
       })
     })
 
-    it.skip('should fail when a food not exists', async () => {
+    it('should fail when a food not exists', async () => {
+      const foodId = identifier.identify()
+
       const { status, body } = await request(app.getHttpServer())
         .post('/foods/supplies')
         .send({
-          suppliedFoods: [{ foodId: identifier.identify() }]
+          suppliedFoods: [{ foodId }]
         })
 
-      expect(status).toBe(400)
+      expect(status).toBe(404)
+      expect(body).toHaveProperty('message', `food id ${foodId} not found`)
     })
   })
 });
