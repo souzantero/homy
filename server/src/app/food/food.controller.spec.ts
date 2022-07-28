@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { LoadFoods } from '../../domain/usecases/load-foods';
 import { AddFood } from '../../domain/usecases/add-food';
 import { AddFoodSupply } from '../../domain/usecases/add-food-supply';
+import { AddFoodSupplyValidator } from '../../domain/validators/add-food-supply-validator';
 import { FoodMemoryRepository } from '../../infra/repositories/memory/food-memory-repository';
 import { FoodController } from './food.controller';
 import { UuidAdapter } from '../../infra/adapters/uuid-adapter';
@@ -27,7 +28,7 @@ describe('FoodController', () => {
         },
         {
           provide: AddFoodSupply,
-          useValue: new AddFoodSupply(new UuidAdapter(), foodSupplyRepository, foodRepository)
+          useValue: new AddFoodSupply(new UuidAdapter(), foodSupplyRepository, new AddFoodSupplyValidator(foodRepository))
         },
         {
           provide: LoadFoods,
