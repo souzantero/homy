@@ -7,7 +7,7 @@ export class LoadFoodSupplies {
   ) { }
 
   load(): Promise<LoadFoods.Result> {
-    return this.loadFoodSuppliesRepository.load()
+    return this.loadFoodSuppliesRepository.loadAll()
   }
 }
 

@@ -13,7 +13,7 @@ export class FoodSupplyMemoryRepository implements AddFoodSupplyRepository, Load
     return foodSupply
   }
 
-  async load(): Promise<LoadFoodSuppliesRepository.Result> {
+  async loadAll(): Promise<LoadFoodSuppliesRepository.Result> {
     return this.foodSupplies
   }
 }

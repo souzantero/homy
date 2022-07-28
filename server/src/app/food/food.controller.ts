@@ -1,9 +1,10 @@
-import { Body, Controller, Get, NotFoundException, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, NotFoundException, Param, Post, ValidationPipe } from '@nestjs/common';
 import { AddFoodSupply } from '../../domain/usecases/add-food-supply';
 import { AddFood } from '../../domain/usecases/add-food';
 import { LoadFoods } from '../../domain/usecases/load-foods';
 import { LoadFoodSupplies } from '../../domain/usecases/load-food-supplies';
 import { FoodNotFoundError } from '../../domain/errors/food-not-found-error';
+import { LoadSuppliedFoods } from '../../domain/usecases/load-supplied-foods';
 import { CreateFoodInput } from './dtos/create-food-input';
 import { CreateFoodSupplyInput } from './dtos/create-food-supply-input';
 
@@ -13,7 +14,8 @@ export class FoodController {
     private readonly addFood: AddFood,
     private readonly addFoodSupply: AddFoodSupply,
     private readonly loadFoods: LoadFoods,
-    private readonly loadFoodSupplies: LoadFoodSupplies
+    private readonly loadFoodSupplies: LoadFoodSupplies,
+    private readonly loadSuppliedFoods: LoadSuppliedFoods
   ) { }
 
   @Get()
@@ -37,7 +39,12 @@ export class FoodController {
   }
 
   @Get('supplies')
-  async getFoodSupplies() {
+  getFoodSupplies() {
     return this.loadFoodSupplies.load()
+  }
+
+  @Get('supplies/:foodSupplyId/supplied-foods')
+  getSuppliedFoods(@Param('foodSupplyId') foodSupplyId: string) {
+    return this.loadSuppliedFoods.load({ foodSupplyId })
   }
 }

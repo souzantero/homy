@@ -1,7 +1,7 @@
 import { FoodSupplyModel } from "../models/food-supply"
 
 export interface LoadFoodSuppliesRepository {
-  load(): Promise<LoadFoodSuppliesRepository.Result>
+  loadAll(): Promise<LoadFoodSuppliesRepository.Result>
 }
 
 export namespace LoadFoodSuppliesRepository {

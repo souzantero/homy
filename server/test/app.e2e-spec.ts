@@ -5,7 +5,7 @@ import * as request from 'supertest';
 import { AppModule } from '../src/app/app.module';
 import { PrismaService } from '../src/app/shared/prisma/prisma.service';
 import { UuidAdapter } from '../src/infra/adapters/uuid-adapter';
-import { Identifier } from 'src/domain/protocols/identifier';
+import { Identifier } from '../src/domain/protocols/identifier';
 
 const dropDatabase = async (prisma: PrismaClient) => prisma.$transaction([
   prisma.suppliedFood.deleteMany(),
@@ -153,6 +153,49 @@ describe('App (e2e)', () => {
 
       expect(status).toBe(404)
       expect(body).toHaveProperty('message', `food id ${foodId} not found`)
+    })
+  })
+
+  describe('/foods/supplies/:foodSupplyId/supplied-foods (GET)', () => {
+    it('should get all supplied foods', async () => {
+      const createdFoods = await prisma.$transaction([
+        prisma.food.create({ data: { id: identifier.identify(), name: 'Banana', expiresIn: 5, createdAt: new Date() } }),
+        prisma.food.create({ data: { id: identifier.identify(), name: 'Maçã', expiresIn: 14, createdAt: new Date() } }),
+        prisma.food.create({ data: { id: identifier.identify(), name: 'Mamão', expiresIn: 7, createdAt: new Date() } })
+      ])
+
+      const suppliedFoods = createdFoods.map(createdFood => ({
+        foodId: createdFood.id,
+        createdAt: new Date()
+      }))
+
+      const createdFoodSupply = await prisma.foodSupply.create({
+        data: {
+          id: identifier.identify(),
+          createdAt: new Date(),
+          suppliedFoods: {
+            create: suppliedFoods
+          }
+        }
+      })
+
+      const { status, body } = await request(app.getHttpServer())
+        .get(`/foods/supplies/${createdFoodSupply.id}/supplied-foods`)
+
+      expect(status).toBe(200)
+      expect(body).toHaveLength(3)
+
+      suppliedFoods.forEach(suppliedFood => {
+        const createdSuppliedFood = body.find(item => item.foodId === suppliedFood.foodId)
+        expect(createdSuppliedFood).toBeDefined()
+        expect(createdSuppliedFood).toHaveProperty('foodSupplyId', createdFoodSupply.id)
+        expect(createdSuppliedFood).toHaveProperty('createdAt', suppliedFood.createdAt.toISOString())
+        expect(createdSuppliedFood).toHaveProperty('food')
+        expect(createdSuppliedFood.food).toBeDefined()
+
+        const createdFood = createdFoods.find(createdFood => createdFood.id === suppliedFood.foodId)
+        expect(createdSuppliedFood.food).toEqual({ ...createdFood, createdAt: createdFood.createdAt.toISOString() })
+      })
     })
   })
 });

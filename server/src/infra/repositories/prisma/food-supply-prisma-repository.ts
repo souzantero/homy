@@ -23,7 +23,7 @@ export class FoodSupplyPrismaRepository implements AddFoodSupplyRepository, Load
     })
   }
 
-  load(): Promise<LoadFoodSuppliesRepository.Result> {
+  loadAll(): Promise<LoadFoodSuppliesRepository.Result> {
     return this.prisma.foodSupply.findMany()
   }
 }
