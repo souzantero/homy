@@ -1,7 +1,7 @@
 export type Food = {
-  id: string
+  id: String
   createdAt: Date
   updatedAt?: Date
-  name: string
-  expiresIn: number
+  name: String
+  expiresIn: Number
 }

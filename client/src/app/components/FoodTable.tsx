@@ -24,7 +24,7 @@ export function FoodTable({
               <Tr key={index}>
                 <Td>{food.id}</Td>
                 <Td>{food.name}</Td>
-                <Td isNumeric>{food.expiresIn} </Td>
+                <Td isNumeric>{food.expiresIn.toString()} </Td>
               </Tr>
             ))
           }

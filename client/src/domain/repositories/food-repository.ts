@@ -1,5 +1,4 @@
-import { Food } from "../models/food";
+import { AddFoodRepository } from "./add-food-repository";
+import { LoadFoodsRepository } from "./load-foods-repository";
 
-export interface FoodRepository {
-  loadAll(): Promise<Food[]>
-}
+export interface FoodRepository extends AddFoodRepository, LoadFoodsRepository {}
