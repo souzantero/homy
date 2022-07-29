@@ -6,7 +6,7 @@ export class FoodMemoryRepository implements FoodRepository {
     private readonly foods: Food[]
   ) { }
 
-  async find(): Promise<Food[]> {
+  async findAll(): Promise<Food[]> {
     return this.foods
   }
 }

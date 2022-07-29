@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react"
 import { Food } from "../../domain/models/food"
-import { FoodRepository } from "../../domain/repositories/food-repository"
+import { useRepository } from "./useRepository"
 
 export type Result = {
   foods?: Food[]
 }
 
-export function useFoods(foodRepository: FoodRepository): Result {
+export function useFoods(): Result {
+  const { repository } = useRepository()
   const [foods, setFoods] = useState<Food[]>()
 
   useEffect(() => {
-    foodRepository
-      .find()
-      .then(setFoods)
+    repository?.food.findAll().then(setFoods)
+    return () => setFoods([])
   }, [])
 
   return { foods }
