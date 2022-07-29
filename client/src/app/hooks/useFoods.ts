@@ -1,37 +1,35 @@
 import { useEffect, useState } from "react"
 import { Food } from "../../domain/models/food"
-import { AddFood } from "../../domain/usacases/add-food"
 import { useRepository } from "./useRepository"
 
 export type Result = {
-  foods?: Food[],
-  addFood: (params: AddFood.Params) => Promise<void>
+  isLoading: Boolean
+  error?: any
+  foods: Food[]
 }
 
 export function useFoods(): Result {
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<any>()
+  const [foods, setFoods] = useState<Food[]>([])
   const { repository } = useRepository()
-  const [foods, setFoods] = useState<Food[]>()
 
   useEffect(() => {
-    repository?.food.loadAll().then(setFoods)
+    loadAllFoods()
     return () => setFoods([])
   }, [])
 
-  const addFood = async (params: AddFood.Params) => {
+  const loadAllFoods = async () => {
     try {
-      if (repository) {
-        const addFood = new AddFood(repository.food)
-        const food = await addFood.add(params)
-        console.log('Alimento adicionado com sucesso')
-      }
+      setIsLoading(true)
+      const allFoods = await repository.food.loadAll()
+      setFoods(allFoods)
     } catch (error) {
-      if (error instanceof Error) {
-        console.log('Falha ao adicionar alimento', error.message)
-      } else {
-        throw error
-      }
+      setError(error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
-  return { foods, addFood }
+  return { isLoading, foods, error }
 }

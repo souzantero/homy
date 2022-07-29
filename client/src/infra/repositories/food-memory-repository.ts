@@ -8,9 +8,13 @@ export class FoodMemoryRepository implements FoodRepository {
   ) { }
 
   async add(params: AddFoodRepository.Params): Promise<Food> {
-    const food: Food = { id: Date.now().toString(), createdAt: new Date(), ...params }
-    this.foods.push(food)
-    return food
+    return new Promise((resolve) => {
+      setTimeout(async () => {
+        const food: Food = { id: Date.now().toString(), createdAt: new Date(), ...params }
+        this.foods.push(food)
+        resolve(food)
+      }, 1000)
+    })
   }
 
   async loadAll(): Promise<Food[]> {
