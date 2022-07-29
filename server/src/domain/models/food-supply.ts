@@ -1,9 +1,9 @@
-import { SuppliedFoodModel } from "./supplied-food"
+import { SuppliedFood } from "./supplied-food"
 
-export type FoodSupplyModel = {
+export type FoodSupply = {
   id: string
   createdAt: Date
   updatedAt?: Date
   deletedAt?: Date
-  suppliedFoods?: SuppliedFoodModel[]
+  suppliedFoods?: SuppliedFood[]
 }

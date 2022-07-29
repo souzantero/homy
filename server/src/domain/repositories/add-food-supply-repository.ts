@@ -1,4 +1,4 @@
-import { FoodSupplyModel } from "../models/food-supply"
+import { FoodSupply } from "../models/food-supply"
 
 export interface AddFoodSupplyRepository {
   add(foodSupply: AddFoodSupplyRepository.Params): Promise<AddFoodSupplyRepository.Result>
@@ -11,5 +11,5 @@ export namespace AddFoodSupplyRepository {
     suppliedFoods: { foodId: string, createdAt: Date }[]
   }
 
-  export type Result = FoodSupplyModel
+  export type Result = FoodSupply
 }

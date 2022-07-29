@@ -1,4 +1,4 @@
-import { SuppliedFoodModel } from "../models/supplied-food"
+import { SuppliedFood } from "../models/supplied-food"
 import { LoadSuppliedFoodsRepository } from "../repositories/load-supplied-foods-repository"
 
 export class LoadSuppliedFoods {
@@ -16,5 +16,5 @@ export namespace LoadSuppliedFoods {
     foodSupplyId: string
   }
 
-  export type Result = SuppliedFoodModel[]
+  export type Result = SuppliedFood[]
 }

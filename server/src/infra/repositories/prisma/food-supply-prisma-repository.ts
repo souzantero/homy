@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client"
-import { FoodSupplyModel } from "../../../domain/models/food-supply"
+import { FoodSupply } from "../../../domain/models/food-supply"
 import { AddFoodSupplyRepository } from "../../../domain/repositories/add-food-supply-repository"
 import { LoadFoodSuppliesRepository } from "../../../domain/repositories/load-food-supplies-repository"
 
@@ -8,7 +8,7 @@ export class FoodSupplyPrismaRepository implements AddFoodSupplyRepository, Load
     private readonly prisma: PrismaClient
   ) { }
 
-  add(foodSupply: AddFoodSupplyRepository.Params): Promise<FoodSupplyModel> {
+  add(foodSupply: AddFoodSupplyRepository.Params): Promise<FoodSupply> {
     return this.prisma.foodSupply.create({
       data: {
         id: foodSupply.id,
