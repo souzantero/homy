@@ -1,5 +1,5 @@
 import { TableContainer, Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react'
-import { Food } from '../../domain/models/food'
+import { Food } from '../../../domain/models/food'
 
 export interface FoodTableProps {
   foods: Food[]

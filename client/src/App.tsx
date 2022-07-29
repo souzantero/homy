@@ -1,5 +1,5 @@
 import { ChakraProvider } from '@chakra-ui/react'
-import { Foods } from './app/components/Foods'
+import { FoodScaffold } from './app/components/food/FoodScaffold'
 import { RepositoryContext } from './app/contexts/RepositoryContext'
 import { Repository } from './domain/repositories/repository'
 export interface AppProps {
@@ -10,7 +10,7 @@ function App({ repository }: AppProps) {
   return (
     <ChakraProvider>
       <RepositoryContext.Provider value={repository}>
-        <Foods />
+        <FoodScaffold />
       </RepositoryContext.Provider>
     </ChakraProvider>
   );
