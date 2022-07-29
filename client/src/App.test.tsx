@@ -6,8 +6,8 @@ const repository = {
   food: new FoodMemoryRepository([])
 }
 
-test('renders my foods title', () => {
+test('renders myfoodstock title', () => {
   render(<App repository={repository} />);
-  const linkElement = screen.getByText(/my foods/i);
+  const linkElement = screen.getByText(/myfoodstock/i);
   expect(linkElement).toBeInTheDocument();
 });
