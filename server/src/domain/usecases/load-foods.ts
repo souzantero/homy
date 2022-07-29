@@ -1,4 +1,4 @@
-import { FoodModel } from "../models/food";
+import { Food } from "../models/food";
 import { LoadFoodsRepository } from "../repositories/load-foods-repository";
 
 export class LoadFoods {
@@ -12,5 +12,5 @@ export class LoadFoods {
 }
 
 export namespace LoadFoods {
-  export type Result = FoodModel[]
+  export type Result = Food[]
 }

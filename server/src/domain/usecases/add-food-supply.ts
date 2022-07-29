@@ -1,4 +1,4 @@
-import { FoodSupplyModel } from "../models/food-supply";
+import { FoodSupply } from "../models/food-supply";
 import { Identifier } from "../protocols/identifier";
 import { AddFoodSupplyRepository } from "../repositories/add-food-supply-repository";
 import { AddFoodSupplyValidator } from "../validators/add-food-supply-validator";
@@ -29,5 +29,5 @@ export class AddFoodSupply {
 
 export namespace AddFoodSupply {
   export type Params = { foodId: string }[]
-  export type Result = FoodSupplyModel
+  export type Result = FoodSupply
 }

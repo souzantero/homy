@@ -1,4 +1,4 @@
-import { FoodModel } from "../models/food"
+import { Food } from "../models/food"
 
 export interface AddFoodRepository {
   add(food: AddFoodRepository.Params): Promise<AddFoodRepository.Result>
@@ -12,5 +12,5 @@ export namespace AddFoodRepository {
     createdAt: Date
   }
 
-  export type Result = FoodModel
+  export type Result = Food
 }

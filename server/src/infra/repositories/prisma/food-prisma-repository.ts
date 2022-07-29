@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { AddFoodRepository } from '../../../domain/repositories/add-food-repository';
-import { FoodModel } from "../../../domain/models/food";
+import { Food } from "../../../domain/models/food";
 import { LoadFoodsRepository } from "../../../domain/repositories/load-foods-repository";
 
 export class FoodPrismaRepository implements AddFoodRepository, LoadFoodsRepository {
@@ -8,13 +8,13 @@ export class FoodPrismaRepository implements AddFoodRepository, LoadFoodsReposit
     private readonly prismaClient: PrismaClient
   ) { }
 
-  add(food: AddFoodRepository.Params): Promise<FoodModel> {
+  add(food: AddFoodRepository.Params): Promise<Food> {
     return this.prismaClient.food.create({
       data: food
     })
   }
 
-  loadAll(): Promise<FoodModel[]> {
+  loadAll(): Promise<Food[]> {
     return this.prismaClient.food.findMany()
   }
 }

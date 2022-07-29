@@ -11,7 +11,7 @@ export function useFoods(): Result {
   const [foods, setFoods] = useState<Food[]>()
 
   useEffect(() => {
-    repository?.food.findAll().then(setFoods)
+    repository?.food.loadAll().then(setFoods)
     return () => setFoods([])
   }, [])
 

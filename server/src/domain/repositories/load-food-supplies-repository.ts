@@ -1,9 +1,9 @@
-import { FoodSupplyModel } from "../models/food-supply"
+import { FoodSupply } from "../models/food-supply"
 
 export interface LoadFoodSuppliesRepository {
   loadAll(): Promise<LoadFoodSuppliesRepository.Result>
 }
 
 export namespace LoadFoodSuppliesRepository {
-  export type Result = FoodSupplyModel[]
+  export type Result = FoodSupply[]
 }

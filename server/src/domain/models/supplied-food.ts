@@ -1,11 +1,11 @@
-import { FoodModel } from "./food"
-import { FoodSupplyModel } from "./food-supply"
+import { Food } from "./food"
+import { FoodSupply } from "./food-supply"
 
-export type SuppliedFoodModel = {
+export type SuppliedFood = {
   foodSupplyId: string
-  foodSupply?: FoodSupplyModel
+  foodSupply?: FoodSupply
   foodId: string
-  food?: FoodModel
+  food?: Food
   createdAt: Date
   updatedAt?: Date
   deletedAt?: Date

@@ -18,7 +18,7 @@ export function Foods() {
         </Box>
         <Spacer />
         <ButtonGroup gap='2'>
-          <Button colorScheme='red'>Adicionar</Button>
+          <Button>Adicionar</Button>
         </ButtonGroup>
       </Flex>
       <Box marginTop='2'>

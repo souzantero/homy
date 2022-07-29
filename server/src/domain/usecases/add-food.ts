@@ -1,4 +1,4 @@
-import { FoodModel } from "../models/food";
+import { Food } from "../models/food";
 import { Identifier } from "../protocols/identifier";
 import { AddFoodRepository } from "../repositories/add-food-repository";
 
@@ -23,5 +23,5 @@ export namespace AddFood {
     expiresIn: number
   }
 
-  export type Result = FoodModel
+  export type Result = Food
 }
