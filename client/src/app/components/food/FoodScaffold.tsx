@@ -25,7 +25,7 @@ export function FoodScaffold() {
           </ButtonGroup>
         </Flex>
         <Box marginTop='2'>
-          <FoodTable foods={foods || []} />
+          <FoodTable foods={foods} />
         </Box>
       </Container>
     </>

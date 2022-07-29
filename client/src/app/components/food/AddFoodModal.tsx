@@ -23,14 +23,10 @@ export function AddFoodModal({
   
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
-    try {
-      const params = { name, expiresIn }
-      await addFood(params)
-      setName('')
-      setExpiresIn(0)
-    } catch (error) {
-      console.error(error)
-    }
+    const params = { name, expiresIn }
+    await addFood(params)
+    setName('')
+    setExpiresIn(0)
   }
 
   return (
