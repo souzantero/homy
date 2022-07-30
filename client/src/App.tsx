@@ -1,5 +1,10 @@
-import { ChakraProvider } from '@chakra-ui/react'
 import { createContext, useContext } from 'react'
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from "react-router-dom";
+import { ChakraProvider } from '@chakra-ui/react'
 import { Repository } from './domain/repositories/repository'
 import { FoodMemoryRepository } from './infra/repositories/food-memory-repository'
 import { FoodScaffold } from './app/components/food/FoodScaffold'
@@ -30,7 +35,11 @@ function App() {
   return (
     <ChakraProvider>
       <AppContext.Provider value={app}>
-        <FoodScaffold />
+        <BrowserRouter>
+          <Routes>
+            <Route index element={<FoodScaffold />}/>
+          </Routes>
+        </BrowserRouter>
       </AppContext.Provider>
     </ChakraProvider>
   );
