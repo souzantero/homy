@@ -43,7 +43,7 @@ export function AddFoodModal({
           </FormControl>
           <FormControl isRequired isDisabled={isAdding.valueOf()}>
             <FormLabel>Validade</FormLabel>
-            <Input type='number' value={expiresIn.valueOf() || ''}  min={1} onChange={handleChangeExpiresIn}/>
+            <Input type='number' value={expiresIn.valueOf()}  min={1} onChange={handleChangeExpiresIn}/>
           </FormControl>
         </ModalBody>
 
