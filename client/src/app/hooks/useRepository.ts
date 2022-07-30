@@ -1,7 +1,6 @@
-import { useContext } from "react"
 import { Repository } from "../../domain/repositories/repository"
-import { RepositoryContext } from "../contexts/RepositoryContext"
+import { useApp } from "../../App"
 
 export function useRepository(): Repository {
-  return useContext(RepositoryContext)!
+  return useApp().repository
 }
