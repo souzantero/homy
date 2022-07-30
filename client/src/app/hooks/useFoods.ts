@@ -12,7 +12,7 @@ export function useFoods(): Result {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<any>()
   const [foods, setFoods] = useState<Food[]>([])
-  const { repository } = useRepository()
+  const repository = useRepository()
 
   useEffect(() => {
     loadAllFoods()

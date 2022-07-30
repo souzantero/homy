@@ -3,7 +3,7 @@ import { Button, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButt
 import { useAddFood } from "../../hooks/useAddFood"
 
 export interface AddFoodModalProps {
-  isOpen: boolean
+  isOpen: Boolean
   onClose: () => void
 }
 
@@ -12,25 +12,26 @@ export function AddFoodModal({
   onClose
 }: AddFoodModalProps) {
   const [name, setName] = useState<String>('')
-  const [expiresIn, setExpiresIn] = useState<Number>(0)
+  const [expiresIn, setExpiresIn] = useState<String>('')
   const { addFood, isAdding } = useAddFood()
 
   const handleChangeName = (event: ChangeEvent<HTMLInputElement>) => setName(event.target.value)
-  const handleChangeExpiresIn = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(event.target.value)
-    setExpiresIn(isNaN(value) ? 0 : value)
-  }
-  
+  const handleChangeExpiresIn = (event: ChangeEvent<HTMLInputElement>) => setExpiresIn(event.target.value)
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
-    const params = { name, expiresIn }
+    const expiresInInt = parseInt(expiresIn.valueOf())
+    const params = { name, expiresIn: isNaN(expiresInInt) ? 0 : expiresInInt }
     await addFood(params)
+    clear()
+  }
+
+  const clear = () => {
     setName('')
-    setExpiresIn(0)
+    setExpiresIn('')
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen.valueOf()} onClose={onClose}>
       <ModalOverlay />
       <ModalContent as={'form'} onSubmit={handleSubmit}>
         <ModalHeader>Adicionar alimento</ModalHeader>
@@ -43,7 +44,7 @@ export function AddFoodModal({
           </FormControl>
           <FormControl isRequired isDisabled={isAdding.valueOf()}>
             <FormLabel>Validade</FormLabel>
-            <Input type='number' value={expiresIn.valueOf() || ''}  min={1} onChange={handleChangeExpiresIn}/>
+            <Input type='number' value={expiresIn.valueOf()}  min={1} onChange={handleChangeExpiresIn}/>
           </FormControl>
         </ModalBody>
 
