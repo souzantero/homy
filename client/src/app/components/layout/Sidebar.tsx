@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 
 import {
-  AiOutlineHome,
+  AiOutlineCoffee,
   AiOutlineMenu
 } from 'react-icons/ai'
 
@@ -27,10 +27,10 @@ interface LinkItemProps {
   icon: IconType;
 }
 const LinkItems: Array<LinkItemProps> = [
-  { name: 'Home', icon: AiOutlineHome },
+  { name: 'Alimentos', icon: AiOutlineCoffee },
 ];
 
-export default function SimpleSidebar({ children }: { children: ReactNode }) {
+export function Sidebar({ children }: { children: ReactNode }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>

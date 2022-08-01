@@ -8,6 +8,7 @@ import { ChakraProvider } from '@chakra-ui/react'
 import { Repository } from './domain/repositories/repository'
 import { FoodMemoryRepository } from './infra/repositories/food-memory-repository'
 import { FoodScaffold } from './app/components/food/FoodScaffold'
+import { Sidebar } from './app/components/layout/Sidebar';
 
 export type AppManager = {
   repository: Repository
@@ -37,7 +38,7 @@ function App() {
       <AppContext.Provider value={app}>
         <BrowserRouter>
           <Routes>
-            <Route index element={<FoodScaffold />}/>
+            <Route index element={<Sidebar><FoodScaffold /></Sidebar>}/>
           </Routes>
         </BrowserRouter>
       </AppContext.Provider>
