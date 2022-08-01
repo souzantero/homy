@@ -1,28 +1,17 @@
-import { Box, Button, ButtonGroup, Container, Flex, Heading, Skeleton, Spacer, useBoolean, useToast } from '@chakra-ui/react'
-import { useEffect } from 'react'
+import { Box, Button, ButtonGroup, Container, Flex, Heading, Skeleton, Spacer, useBoolean } from '@chakra-ui/react'
+import { Food } from '../../../domain/models/food'
 import { useFoods } from "../../hooks/useFoods"
+import { useRemoveFood } from '../../hooks/useRemoveFood'
 import { AddFoodModal } from './AddFoodModal'
 import { FoodTable } from './FoodTable'
 
 export function FoodScaffold() {
-  const toast = useToast()
   const [isAdd, isAddAction] = useBoolean()
-  const { foods, isLoading, error } = useFoods()
+  const { foods, isLoading } = useFoods()
+  const { removeFood, isRemoving } = useRemoveFood()
   const handleClickAdd = () => {
     isAdd ? isAddAction.off() : isAddAction.on()
   }
-
-  useEffect(() => {
-    if (error) {
-      const description = error.message ? error.message : ''
-      
-      toast({
-        status: 'error',
-        title: 'Falha ao buscar alimentos.',
-        description
-      })
-    }
-  }, [error])
 
   if (isLoading) return <Skeleton height='20px' />
   return (
@@ -39,7 +28,7 @@ export function FoodScaffold() {
           </ButtonGroup>
         </Flex>
         <Box marginTop='2'>
-          <FoodTable foods={foods} />
+          <FoodTable foods={foods} onRemove={removeFood} />
         </Box>
       </Container>
     </>

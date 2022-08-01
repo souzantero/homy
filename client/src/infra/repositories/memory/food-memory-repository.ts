@@ -6,6 +6,10 @@ export class FoodMemoryRepository implements FoodRepository {
   constructor(
     private readonly foods: Food[]
   ) { }
+  
+  remove(food: Food): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
 
   async add(params: AddFoodRepository.Params): Promise<Food> {
     const food: Food = { id: Date.now().toString(), createdAt: new Date(), ...params }

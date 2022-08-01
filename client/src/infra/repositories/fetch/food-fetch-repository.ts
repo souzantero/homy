@@ -3,8 +3,11 @@ import { AddFoodRepository } from "../../../domain/repositories/add-food-reposit
 import { FoodRepository } from "../../../domain/repositories/food-repository"
 
 export class FoodFetchRepository implements FoodRepository {
-
   constructor(private readonly hostAddress: string) { }
+
+  remove(food: Food): Promise<void> {
+    return Promise.resolve()
+  }
 
   async add(params: AddFoodRepository.Params): Promise<Food> {
     const response = await fetch(`${this.hostAddress}/foods`, {
