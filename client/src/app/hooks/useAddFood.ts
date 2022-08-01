@@ -1,8 +1,10 @@
-import { useToast } from "@chakra-ui/react"
 import { useState } from "react"
+import { useToast } from "@chakra-ui/react"
+import { useQueryClient } from '@tanstack/react-query'
 import { Food } from "../../domain/models/food"
 import { AddFoodRepository } from "../../domain/repositories/add-food-repository"
 import { useRepository } from "./useRepository"
+
 
 export type Result = {
   isAdding: Boolean
@@ -11,6 +13,7 @@ export type Result = {
 
 export function useAddFood(): Result {
   const toast = useToast()
+  const queryClient = useQueryClient()
   const [isAdding, setIsAdding] = useState(false)
   const repository = useRepository()
 
@@ -24,6 +27,8 @@ export function useAddFood(): Result {
         title: 'Alimento adicionado.',
         description: "Alimento adicionado com sucesso.",
       })
+
+      queryClient.invalidateQueries(['foods'])
 
       return food
     } catch (error) {

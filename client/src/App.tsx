@@ -5,6 +5,10 @@ import {
   Route,
 } from "react-router-dom";
 import { ChakraProvider } from '@chakra-ui/react'
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
 import { Repository } from './domain/repositories/repository'
 import { FoodFetchRepository } from './infra/repositories/fetch/food-fetch-repository'
 import { FoodScaffold } from './app/components/food/FoodScaffold'
@@ -30,13 +34,15 @@ export const useApp = () => {
 function App() {
   return (
     <ChakraProvider>
-      <AppContext.Provider value={app}>
-        <BrowserRouter>
-          <Routes>
-            <Route index element={<Sidebar><FoodScaffold /></Sidebar>}/>
-          </Routes>
-        </BrowserRouter>
-      </AppContext.Provider>
+      <QueryClientProvider client={new QueryClient()}>
+        <AppContext.Provider value={app}>
+          <BrowserRouter>
+            <Routes>
+              <Route index element={<Sidebar><FoodScaffold /></Sidebar>}/>
+            </Routes>
+          </BrowserRouter>
+        </AppContext.Provider>
+      </QueryClientProvider>
     </ChakraProvider>
   );
 }

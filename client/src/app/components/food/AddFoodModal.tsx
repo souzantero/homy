@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from "react"
+import { ChangeEvent, FormEvent, useEffect, useState } from "react"
 import { Button, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@chakra-ui/react'
 import { useAddFood } from "../../hooks/useAddFood"
 
@@ -15,14 +15,21 @@ export function AddFoodModal({
   const [expiresIn, setExpiresIn] = useState<String>('')
   const { addFood, isAdding } = useAddFood()
 
+  useEffect(() => {
+    clear()
+  }, [isOpen])
+
   const handleChangeName = (event: ChangeEvent<HTMLInputElement>) => setName(event.target.value)
   const handleChangeExpiresIn = (event: ChangeEvent<HTMLInputElement>) => setExpiresIn(event.target.value)
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
     const expiresInInt = parseInt(expiresIn.valueOf())
     const params = { name, expiresIn: isNaN(expiresInInt) ? 0 : expiresInInt }
-    await addFood(params)
-    clear()
+    const createdFood = await addFood(params)
+    if (createdFood) {
+      clear()
+      onClose()
+    }    
   }
 
   const clear = () => {
@@ -50,7 +57,7 @@ export function AddFoodModal({
 
         <ModalFooter>
           <Button colorScheme='blue' mr={3} onClick={onClose}>
-            Cancelar
+            Fechar
           </Button>
           <Button type='submit' variant='ghost' isLoading={isAdding.valueOf()}>Enviar</Button>
         </ModalFooter>
