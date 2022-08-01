@@ -6,9 +6,10 @@ import {
 } from "react-router-dom";
 import { ChakraProvider } from '@chakra-ui/react'
 import { Repository } from './domain/repositories/repository'
-import { FoodMemoryRepository } from './infra/repositories/food-memory-repository'
+import { FoodFetchRepository } from './infra/repositories/fetch/food-fetch-repository'
 import { FoodScaffold } from './app/components/food/FoodScaffold'
-import { Sidebar } from './app/components/layout/Sidebar';
+import { Sidebar } from './app/components/layout/Sidebar'
+import env from './app/config/env'
 
 export type AppManager = {
   repository: Repository
@@ -16,13 +17,7 @@ export type AppManager = {
 
 const app: AppManager = {
   repository: {
-    food: new FoodMemoryRepository([
-      { id: Date.now().toString() + '1', name: 'Banana', expiresIn: 5, createdAt: new Date() },
-      { id: Date.now().toString() + '2', name: 'Maçã', expiresIn: 5, createdAt: new Date() },
-      { id: Date.now().toString() + '3', name: 'Mamão', expiresIn: 5, createdAt: new Date() },
-      { id: Date.now().toString() + '4', name: 'Tomate', expiresIn: 5, createdAt: new Date() },
-      { id: Date.now().toString() + '5', name: 'Cenoura', expiresIn: 5, createdAt: new Date() },
-    ])
+    food: new FoodFetchRepository(env.serverHostAddress)
   }
 }
 

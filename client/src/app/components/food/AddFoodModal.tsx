@@ -23,7 +23,6 @@ export function AddFoodModal({
     const params = { name, expiresIn: isNaN(expiresInInt) ? 0 : expiresInInt }
     await addFood(params)
     clear()
-    onClose()
   }
 
   const clear = () => {
