@@ -9,11 +9,13 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'
+
+import env from './app/config/env'
 import { Repository } from './domain/repositories/repository'
 import { FoodFetchRepository } from './infra/repositories/fetch/food-fetch-repository'
 import { Foods } from './app/components/food/Foods'
 import { Sidebar } from './app/components/layout/Sidebar'
-import env from './app/config/env'
+import { AddFood } from './app/components/food/AddFood';
 
 export type AppManager = {
   repository: Repository
@@ -41,7 +43,7 @@ function App() {
               <Route path='/' element={<Sidebar/>}>
                 <Route path='foods'>
                   <Route index element={<Foods />}/>
-                  <Route path='new' element={<div>Add new food</div>}/>
+                  <Route path='new' element={<AddFood/>}/>
                 </Route>
               </Route>
             </Routes>

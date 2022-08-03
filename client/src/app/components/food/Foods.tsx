@@ -24,10 +24,10 @@ export function FoodsHead() {
 
 export function Foods() {
   return (
-    <Box padding='2'>
+    <Box padding={2}>
       <FoodsHead />
-      <Divider margin={'4'} />
-      <Box marginTop='2'>
+      <Divider margin={4} />
+      <Box padding={2}>
         <FoodTable />
       </Box>
     </Box>
