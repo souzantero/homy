@@ -6,6 +6,7 @@ import { AddFoodSupply } from '../../domain/usecases/add-food-supply';
 import { AddFoodSupplyValidator } from '../../domain/validators/add-food-supply-validator';
 import { LoadFoodSupplies } from '../../domain/usecases/load-food-supplies';
 import { LoadSuppliedFoods } from '../../domain/usecases/load-supplied-foods';
+import { RemoveFoodById } from '../../domain/usecases/remove-food-by-id';
 import { FoodMemoryRepository } from '../../infra/repositories/memory/food-memory-repository';
 import { UuidAdapter } from '../../infra/adapters/uuid-adapter';
 import { FoodSupplyMemoryRepository } from '../../infra/repositories/memory/food-supply-memory-repository';
@@ -49,6 +50,10 @@ describe('FoodController', () => {
         {
           provide: LoadSuppliedFoods,
           useValue: new LoadSuppliedFoods(suppliedFoodRepository)
+        },
+        {
+          provide: RemoveFoodById,
+          useValue: {}
         }
       ]
     }).compile();

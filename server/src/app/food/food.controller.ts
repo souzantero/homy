@@ -5,6 +5,7 @@ import { LoadFoods } from '../../domain/usecases/load-foods';
 import { LoadFoodSupplies } from '../../domain/usecases/load-food-supplies';
 import { FoodNotFoundError } from '../../domain/errors/food-not-found-error';
 import { LoadSuppliedFoods } from '../../domain/usecases/load-supplied-foods';
+import { RemoveFoodById } from '../../domain/usecases/remove-food-by-id';
 import { CreateFoodInput } from './dtos/create-food-input';
 import { CreateFoodSupplyInput } from './dtos/create-food-supply-input';
 
@@ -15,7 +16,8 @@ export class FoodController {
     private readonly addFoodSupply: AddFoodSupply,
     private readonly loadFoods: LoadFoods,
     private readonly loadFoodSupplies: LoadFoodSupplies,
-    private readonly loadSuppliedFoods: LoadSuppliedFoods
+    private readonly loadSuppliedFoods: LoadSuppliedFoods,
+    private readonly removeFoodById: RemoveFoodById
   ) { }
 
   @Get()
@@ -29,8 +31,8 @@ export class FoodController {
   }
 
   @Delete(':id')
-  deleteFoodById(@Param('id') id: String) {
-    return Promise.resolve()
+  deleteFoodById(@Param('id') id: string) {
+    return this.removeFoodById.remove(id)
   }
 
   @Post('supplies')

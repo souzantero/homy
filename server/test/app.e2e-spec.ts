@@ -88,6 +88,26 @@ describe('App (e2e)', () => {
     })
   })
 
+  describe('/foods/:foodId (DELETE)', () => {
+    it('should delete a existed food', async () => {
+      const createdFoods = await prisma.$transaction([
+        prisma.food.create({ data: { id: identifier.identify(), name: 'Banana', expiresIn: 8, createdAt: new Date() } }),
+        prisma.food.create({ data: { id: identifier.identify(), name: 'Maçã', expiresIn: 10, createdAt: new Date() } }),
+        prisma.food.create({ data: { id: identifier.identify(), name: 'Mamão', expiresIn: 90, createdAt: new Date() } })
+      ])
+
+      const { status, body } = await request(app.getHttpServer()).delete(`/foods/${createdFoods[0].id}`)
+
+      expect(status).toBe(200)
+      expect(body).toEqual({})
+
+      const foods = await findAllFoods(prisma)
+      const deletedFood = foods.find(food => food.id === createdFoods[0].id)
+      expect(deletedFood).toBeDefined()
+      expect(deletedFood.deletedAt).not.toBeNull()
+    })
+  })
+
   describe('/foods/supplies (GET)', () => {
     it('should get all food supplies', async () => {
       const createdFoodSupplies = await prisma.$transaction([

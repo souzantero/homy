@@ -4,6 +4,7 @@ import { AddFood } from '../../domain/usecases/add-food';
 import { LoadFoods } from '../../domain/usecases/load-foods';
 import { LoadFoodSupplies } from '../../domain/usecases/load-food-supplies';
 import { LoadSuppliedFoods } from '../../domain/usecases/load-supplied-foods';
+import { RemoveFoodById } from '../../domain/usecases/remove-food-by-id';
 import { PrismaModule } from '../shared/prisma/prisma.module';
 import { PrismaService } from '../shared/prisma/prisma.service';
 import { FoodController } from './food.controller';
@@ -12,6 +13,7 @@ import { makeAddFoodSupply } from '../../infra/factories/add-food-supply-factory
 import { makeLoadFoods } from '../../infra/factories/load-foods-factory';
 import { makeLoadFoodSupplies } from '../../infra/factories/load-food-supplies-factory';
 import { makeLoadSuppliedFoods } from '../../infra/factories/load-supplied-foods-factory';
+import { makeRemoveFoodById } from '../../infra/factories/remove-food-by-id-factory';
 
 @Module({
   imports: [PrismaModule],
@@ -41,6 +43,11 @@ import { makeLoadSuppliedFoods } from '../../infra/factories/load-supplied-foods
       provide: LoadSuppliedFoods,
       inject: [PrismaService],
       useFactory: makeLoadSuppliedFoods
+    },
+    {
+      provide: RemoveFoodById,
+      inject: [PrismaService],
+      useFactory: makeRemoveFoodById
     }
   ]
 })
