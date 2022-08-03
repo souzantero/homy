@@ -35,11 +35,28 @@ describe('App (e2e)', () => {
     await app.init();
   });
 
-  it('/foods (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/foods')
-      .expect(200)
-  });
+
+  describe('/foods (GET)', () => {
+    it('should be success', () => {
+      return request(app.getHttpServer())
+        .get('/foods')
+        .expect(200)
+    })
+
+    it('should not get deleted foods', async () => {
+      const createdFoods = await prisma.$transaction([
+        prisma.food.create({ data: { id: identifier.identify(), name: 'Banana', expiresIn: 8, createdAt: new Date(), deletedAt: new Date() } }),
+        prisma.food.create({ data: { id: identifier.identify(), name: 'Maçã', expiresIn: 10, createdAt: new Date() } }),
+        prisma.food.create({ data: { id: identifier.identify(), name: 'Mamão', expiresIn: 90, createdAt: new Date() } })
+      ])
+
+      const { status, body } = await request(app.getHttpServer()).get('/foods')
+
+      expect(status).toBe(200)
+      expect(body).toHaveLength(2)
+      expect(body.find(item => item.id === createdFoods[0].id)).toBeUndefined()
+    })
+  })
 
   describe('/foods (POST)', () => {
     it('should create a new food', async () => {

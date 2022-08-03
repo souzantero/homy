@@ -7,6 +7,10 @@ export class FoodMemoryRepository implements AddFoodRepository, LoadFoodsReposit
     private readonly foods: Food[] = []
   ) { }
 
+  loadMany(where: LoadFoodsRepository.Where): Promise<LoadFoodsRepository.Result> {
+    throw new Error("Method not implemented.");
+  }
+
   async add(food: AddFoodRepository.Params): Promise<Food> {
     this.foods.push(food)
     return food

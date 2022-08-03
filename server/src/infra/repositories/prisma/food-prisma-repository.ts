@@ -9,6 +9,10 @@ export class FoodPrismaRepository implements AddFoodRepository, LoadFoodsReposit
     private readonly prisma: PrismaClient
   ) { }
 
+  loadMany(where: LoadFoodsRepository.Where): Promise<LoadFoodsRepository.Result> {
+    return this.prisma.food.findMany({ where })
+  }
+
   updateById(id: string, data: UpdateFoodByIdRepository.Data): Promise<UpdateFoodByIdRepository.Data> {
     return this.prisma.food.update({
       where: { id },

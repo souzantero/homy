@@ -3,11 +3,15 @@ import { LoadFoodsRepository } from "../repositories/load-foods-repository";
 
 export class LoadFoods {
   constructor(
-    private foodRepository: LoadFoodsRepository
+    private loadFoodsRepository: LoadFoodsRepository
   ) { }
 
   load(): Promise<LoadFoods.Result> {
-    return this.foodRepository.loadAll()
+    const where: LoadFoodsRepository.Where = {
+      deletedAt: null
+    }
+
+    return this.loadFoodsRepository.loadMany(where)
   }
 }
 
