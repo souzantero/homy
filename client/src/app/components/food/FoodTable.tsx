@@ -8,13 +8,13 @@ export function FoodTable({}: FoodTableProps) {
   if (isLoading) return <Skeleton height='20px' />
   return (
     <TableContainer>
-      <Table variant='simple' size='sm'>
+      <Table variant='striped' colorScheme={'facebook'}  size='sm'>
         <Thead>
           <Tr>
             <Th>ID</Th>
             <Th>Nome</Th>
             <Th isNumeric>Validade</Th>
-            <Th/>
+            <Th isNumeric/>
           </Tr>
         </Thead>
         <Tbody>

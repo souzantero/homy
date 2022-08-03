@@ -1,4 +1,4 @@
-import { Box, Button, ButtonGroup, Flex, Heading, Spacer, useBoolean } from '@chakra-ui/react'
+import { Box, Button, ButtonGroup, Divider, Flex, Heading, Spacer, useBoolean } from '@chakra-ui/react'
 import { AddFoodModal } from './AddFoodModal'
 import { FoodTable } from './FoodTable'
 
@@ -16,7 +16,14 @@ export function FoodScaffoldHead({
       </Box>
       <Spacer />
       <ButtonGroup gap='2'>
-        <Button onClick={onClickAdd}>Adicionar</Button>
+        <Button 
+          color={'blue'}
+          borderColor={'blue'}
+          variant={'outline'}
+          onClick={onClickAdd}
+        >
+          Adicionar
+        </Button>
       </ButtonGroup>
     </Flex>
   )
@@ -34,6 +41,7 @@ export function FoodScaffold() {
       <AddFoodModal isOpen={isAdd} onClose={isAddAction.off} />
       <Box padding='2'>
         <FoodScaffoldHead onClickAdd={handleClickAdd} />
+        <Divider margin={'4'} />
         <Box marginTop='2'>
           <FoodTable />
         </Box>
