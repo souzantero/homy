@@ -1,8 +1,13 @@
 import { Box, Button, ButtonGroup, Divider, Flex, Heading, Spacer } from '@chakra-ui/react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { FoodTable } from './FoodTable'
 
 export function FoodsHead() {
+  const navigate = useNavigate()
+  const handleClickAdd = () => {
+    navigate('/foods/new')
+  }
+
   return (
     <Flex padding='2' minWidth='max-content' alignItems='center' gap='2'>
       <Box padding='2'>
@@ -14,8 +19,9 @@ export function FoodsHead() {
           color={'blue'}
           borderColor={'blue'}
           variant={'outline'}
+          onClick={handleClickAdd}
         >
-          <Link to={'/foods/new'}>Adicionar</Link>
+          Adicionar
         </Button>
       </ButtonGroup>
     </Flex>
