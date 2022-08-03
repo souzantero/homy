@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode } from 'react'
 import {
   IconButton,
   Box,
@@ -13,14 +13,14 @@ import {
   useDisclosure,
   BoxProps,
   FlexProps,
-} from '@chakra-ui/react';
+} from '@chakra-ui/react'
 
 import {
   AiOutlineCoffee,
   AiOutlineMenu
 } from 'react-icons/ai'
 
-import { IconType } from 'react-icons';
+import { IconType } from 'react-icons'
 
 interface LinkItemProps {
   name: string;

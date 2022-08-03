@@ -1,16 +1,11 @@
-import { TableContainer, Table, Thead, Tbody, Tr, Th, Td, IconButton } from '@chakra-ui/react'
-import { AiOutlineDelete } from 'react-icons/ai'
-import { Food } from '../../../domain/models/food'
+import { TableContainer, Table, Thead, Tbody, Tr, Th, Skeleton } from '@chakra-ui/react'
+import { useFoods } from '../../hooks/useFoods'
+import { FoodTableRow } from './FoodTableRow'
 
-export interface FoodTableProps {
-  foods: Food[]
-  onRemove?: (food: Food) => void
-}
-
-export function FoodTable({
-  foods,
-  onRemove
-}: FoodTableProps) {
+export interface FoodTableProps { }
+export function FoodTable({}: FoodTableProps) {
+  const { foods, isLoading } = useFoods()
+  if (isLoading) return <Skeleton height='20px' />
   return (
     <TableContainer>
       <Table variant='simple' size='sm'>
@@ -19,29 +14,13 @@ export function FoodTable({
             <Th>ID</Th>
             <Th>Nome</Th>
             <Th isNumeric>Validade</Th>
-            {
-              onRemove && <Th/>
-            }
+            <Th/>
           </Tr>
         </Thead>
         <Tbody>
           {
             foods.map((food, index) => (
-              <Tr key={index}>
-                <Td>{food.id}</Td>
-                <Td>{food.name}</Td>
-                <Td isNumeric>{food.expiresIn.toString()} </Td>
-                {
-                  onRemove && (
-                    <Td>
-                      <IconButton 
-                        aria-label='Remover alimento'
-                        onClick={() => onRemove(food)}
-                        icon={<AiOutlineDelete />} />
-                    </Td>
-                  )
-                }
-              </Tr>
+              <FoodTableRow key={index} food={food}  />
             ))
           }
         </Tbody>

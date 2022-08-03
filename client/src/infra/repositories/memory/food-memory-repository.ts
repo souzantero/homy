@@ -1,6 +1,6 @@
-import { Food } from "../../../domain/models/food";
-import { AddFoodRepository } from "../../../domain/repositories/add-food-repository";
-import { FoodRepository } from "../../../domain/repositories/food-repository";
+import { Food } from "../../../domain/models/food"
+import { AddFoodRepository } from "../../../domain/repositories/add-food-repository"
+import { FoodRepository } from "../../../domain/repositories/food-repository"
 
 export class FoodMemoryRepository implements FoodRepository {
   constructor(
@@ -8,7 +8,7 @@ export class FoodMemoryRepository implements FoodRepository {
   ) { }
   
   removeById(id: String): Promise<void> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented.")
   }
 
   async add(params: AddFoodRepository.Params): Promise<Food> {
