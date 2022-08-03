@@ -15,22 +15,26 @@ import {
   FlexProps,
 } from '@chakra-ui/react'
 
+import { Link as RouterLink } from 'react-router-dom'
+
 import {
   AiOutlineCoffee,
   AiOutlineMenu
 } from 'react-icons/ai'
 
 import { IconType } from 'react-icons'
+import { Outlet } from 'react-router-dom';
 
 interface LinkItemProps {
-  name: string;
-  icon: IconType;
+  name: string
+  to: string
+  icon: IconType
 }
 const LinkItems: Array<LinkItemProps> = [
-  { name: 'Alimentos', icon: AiOutlineCoffee },
+  { name: 'Alimentos', to: '/foods', icon: AiOutlineCoffee },
 ];
 
-export function Sidebar({ children }: { children: ReactNode }) {
+export function Sidebar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
@@ -52,8 +56,8 @@ export function Sidebar({ children }: { children: ReactNode }) {
       </Drawer>
       {/* mobilenav */}
       <MobileNav display={{ base: 'flex', md: 'none' }} onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 60 }} p="4">
-        {children}
+      <Box ml={{ base: 0, md: 60 }} p="4" as='main'>
+        <Outlet/>
       </Box>
     </Box>
   );
@@ -80,7 +84,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
+        <NavItem key={link.name} to={link.to} icon={link.icon}>
           {link.name}
         </NavItem>
       ))}
@@ -89,12 +93,13 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 };
 
 interface NavItemProps extends FlexProps {
-  icon: IconType;
-  children: ReactNode;
+  icon: IconType
+  to: string
+  children: ReactNode
 }
-const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
+const NavItem = ({ icon, to, children, ...rest }: NavItemProps) => {
   return (
-    <Link href="#" style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+    <Link as={RouterLink} to={to} style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
       <Flex
         align="center"
         p="4"

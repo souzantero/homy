@@ -11,7 +11,7 @@ import {
 } from '@tanstack/react-query'
 import { Repository } from './domain/repositories/repository'
 import { FoodFetchRepository } from './infra/repositories/fetch/food-fetch-repository'
-import { FoodScaffold } from './app/components/food/FoodScaffold'
+import { Foods } from './app/components/food/Foods'
 import { Sidebar } from './app/components/layout/Sidebar'
 import env from './app/config/env'
 
@@ -38,7 +38,12 @@ function App() {
         <AppContext.Provider value={app}>
           <BrowserRouter>
             <Routes>
-              <Route index element={<Sidebar><FoodScaffold /></Sidebar>}/>
+              <Route path='/' element={<Sidebar/>}>
+                <Route path='foods'>
+                  <Route index element={<Foods />}/>
+                  <Route path='new' element={<div>Add new food</div>}/>
+                </Route>
+              </Route>
             </Routes>
           </BrowserRouter>
         </AppContext.Provider>
