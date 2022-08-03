@@ -1,4 +1,4 @@
-import { Body, Controller, Get, NotFoundException, Param, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post, ValidationPipe } from '@nestjs/common';
 import { AddFoodSupply } from '../../domain/usecases/add-food-supply';
 import { AddFood } from '../../domain/usecases/add-food';
 import { LoadFoods } from '../../domain/usecases/load-foods';
@@ -26,6 +26,11 @@ export class FoodController {
   @Post()
   createFood(@Body(ValidationPipe) data: CreateFoodInput) {
     return this.addFood.add(data)
+  }
+
+  @Delete(':id')
+  deleteFoodById(@Param('id') id: String) {
+    return Promise.resolve()
   }
 
   @Post('supplies')

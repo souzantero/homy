@@ -2,13 +2,11 @@ import { useState } from "react"
 import { useToast } from "@chakra-ui/react"
 import { useQueryClient } from '@tanstack/react-query'
 import { Food } from "../../domain/models/food"
-import { AddFoodRepository } from "../../domain/repositories/add-food-repository"
 import { useRepository } from "./useRepository"
-
 
 export type Result = {
   isRemoving: Boolean
-  removeFood: (food: Food) => Promise<void>
+  removeFood: (food: Food) => Promise<Boolean>
 }
 
 export function useRemoveFood(): Result {
@@ -20,7 +18,7 @@ export function useRemoveFood(): Result {
   const removeFood = async (food: Food) => {
     try {
       setIsRemoving(true)
-      await repository.food.remove(food)
+      await repository.food.removeById(food.id)
 
       toast({
         status: 'success',
@@ -29,11 +27,13 @@ export function useRemoveFood(): Result {
       })
 
       queryClient.invalidateQueries(['foods'])
+      return true
     } catch (error) {
       const status = 'error'
       const title = 'Falha ao remover alimento.'
       const description = error instanceof Error ? error.message : 'Não foi possível remover o alimento no momento, tente novamente mais tarde.'
       toast({ status, title, description })
+      return false
     } finally {
       setIsRemoving(false)
     }

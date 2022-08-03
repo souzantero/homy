@@ -7,7 +7,7 @@ export class FoodMemoryRepository implements FoodRepository {
     private readonly foods: Food[]
   ) { }
   
-  remove(food: Food): Promise<void> {
+  removeById(id: String): Promise<void> {
     throw new Error("Method not implemented.");
   }
 

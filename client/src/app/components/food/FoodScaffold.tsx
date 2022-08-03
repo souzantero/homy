@@ -17,7 +17,7 @@ export function FoodScaffold() {
   return (
     <>
       <AddFoodModal isOpen={isAdd} onClose={isAddAction.off} />
-      <Container padding='2'>
+      <Box padding='2'>
         <Flex padding='2' minWidth='max-content' alignItems='center' gap='2'>
           <Box padding='2'>
             <Heading size='md'>Alimentos</Heading>
@@ -30,7 +30,7 @@ export function FoodScaffold() {
         <Box marginTop='2'>
           <FoodTable foods={foods} onRemove={removeFood} />
         </Box>
-      </Container>
+      </Box>
     </>
   )
 }
