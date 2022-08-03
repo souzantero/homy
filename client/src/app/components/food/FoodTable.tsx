@@ -2,8 +2,7 @@ import { TableContainer, Table, Thead, Tbody, Tr, Th, Skeleton } from '@chakra-u
 import { useFoods } from '../../hooks/useFoods'
 import { FoodTableRow } from './FoodTableRow'
 
-export interface FoodTableProps { }
-export function FoodTable({}: FoodTableProps) {
+export function FoodTable() {
   const { foods, isLoading } = useFoods()
   if (isLoading) return <Skeleton height='20px' />
   return (
@@ -11,7 +10,6 @@ export function FoodTable({}: FoodTableProps) {
       <Table variant='striped' colorScheme={'facebook'}  size='sm'>
         <Thead>
           <Tr>
-            <Th>ID</Th>
             <Th>Nome</Th>
             <Th isNumeric>Validade</Th>
             <Th isNumeric/>

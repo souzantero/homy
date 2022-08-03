@@ -1,4 +1,4 @@
-import { Button, Td, Tr } from "@chakra-ui/react"
+import { Td, Tr } from "@chakra-ui/react"
 import { Food } from "../../../domain/models/food"
 import { useRemoveFood } from "../../hooks/useRemoveFood"
 import { RemoveFoodButton } from "./RemoveFoodButton"
@@ -13,7 +13,6 @@ export function FoodTableRow({
   const { removeFood, isRemoving } = useRemoveFood()
   return (
     <Tr>
-      <Td>{food.id}</Td>
       <Td>{food.name}</Td>
       <Td isNumeric>{food.expiresIn.toString()} </Td>
       <Td isNumeric>

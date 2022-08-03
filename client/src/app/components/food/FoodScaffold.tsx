@@ -2,13 +2,13 @@ import { Box, Button, ButtonGroup, Divider, Flex, Heading, Spacer, useBoolean } 
 import { AddFoodModal } from './AddFoodModal'
 import { FoodTable } from './FoodTable'
 
-export interface FoodScaffoldHead {
+export interface FoodScaffoldHeadProps {
   onClickAdd: () => void
 }
 
 export function FoodScaffoldHead({
   onClickAdd
-}: FoodScaffoldHead) {
+}: FoodScaffoldHeadProps) {
   return (
     <Flex padding='2' minWidth='max-content' alignItems='center' gap='2'>
       <Box padding='2'>
