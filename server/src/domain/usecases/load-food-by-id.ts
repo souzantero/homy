@@ -7,12 +7,12 @@ export class LoadFoodById {
   ) { }
 
   async load(id: string): Promise<LoadFoodById.Result> {
-    const food = await this.loadFoodByIdRepository.loadOneWithSuppliesById(id)
-    if (food && food.deletedAt) {
-      return null
+    const where: LoadFoodByIdRepository.Where = {
+      id,
+      deletedAt: null
     }
 
-    return food
+    return this.loadFoodByIdRepository.loadOneWithSupplies(where)
   }
 }
 

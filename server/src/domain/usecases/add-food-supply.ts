@@ -21,7 +21,7 @@ export class AddFoodSupply {
       createdAt,
       suppliedFoods: suppliedFoods.map(suppliedFood => ({
         ...suppliedFood,
-        createdAt: new Date()
+        createdAt
       }))
     })
   }

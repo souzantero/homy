@@ -10,11 +10,9 @@ export class FoodPrismaRepository implements AddFoodRepository, LoadFoodByIdRepo
     private readonly prisma: PrismaClient
   ) { }
 
-  loadOneWithSuppliesById(id: string): Promise<Food> {
-    return this.prisma.food.findUnique({
-      where: {
-        id
-      },
+  loadOneWithSupplies(where: LoadFoodByIdRepository.Where): Promise<Food> {
+    return this.prisma.food.findFirst({
+      where,
       include: {
         suppliedFoods: true
       }
