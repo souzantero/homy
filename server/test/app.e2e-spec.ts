@@ -7,6 +7,8 @@ import { PrismaService } from '../src/app/shared/prisma/prisma.service';
 import { UuidAdapter } from '../src/infra/adapters/uuid-adapter';
 import { Identifier } from '../src/domain/protocols/identifier';
 
+const serialize = (data: any) => JSON.parse(JSON.stringify(data))
+
 const dropDatabase = async (prisma: PrismaClient) => prisma.$transaction([
   prisma.suppliedFood.deleteMany(),
   prisma.foodSupply.deleteMany(),
@@ -30,7 +32,7 @@ describe('App (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
-    prisma = moduleFixture.get<PrismaService>(PrismaService)
+    prisma = prisma ? prisma : moduleFixture.get<PrismaService>(PrismaService)
     await dropDatabase(prisma)
     await app.init();
   });
@@ -102,6 +104,56 @@ describe('App (e2e)', () => {
 
       expect(response.status).toBe(400)
       expect(response.body).toHaveProperty('message', ['name must be a string'])
+    })
+  })
+
+  describe('/foods/:foodId (GET)', () => {
+    it('should get a food with supplied foods', async () => {
+      const createdFoods = await prisma.$transaction([
+        prisma.food.create({ data: { id: identifier.identify(), name: 'Banana', expiresIn: 5, createdAt: new Date() } }),
+        prisma.food.create({ data: { id: identifier.identify(), name: 'Maçã', expiresIn: 14, createdAt: new Date() } }),
+        prisma.food.create({ data: { id: identifier.identify(), name: 'Mamão', expiresIn: 7, createdAt: new Date() } })
+      ])
+
+      const suppliedFoods = createdFoods.map(createdFood => ({
+        foodId: createdFood.id,
+        createdAt: new Date()
+      }))
+
+      await prisma.foodSupply.create({
+        data: {
+          id: identifier.identify(),
+          createdAt: new Date(),
+          suppliedFoods: {
+            create: suppliedFoods
+          }
+        }
+      })
+
+      const food = createdFoods[0]
+      const createdSuppliedFoods = await findAllSuppliedFoods(prisma)
+      const filteredSuppliedFoods = createdSuppliedFoods.filter(suppliedFood => suppliedFood.foodId === food.id)
+
+      const { status, body } = await request(app.getHttpServer()).get(`/foods/${food.id}`)
+      expect(status).toBe(200)
+      expect(body).toBeDefined()
+      expect(body).toEqual({
+        ...serialize(food),
+        suppliedFoods: filteredSuppliedFoods.map(serialize)
+      })
+    })
+
+    it('should be not found if food not exists', async () => {
+      const { status, body } = await request(app.getHttpServer()).get('/foods/fakeId')
+      expect(status).toBe(404)
+      expect(body).toHaveProperty('message', 'food not found')
+    })
+
+    it('should be not found if food is deleted', async () => {
+      const food = await prisma.food.create({ data: { id: identifier.identify(), name: 'Banana', expiresIn: 5, createdAt: new Date(), deletedAt: new Date() } })
+      const { status, body } = await request(app.getHttpServer()).get(`/foods/${food.id}`)
+      expect(status).toBe(404)
+      expect(body).toHaveProperty('message', 'food not found')
     })
   })
 

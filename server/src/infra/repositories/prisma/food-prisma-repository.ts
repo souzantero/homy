@@ -3,11 +3,23 @@ import { AddFoodRepository } from '../../../domain/repositories/add-food-reposit
 import { Food } from "../../../domain/models/food";
 import { LoadFoodsRepository } from "../../../domain/repositories/load-foods-repository";
 import { UpdateFoodByIdRepository } from '../../../domain/repositories/update-food-by-id-repository';
+import { LoadFoodByIdRepository } from '../../../domain/repositories/load-food-by-id-repository';
 
-export class FoodPrismaRepository implements AddFoodRepository, LoadFoodsRepository, UpdateFoodByIdRepository {
+export class FoodPrismaRepository implements AddFoodRepository, LoadFoodByIdRepository, LoadFoodsRepository, UpdateFoodByIdRepository {
   constructor(
     private readonly prisma: PrismaClient
   ) { }
+
+  loadOneWithSuppliesById(id: string): Promise<Food> {
+    return this.prisma.food.findUnique({
+      where: {
+        id
+      },
+      include: {
+        suppliedFoods: true
+      }
+    })
+  }
 
   loadMany(where: LoadFoodsRepository.Where): Promise<LoadFoodsRepository.Result> {
     return this.prisma.food.findMany({ where })

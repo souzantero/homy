@@ -13,7 +13,7 @@ import { FoodSupplyMemoryRepository } from '../../infra/repositories/memory/food
 import { SuppliedFoodMemoryRepository } from '../../infra/repositories/memory/supplied-food-memory-repository';
 
 
-describe('FoodController', () => {
+describe.skip('FoodController', () => {
   let controller: FoodController
   let addFood: AddFood
   let addFoodSupply: AddFoodSupply
