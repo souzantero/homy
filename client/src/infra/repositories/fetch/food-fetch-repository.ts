@@ -5,7 +5,7 @@ import { FoodRepository } from "../../../domain/repositories/food-repository"
 export class FoodFetchRepository implements FoodRepository {
   constructor(private readonly hostAddress: string) { }
 
-  async removeById(id: String): Promise<void> {
+  async removeById(id: string): Promise<void> {
     const response = await fetch(`${this.hostAddress}/foods/${id}`, {
       method: 'DELETE'
     })

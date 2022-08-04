@@ -1,7 +1,7 @@
-import { Button, ButtonGroup, Td, Tr } from "@chakra-ui/react"
-import { useNavigate } from "react-router-dom"
+import { ButtonGroup, Td, Tr } from "@chakra-ui/react"
 import { Food } from "../../../domain/models/food"
 import { useRemoveFood } from "../../hooks/useRemoveFood"
+import { NavButton } from "../button/NavButton"
 import { RemoveFoodButton } from "./RemoveFoodButton"
 
 export interface FoodTableRowProps {
@@ -11,28 +11,16 @@ export interface FoodTableRowProps {
 export function FoodTableRow({
   food
 }: FoodTableRowProps) {
-  const navigate = useNavigate()
   const { removeFood, isRemoving } = useRemoveFood()
-  const handleClickOpen = () => {
-    navigate(`/foods/${food.id}`)
-  }
-
   return (
     <Tr>
       <Td>{food.name}</Td>
       <Td isNumeric>{food.expiresIn.toString()} </Td>
       <Td isNumeric>
         <ButtonGroup>
-          <Button
-            color={'blue'}
-            borderColor={'blue'}
-            size={'sm'}
-            variant={'outline'}
-            onClick={handleClickOpen}
-          >
+          <NavButton to={`/foods/${food.id}`}>
             Abrir
-          </Button>
-
+          </NavButton>
           <RemoveFoodButton 
             isRemoving={isRemoving} 
             onRemove={() => removeFood(food)} />

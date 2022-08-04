@@ -5,8 +5,8 @@ import { Food } from "../../domain/models/food"
 import { useRepository } from "./useRepository"
 
 export type Result = {
-  isRemoving: Boolean
-  removeFood: (food: Food) => Promise<Boolean>
+  isRemoving: boolean
+  removeFood: (food: Food) => Promise<boolean>
 }
 
 export function useRemoveFood(): Result {

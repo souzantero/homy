@@ -1,18 +1,24 @@
-import { Skeleton } from "@chakra-ui/react";
-import { useMemo } from "react";
-import { useParams } from "react-router-dom";
-import { useFoods } from "../../hooks/useFoods";
-import { Page } from "../layout/Page";
-import { PageHeader } from "../layout/PageHeader";
+import { ButtonGroup, Skeleton } from "@chakra-ui/react"
+import { useParams } from "react-router-dom"
+import { useFood } from "../../hooks/useFood"
+import { Page } from "../layout/Page"
+import { PageBody } from "../layout/PageBody"
+import { PageHeader } from "../layout/PageHeader"
 
 export function Food() {
   const { foodId } = useParams()
-  const { foods, isLoading } = useFoods()
-  const food = useMemo(() => foods.find(food => food.id === foodId), [foods])
+  const { isLoading } = useFood(foodId || '')
   if (isLoading) return <Skeleton/>
   return (
     <Page>
-      <PageHeader title={'Alimento'}/>
+      <PageHeader title={'Alimento'}>
+        <ButtonGroup>
+
+        </ButtonGroup>
+      </PageHeader>
+      <PageBody>
+
+      </PageBody>
     </Page>
   )
 }

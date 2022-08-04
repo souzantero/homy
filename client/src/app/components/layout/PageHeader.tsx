@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, Heading, Spacer } from "@chakra-ui/react";
+import { Divider, Flex, Heading, Spacer } from "@chakra-ui/react";
 import { PropsWithChildren } from "react";
 
 export interface PageHeaderProps {

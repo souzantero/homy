@@ -1,15 +1,16 @@
 import { ChangeEvent, FormEvent, useState } from "react"
-import { Button, Flex, FormControl, FormLabel, Heading, Input, Spacer, Stack } from '@chakra-ui/react'
+import { Flex, FormControl, FormLabel, Input, Spacer, Stack } from '@chakra-ui/react'
 import { useAddFood } from "../../hooks/useAddFood"
 import { useNavigate } from "react-router-dom"
 import { Page } from "../layout/Page"
 import { PageHeader } from "../layout/PageHeader"
 import { PageBody } from "../layout/PageBody"
+import { ActionButton } from "../button/ActionButton"
 
 export function AddFood() {
   const navigate = useNavigate()
-  const [name, setName] = useState<String>('')
-  const [expiresIn, setExpiresIn] = useState<String>('')
+  const [name, setName] = useState<string>('')
+  const [expiresIn, setExpiresIn] = useState<string>('')
   const { addFood, isAdding } = useAddFood()
 
   const handleChangeName = (event: ChangeEvent<HTMLInputElement>) => setName(event.target.value)
@@ -35,27 +36,24 @@ export function AddFood() {
       <PageHeader title="Adicionar alimento"/>
       <PageBody>
         <Stack as={'form'} spacing={4} onSubmit={handleSubmit}>
-          <FormControl isRequired isDisabled={isAdding.valueOf()}>
+          <FormControl isRequired isDisabled={isAdding}>
             <FormLabel>Nome</FormLabel>
-            <Input type='text' value={name.valueOf()} onChange={handleChangeName} />
+            <Input type='text' value={name} onChange={handleChangeName} />
           </FormControl>
-          <FormControl isRequired isDisabled={isAdding.valueOf()}>
+          <FormControl isRequired isDisabled={isAdding}>
             <FormLabel>Validade</FormLabel>
-            <Input type='number' value={expiresIn.valueOf()}  min={1} onChange={handleChangeExpiresIn}/>
+            <Input type='number' value={expiresIn}  min={1} onChange={handleChangeExpiresIn}/>
           </FormControl>
           <Flex minWidth={'max-content'} alignItems={'end'} gap={2}>
             <Spacer/>
-            <Button
-              color={'green'}
-              borderColor={'green'}
-              variant={'outline'}
+            <ActionButton
               type='submit'
-              size={'sm'}
-              isDisabled={isAdding.valueOf()}
-              isLoading={isAdding.valueOf()}
+              isDisabled={isAdding}
+              isLoading={isAdding}
+              loadingText='Enviando...'
             >
               Enviar
-            </Button>
+            </ActionButton>
           </Flex>
         </Stack>
       </PageBody>

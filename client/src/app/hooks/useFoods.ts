@@ -5,7 +5,7 @@ import { Food } from "../../domain/models/food"
 import { useRepository } from "./useRepository"
 
 export type Result = {
-  isLoading: Boolean
+  isLoading: boolean
   error?: any
   foods: Food[]
 }

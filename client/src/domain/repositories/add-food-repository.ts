@@ -5,8 +5,8 @@ export interface AddFoodRepository {
 }
 export namespace AddFoodRepository {
   export type Params = {
-    name: String
-    expiresIn: Number
+    name: string
+    expiresIn: number
   }
 
   export type Result = Food

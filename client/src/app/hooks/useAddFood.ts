@@ -7,7 +7,7 @@ import { useRepository } from "./useRepository"
 
 
 export type Result = {
-  isAdding: Boolean
+  isAdding: boolean
   addFood: (params: AddFoodRepository.Params) => Promise<Food | undefined>
 }
 

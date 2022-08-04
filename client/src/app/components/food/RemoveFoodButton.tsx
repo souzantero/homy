@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react"
 
 export interface RemoveFoodButtonProps {
-  isRemoving: Boolean,
+  isRemoving: boolean,
   onRemove: () => void
 }
 
