@@ -1,7 +1,10 @@
 import { ChangeEvent, FormEvent, useState } from "react"
-import { Box, Button, Divider, Flex, FormControl, FormLabel, Heading, Input, Spacer, Stack } from '@chakra-ui/react'
+import { Button, Flex, FormControl, FormLabel, Heading, Input, Spacer, Stack } from '@chakra-ui/react'
 import { useAddFood } from "../../hooks/useAddFood"
 import { useNavigate } from "react-router-dom"
+import { Page } from "../layout/Page"
+import { PageHeader } from "../layout/PageHeader"
+import { PageBody } from "../layout/PageBody"
 
 export function AddFood() {
   const navigate = useNavigate()
@@ -28,12 +31,9 @@ export function AddFood() {
   }
 
   return (
-    <Box padding={2}>
-      <Box padding={2}>
-        <Heading size={'md'} >Adicionar alimento</Heading>
-      </Box>
-      <Divider margin={4} />
-      <Box padding={2}>
+    <Page>
+      <PageHeader title="Adicionar alimento"/>
+      <PageBody>
         <Stack as={'form'} spacing={4} onSubmit={handleSubmit}>
           <FormControl isRequired isDisabled={isAdding.valueOf()}>
             <FormLabel>Nome</FormLabel>
@@ -50,6 +50,7 @@ export function AddFood() {
               borderColor={'green'}
               variant={'outline'}
               type='submit'
+              size={'sm'}
               isDisabled={isAdding.valueOf()}
               isLoading={isAdding.valueOf()}
             >
@@ -57,7 +58,7 @@ export function AddFood() {
             </Button>
           </Flex>
         </Stack>
-      </Box>
-    </Box>
+      </PageBody>
+    </Page>
   )
 }
