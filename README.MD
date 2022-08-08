@@ -5,11 +5,12 @@ Objetivo: Ajudar os meus donos a gerenciar os seus recursos residênciais
 Primeiro módulo: Gestão de alimentos
 
 - Funcionalidades
-  * Cadastro de Alimentos
+  * Cadastro de alimentos
   * Reabastecimento do estoque de alimentos
   * Mostrar estoque ordenado por data de validade
 
 Tecnico:
 
+* Exercitar arquitetura limpa
 * Monorepo
 * Testes e2e
