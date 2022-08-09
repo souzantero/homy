@@ -7,6 +7,7 @@ export class FoodMemoryRepository implements FoodRepository {
     private readonly foods: Food[]
   ) { }
   
+  
   removeById(id: string): Promise<void> {
     throw new Error("Method not implemented.")
   }
@@ -19,5 +20,15 @@ export class FoodMemoryRepository implements FoodRepository {
 
   async loadAll(): Promise<Food[]> {
     return this.foods
+  }
+
+  async loadOneById(foodId: string): Promise<Food> {
+    const food = this.foods.find(food => food.id === foodId)
+
+    if (!food) {
+      throw new Error('Food not found')
+    }
+
+    return food
   }
 }
