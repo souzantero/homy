@@ -157,6 +157,30 @@ describe('App (e2e)', () => {
     })
   })
 
+  describe('/foods/:foodId (PUT)', () => {
+    it('should update a exited food', async () => {
+      const createdFood = await prisma.food.create({ data: { id: identifier.identify(), name: 'Banana', expiresIn: 5, createdAt: new Date() } })
+      const { status } = await request(app.getHttpServer())
+        .put(`/foods/${createdFood.id}`)
+        .set('Content-Type', 'application/json')
+        .send({
+          name: 'Caju',
+          expiresIn: 10
+        })
+
+      expect(status).toBe(200)
+      
+      const foods = await findAllFoods(prisma)
+      expect(foods).toHaveLength(1)
+      expect(foods[0]).toHaveProperty('id', createdFood.id)
+      expect(foods[0]).toHaveProperty('name', 'Caju')
+      expect(foods[0]).toHaveProperty('expiresIn', 10)
+      expect(foods[0]).toHaveProperty('createdAt', createdFood.createdAt)
+      expect(foods[0].updatedAt).toBeDefined()
+      expect(foods[0].updatedAt.getTime()).toBeGreaterThan(createdFood.createdAt.getTime())
+    })
+  })
+
   describe('/foods/:foodId (DELETE)', () => {
     it('should delete a existed food', async () => {
       const createdFoods = await prisma.$transaction([

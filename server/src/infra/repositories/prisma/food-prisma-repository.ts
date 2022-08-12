@@ -23,7 +23,7 @@ export class FoodPrismaRepository implements AddFoodRepository, LoadFoodByIdRepo
     return this.prisma.food.findMany({ where })
   }
 
-  updateById(id: string, data: UpdateFoodByIdRepository.Data): Promise<UpdateFoodByIdRepository.Data> {
+  updateById(id: string, data: UpdateFoodByIdRepository.Data): Promise<UpdateFoodByIdRepository.Result> {
     return this.prisma.food.update({
       where: { id },
       data

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Post, ValidationPipe } from '@nestjs/common'
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, ValidationPipe } from '@nestjs/common'
 import { AddFoodSupply } from '../../domain/usecases/add-food-supply'
 import { AddFood } from '../../domain/usecases/add-food'
 import { LoadFoods } from '../../domain/usecases/load-foods'
@@ -7,8 +7,10 @@ import { FoodNotFoundError } from '../../domain/errors/food-not-found-error'
 import { LoadSuppliedFoods } from '../../domain/usecases/load-supplied-foods'
 import { RemoveFoodById } from '../../domain/usecases/remove-food-by-id'
 import { LoadFoodById } from '../../domain/usecases/load-food-by-id'
+import { UpdateFoodById } from '../../domain/usecases/update-food-by-id'
 import { CreateFoodInput } from './dtos/create-food-input'
 import { CreateFoodSupplyInput } from './dtos/create-food-supply-input'
+import { UpdateFoodInput } from './dtos/update-food-input'
 
 @Controller('foods')
 export class FoodController {
@@ -19,12 +21,18 @@ export class FoodController {
     private readonly loadFoodSupplies: LoadFoodSupplies,
     private readonly loadSuppliedFoods: LoadSuppliedFoods,
     private readonly removeFoodById: RemoveFoodById,
-    private readonly loadFoodById: LoadFoodById
+    private readonly loadFoodById: LoadFoodById,
+    private readonly updateFoodById: UpdateFoodById
   ) { }
 
   @Get()
   getFoods() {
     return this.loadFoods.load()
+  }
+
+  @Get('supplies/:foodSupplyId/supplied-foods')
+  getSuppliedFoods(@Param('foodSupplyId') foodSupplyId: string) {
+    return this.loadSuppliedFoods.load({ foodSupplyId })
   }
 
   @Get('supplies')
@@ -47,11 +55,6 @@ export class FoodController {
     return this.addFood.add(data)
   }
 
-  @Delete(':id')
-  deleteFood(@Param('id') id: string) {
-    return this.removeFoodById.remove(id)
-  }
-
   @Post('supplies')
   async createFoodSupply(@Body(ValidationPipe) data: CreateFoodSupplyInput) {
     try {
@@ -62,8 +65,13 @@ export class FoodController {
     }
   }
 
-  @Get('supplies/:foodSupplyId/supplied-foods')
-  getSuppliedFoods(@Param('foodSupplyId') foodSupplyId: string) {
-    return this.loadSuppliedFoods.load({ foodSupplyId })
+  @Put(':id')
+  updateFood(@Param('id') id: string, @Body(ValidationPipe) data: UpdateFoodInput) {
+    return this.updateFoodById.updateById(id, data)
+  }
+
+  @Delete(':id')
+  deleteFood(@Param('id') id: string) {
+    return this.removeFoodById.remove(id)
   }
 }

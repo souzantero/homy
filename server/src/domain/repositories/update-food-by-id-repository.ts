@@ -1,7 +1,7 @@
 import { Food } from "../models/food"
 
 export interface UpdateFoodByIdRepository {
-  updateById(id: string, data: UpdateFoodByIdRepository.Data): Promise<UpdateFoodByIdRepository.Data>
+  updateById(id: string, data: UpdateFoodByIdRepository.Data): Promise<UpdateFoodByIdRepository.Result>
 }
 
 export namespace UpdateFoodByIdRepository {
