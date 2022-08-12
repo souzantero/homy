@@ -76,7 +76,12 @@ export class FoodController {
   }
 
   @Delete(':id')
-  deleteFood(@Param('id') id: string) {
-    return this.removeFoodById.remove(id)
+  async deleteFood(@Param('id') id: string) {
+    try {
+      return await this.removeFoodById.remove(id)
+    } catch (error) {
+      if (error instanceof FoodNotFoundError) throw new NotFoundException('food not found')
+      else throw error
+    }
   }
 }
