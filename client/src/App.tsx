@@ -4,7 +4,7 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider, useToast } from '@chakra-ui/react'
 import {
   QueryClient,
   QueryClientProvider,
@@ -18,15 +18,18 @@ import { Sidebar } from './app/components/layout/Sidebar'
 import { AddFood } from './app/components/food/AddFood'
 import { Food } from './app/components/food/Food'
 import { EditFood } from './app/components/food/EditFood'
+import { Notifier } from './domain/protocols/notifier';
 
 export type AppManager = {
-  repository: Repository
+  repository: Repository,
+  useNotify: () => (paras: Notifier.Params) => void
 }
 
 const app: AppManager = {
   repository: {
     food: new FoodFetchRepository(env.serverHostAddress)
-  }
+  },
+  useNotify: useToast
 }
 
 export const AppContext = createContext(app)

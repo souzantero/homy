@@ -1,9 +1,9 @@
 import { useState } from "react"
-import { useToast } from "@chakra-ui/react"
 import { useQueryClient } from '@tanstack/react-query'
 import { Food } from "../../domain/models/food"
 import { AddFoodRepository } from "../../domain/repositories/add-food-repository"
 import { useRepository } from "./useRepository"
+import { useNotifier } from "./useNotifier"
 
 
 export type Result = {
@@ -12,7 +12,7 @@ export type Result = {
 }
 
 export function useAddFood(): Result {
-  const toast = useToast()
+  const { notify } = useNotifier()
   const queryClient = useQueryClient()
   const [isAdding, setIsAdding] = useState(false)
   const repository = useRepository()
@@ -22,7 +22,7 @@ export function useAddFood(): Result {
       setIsAdding(true)
       const food = await repository.food.add(params)
 
-      toast({
+      notify({
         status: 'success',
         title: 'Alimento adicionado.',
         description: "Alimento adicionado com sucesso.",
@@ -35,7 +35,7 @@ export function useAddFood(): Result {
       const status = 'error'
       const title = 'Falha ao adicionar alimento.'
       const description = error instanceof Error ? error.message : 'Não foi possível adicionar o alimento no momento, tente novamente mais tarde.'
-      toast({ status, title, description })
+      notify({ status, title, description })
     } finally {
       setIsAdding(false)
     }
