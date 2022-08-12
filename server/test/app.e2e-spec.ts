@@ -179,6 +179,33 @@ describe('App (e2e)', () => {
       expect(foods[0].updatedAt).toBeDefined()
       expect(foods[0].updatedAt.getTime()).toBeGreaterThan(createdFood.createdAt.getTime())
     })
+
+    it('should be not found if food not exists', async () => {
+      const { status, body } = await request(app.getHttpServer())
+        .put('/foods/fakeId')
+        .set('Content-Type', 'application/json')
+        .send({
+          name: 'Caju',
+          expiresIn: 7
+        })
+      
+      expect(status).toBe(404)
+      expect(body).toHaveProperty('message', 'food not found')
+    })
+
+    it('should be not found if food is deleted', async () => {
+      const food = await prisma.food.create({ data: { id: identifier.identify(), name: 'Banana', expiresIn: 5, createdAt: new Date(), deletedAt: new Date() } })
+      const { status, body } = await request(app.getHttpServer())
+        .put(`/foods/${food.id}`)
+        .set('Content-Type', 'application/json')
+        .send({
+          name: 'Caju',
+          expiresIn: 7
+        })
+
+      expect(status).toBe(404)
+      expect(body).toHaveProperty('message', 'food not found')
+    })
   })
 
   describe('/foods/:foodId (DELETE)', () => {

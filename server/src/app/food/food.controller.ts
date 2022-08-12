@@ -66,8 +66,13 @@ export class FoodController {
   }
 
   @Put(':id')
-  updateFood(@Param('id') id: string, @Body(ValidationPipe) data: UpdateFoodInput) {
-    return this.updateFoodById.updateById(id, data)
+  async updateFood(@Param('id') id: string, @Body(ValidationPipe) data: UpdateFoodInput) {
+    try {
+      return await this.updateFoodById.updateById(id, data)
+    } catch (error) {
+      if (error instanceof FoodNotFoundError) throw new NotFoundException('food not found')
+      else throw error
+    }
   }
 
   @Delete(':id')
