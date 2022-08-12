@@ -1,12 +1,16 @@
 import { Food } from "../../../domain/models/food"
 import { AddFoodRepository } from "../../../domain/repositories/add-food-repository"
 import { FoodRepository } from "../../../domain/repositories/food-repository"
+import { UpdateFoodRepository } from "../../../domain/repositories/update-food-repository"
 
 export class FoodMemoryRepository implements FoodRepository {
   constructor(
     private readonly foods: Food[]
   ) { }
   
+  updateById(id: string, data: UpdateFoodRepository.Data): Promise<Food> {
+    throw new Error("Method not implemented.")
+  }
   
   removeById(id: string): Promise<void> {
     throw new Error("Method not implemented.")

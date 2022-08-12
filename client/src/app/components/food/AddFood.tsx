@@ -7,13 +7,12 @@ import { PageBody } from "../layout/PageBody"
 import { FoodForm, Period } from "./FoodForm"
 
 export function AddFood() {
+  const { addFood, isAdding } = useAddFood()
   const navigate = useNavigate()
   const [name, setName] = useState<string>('')
   const [expiresIn, setExpiresIn] = useState<number>(0)
   const [period, setPeriod] = useState<Period>(Period.Day)
   
-  const { addFood, isAdding } = useAddFood()
-
   const handleSubmit = async () => {    
     const params = { name, expiresIn: expiresIn * period }
     const createdFood = await addFood(params)
