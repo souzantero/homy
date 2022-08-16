@@ -1,4 +1,15 @@
 -- CreateTable
+CREATE TABLE "User" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "createdAt" DATETIME NOT NULL,
+    "updatedAt" DATETIME,
+    "deletedAt" DATETIME,
+    "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL
+);
+
+-- CreateTable
 CREATE TABLE "Food" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "createdAt" DATETIME NOT NULL,
@@ -28,3 +39,6 @@ CREATE TABLE "SuppliedFood" (
     CONSTRAINT "SuppliedFood_foodSupplyId_fkey" FOREIGN KEY ("foodSupplyId") REFERENCES "FoodSupply" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "SuppliedFood_foodId_fkey" FOREIGN KEY ("foodId") REFERENCES "Food" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");

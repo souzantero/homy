@@ -6,7 +6,13 @@ export class AuthenticateUserByEmailAndPassword {
     password
   }: AuthenticateUserByEmailAndPassword.Params): Promise<AuthenticateUserByEmailAndPassword.Result> {
     if (email !== 'dev@homy.app') return null
-    return { email }
+    return {
+      id: Date.now().toString(),
+      createdAt: new Date(),
+      name: 'Felipe Antero',
+      email,
+      password: 'fakepasswd'
+    }
   }
 }
 
