@@ -5,7 +5,7 @@ import { User } from "../../../domain/models/user"
 import { AuthenticateUserByEmailAndPassword } from "../../../domain/usecases/authenticate-user-by-email-and-password"
 
 @Injectable()
-export class LocalStrategy extends PassportStrategy(Strategy) {
+export class EmailAndPasswordStrategy extends PassportStrategy(Strategy) {
   constructor(
     private readonly authenticateUser: AuthenticateUserByEmailAndPassword
   ) {
