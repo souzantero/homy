@@ -1,18 +1,18 @@
 import { Food } from "../models/food"
-import { LoadFoodByIdRepository } from "../repositories/load-food-by-id-repository"
+import { LoadFoodRepository } from "../repositories/load-food-repository"
 
 export class LoadFoodById {
   constructor(
-    private readonly loadFoodByIdRepository: LoadFoodByIdRepository
+    private readonly loadFoodRepository: LoadFoodRepository
   ) { }
 
   async load(id: string): Promise<LoadFoodById.Result> {
-    const where: LoadFoodByIdRepository.Where = {
+    const where: LoadFoodRepository.Where = {
       id,
       deletedAt: null
     }
 
-    return this.loadFoodByIdRepository.loadOneWithSupplies(where)
+    return this.loadFoodRepository.loadOneWithSupplies(where)
   }
 }
 

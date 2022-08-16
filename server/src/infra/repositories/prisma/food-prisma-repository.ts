@@ -3,14 +3,14 @@ import { AddFoodRepository } from '../../../domain/repositories/add-food-reposit
 import { Food } from "../../../domain/models/food";
 import { LoadFoodsRepository } from "../../../domain/repositories/load-foods-repository";
 import { UpdateFoodByIdRepository } from '../../../domain/repositories/update-food-by-id-repository';
-import { LoadFoodByIdRepository } from '../../../domain/repositories/load-food-by-id-repository';
+import { LoadFoodRepository } from '../../../domain/repositories/load-food-repository';
 
-export class FoodPrismaRepository implements AddFoodRepository, LoadFoodByIdRepository, LoadFoodsRepository, UpdateFoodByIdRepository {
+export class FoodPrismaRepository implements AddFoodRepository, LoadFoodRepository, LoadFoodsRepository, UpdateFoodByIdRepository {
   constructor(
     private readonly prisma: PrismaClient
   ) { }
 
-  loadOneWithSupplies(where: LoadFoodByIdRepository.Where): Promise<Food> {
+  loadOneWithSupplies(where: LoadFoodRepository.Where): Promise<Food> {
     return this.prisma.food.findFirst({
       where,
       include: {
