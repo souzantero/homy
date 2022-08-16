@@ -7,11 +7,12 @@ import { UserPrismaRepository } from "../repositories/prisma/user-prisma-reposit
 export const makeAddUser = (prisma: PrismaClient) => {
   const identifier = new UuidAdapter()
   const hasher = new BcryptAdapter(12)
-  const addUserRepository = new UserPrismaRepository(prisma)
+  const userRepository = new UserPrismaRepository(prisma)
 
   return new AddUser(
     identifier,
     hasher,
-    addUserRepository
+    userRepository,
+    userRepository
   )
 }

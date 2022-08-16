@@ -7,7 +7,8 @@ import { PrismaService } from '../src/app/shared/prisma/prisma.service'
 import { UuidAdapter } from '../src/infra/adapters/uuid-adapter'
 import { Identifier } from '../src/domain/protocols/identifier'
 import { BcryptAdapter } from '../src/infra/adapters/bcrypt-adapter'
-import { HashComparer } from 'src/domain/protocols/hash-comparer'
+import { HashComparer } from '../src/domain/protocols/hash-comparer'
+import { Hasher } from '../src/domain/protocols/hasher'
 
 const serialize = (data: any) => JSON.parse(JSON.stringify(data))
 
@@ -27,10 +28,12 @@ describe('App (e2e)', () => {
   let app: INestApplication;
   let prisma: PrismaClient
   let identifier: Identifier
+  let hasher: Hasher
   let hashComparer: HashComparer
 
   beforeEach(async () => {
     identifier = new UuidAdapter()
+    hasher = new BcryptAdapter(12)
     hashComparer = new BcryptAdapter(12)
 
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -73,6 +76,139 @@ describe('App (e2e)', () => {
         expect(users[0]).toHaveProperty('updatedAt', null)
         expect(users[0]).toHaveProperty('deletedAt', null)
         expect(await hashComparer.compare('12345678', users[0].password)).toBeTruthy()
+      })
+
+      it('should fail when user already exists with the same email', async () => {
+        await prisma.user.create({
+          data: {
+            id: identifier.identify(),
+            name: 'Felipe Antero',
+            email: 'souzantero@gmail.com',
+            password: await hasher.hash('12345678'),
+            createdAt: new Date()
+          }
+        })
+
+        const { status, body } = await request(app.getHttpServer())
+          .post('/auth/sign-up')
+          .set('Content-Type', 'application/json')
+          .send({
+            name: 'Felipe Antero',
+            email: 'souzantero@gmail.com',
+            password: '12345678'
+          })
+
+        expect(status).toBe(403)
+        expect(body).toHaveProperty('message', 'the received email is already in use')
+      })
+
+      it('should fail when name is not sent', async () => {
+        const { status, body } = await request(app.getHttpServer())
+          .post('/auth/sign-up')
+          .set('Content-Type', 'application/json')
+          .send({
+            email: 'souzantero@gmail.com',
+            password: '12345678'
+          })
+
+        expect(status).toBe(400)
+        expect(body).toHaveProperty('message', ['name should not be empty'])
+      })
+
+      it('should fail when name is empty', async () => {
+        const { status, body } = await request(app.getHttpServer())
+          .post('/auth/sign-up')
+          .set('Content-Type', 'application/json')
+          .send({
+            name: '',
+            email: 'souzantero@gmail.com',
+            password: '12345678'
+          })
+
+        expect(status).toBe(400)
+        expect(body).toHaveProperty('message', ['name should not be empty'])
+      })
+
+      it('should fail when email is not sent', async () => {
+        const { status, body } = await request(app.getHttpServer())
+          .post('/auth/sign-up')
+          .set('Content-Type', 'application/json')
+          .send({
+            name: 'Felipe Antero',
+            password: '12345678'
+          })
+
+        expect(status).toBe(400)
+        expect(body.message.some(m => m === 'email should not be empty')).toBeTruthy()
+      })
+
+      it('should fail when email is empty', async () => {
+        const { status, body } = await request(app.getHttpServer())
+          .post('/auth/sign-up')
+          .set('Content-Type', 'application/json')
+          .send({
+            name: 'Felipe Antero',
+            email: '',
+            password: '12345678'
+          })
+
+        expect(status).toBe(400)
+        expect(body.message.some(m => m === 'email should not be empty')).toBeTruthy()
+      })
+
+      it('should fail when email is not a valid email format', async () => {
+        const { status, body } = await request(app.getHttpServer())
+          .post('/auth/sign-up')
+          .set('Content-Type', 'application/json')
+          .send({
+            name: 'Felipe Antero',
+            email: 'Felipe Antero',
+            password: '12345678'
+          })
+
+        expect(status).toBe(400)
+        expect(body.message.some(m => m === 'email must be an email')).toBeTruthy()
+      })
+
+      it('should fail when password is not sent', async () => {
+        const { status, body } = await request(app.getHttpServer())
+          .post('/auth/sign-up')
+          .set('Content-Type', 'application/json')
+          .send({
+            name: 'Felipe Antero',
+            email: 'souzantero@gmail.com'
+          })
+
+        expect(status).toBe(400)
+        expect(body.message.some(m => m === 'password should not be empty')).toBeTruthy()
+      })
+
+      it('should fail when password is emtpy', async () => {
+        const { status, body } = await request(app.getHttpServer())
+          .post('/auth/sign-up')
+          .set('Content-Type', 'application/json')
+          .send({
+            name: 'Felipe Antero',
+            email: 'souzantero@gmail.com',
+            password: ''
+          })
+
+        expect(status).toBe(400)
+        expect(body.message.some(m => m === 'password should not be empty')).toBeTruthy()
+      })
+
+      it('should fail when password is grether than 8', async () => {
+        const { status, body } = await request(app.getHttpServer())
+          .post('/auth/sign-up')
+          .set('Content-Type', 'application/json')
+          .send({
+            name: 'Felipe Antero',
+            email: 'souzantero@gmail.com',
+            password: '1234567'
+          })
+
+        expect(status).toBe(400)
+        expect(body.message.some(m => m === 'password must be longer than or equal to 8 characters')).toBeTruthy()
       })
     })
   })
