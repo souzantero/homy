@@ -1,10 +1,14 @@
 import { User } from '../models/user'
+import { Encrypter } from '../protocols/encrypter'
 
 export class SignInWithUser {
+  constructor(
+    private readonly encrypter: Encrypter
+  ) { }
+
   async sign(user: User): Promise<SignInWithUser.Result> {
-    return {
-      accessToken: JSON.stringify(user)
-    }
+    const accessToken = await this.encrypter.encrypt(user.id)
+    return { accessToken }
   }
 }
 

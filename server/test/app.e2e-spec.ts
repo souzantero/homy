@@ -7,8 +7,11 @@ import { PrismaService } from '../src/app/shared/prisma/prisma.service'
 import { UuidAdapter } from '../src/infra/adapters/uuid-adapter'
 import { Identifier } from '../src/domain/protocols/identifier'
 import { BcryptAdapter } from '../src/infra/adapters/bcrypt-adapter'
+import { JwtAdapter } from '../src/infra/adapters/jwt-adapter'
 import { HashComparer } from '../src/domain/protocols/hash-comparer'
 import { Hasher } from '../src/domain/protocols/hasher'
+import { Decrypter } from '../src/domain/protocols/decrypter'
+import { AddUser } from '../src/domain/usecases/add-user'
 
 const serialize = (data: any) => JSON.parse(JSON.stringify(data))
 
@@ -30,11 +33,13 @@ describe('App (e2e)', () => {
   let identifier: Identifier
   let hasher: Hasher
   let hashComparer: HashComparer
+  let decrypter: Decrypter
 
   beforeEach(async () => {
     identifier = new UuidAdapter()
     hasher = new BcryptAdapter(12)
     hashComparer = new BcryptAdapter(12)
+    decrypter = new JwtAdapter('my-secret')
 
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
@@ -209,6 +214,28 @@ describe('App (e2e)', () => {
 
         expect(status).toBe(400)
         expect(body.message.some(m => m === 'password must be longer than or equal to 8 characters')).toBeTruthy()
+      })
+    })
+
+    describe('/sign-in', () => {
+      it('should sign user authentication token', async () => {
+        const addUser = app.get<AddUser>(AddUser)
+        const addedUser = await addUser.add({ name: 'Felipe', email: 'souzantero@gmail.com', password: '12345678' })
+
+        const { status, body } = await request(app.getHttpServer())
+          .post('/auth/sign-in')
+          .set('Content-Type', 'application/json')
+          .send({
+            email: 'souzantero@gmail.com',
+            password: '12345678'
+          })
+
+        expect(status).toBe(201)
+        expect(body).toHaveProperty('accessToken')
+
+        const decrypted = await decrypter.decrypt(body.accessToken)
+
+        expect(decrypted).toHaveProperty('sub', addedUser.id)
       })
     })
   })

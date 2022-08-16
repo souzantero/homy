@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client"
 import { User } from "../../../domain/models/user"
-import { LoadUserRepository } from "src/domain/repositories/load-user-repository"
+import { LoadUserRepository } from "../../../domain/repositories/load-user-repository"
 import { AddUserRepository } from "../../../domain/repositories/add-user-repository"
 
 export class UserPrismaRepository implements AddUserRepository, LoadUserRepository {
