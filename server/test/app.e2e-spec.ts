@@ -231,11 +231,68 @@ describe('App (e2e)', () => {
           })
 
         expect(status).toBe(201)
-        expect(body).toHaveProperty('accessToken')
+        expect(body).toHaveProperty('authorizationToken')
 
-        const decrypted = await decrypter.decrypt(body.accessToken)
-
+        const decrypted = await decrypter.decrypt(body.authorizationToken)
         expect(decrypted).toHaveProperty('sub', addedUser.id)
+
+        const users = await findAllUsers(prisma)
+        expect(users).toHaveLength(1)
+        expect(users[0]).toHaveProperty('authorizationToken', body.authorizationToken)
+      })
+
+      it('should be unauthorized when is invalid email', async () => {
+        await app.get<AddUser>(AddUser).add({ name: 'Felipe', email: 'souzantero@gmail.com', password: '12345678' })
+
+        const { status, body } = await request(app.getHttpServer())
+          .post('/auth/sign-in')
+          .set('Content-Type', 'application/json')
+          .send({
+            email: 'invalid@gmail.com',
+            password: '12345678'
+          })
+
+        expect(status).toBe(401)
+        expect(body).toHaveProperty('message', 'Unauthorized')
+      })
+
+      it('should be unauthorized when is invalid password', async () => {
+        await app.get<AddUser>(AddUser).add({ name: 'Felipe', email: 'souzantero@gmail.com', password: '12345678' })
+
+        const { status, body } = await request(app.getHttpServer())
+          .post('/auth/sign-in')
+          .set('Content-Type', 'application/json')
+          .send({
+            email: 'souzantero@gmail.com',
+            password: '98765478'
+          })
+
+        expect(status).toBe(401)
+        expect(body).toHaveProperty('message', 'Unauthorized')
+      })
+
+      it('should be unauthorized when email is not sent', async () => {
+        const { status, body } = await request(app.getHttpServer())
+          .post('/auth/sign-in')
+          .set('Content-Type', 'application/json')
+          .send({
+            password: '98765478'
+          })
+
+        expect(status).toBe(401)
+        expect(body).toHaveProperty('message', 'Unauthorized')
+      })
+
+      it('should be unauthorized when password is not sent', async () => {
+        const { status, body } = await request(app.getHttpServer())
+          .post('/auth/sign-in')
+          .set('Content-Type', 'application/json')
+          .send({
+            email: 'me@mail.com'
+          })
+
+        expect(status).toBe(401)
+        expect(body).toHaveProperty('message', 'Unauthorized')
       })
     })
   })

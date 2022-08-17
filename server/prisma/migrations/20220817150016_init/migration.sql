@@ -6,7 +6,8 @@ CREATE TABLE "User" (
     "deletedAt" DATETIME,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "password" TEXT NOT NULL
+    "password" TEXT NOT NULL,
+    "authorizationToken" TEXT
 );
 
 -- CreateTable

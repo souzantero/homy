@@ -28,6 +28,7 @@ import { PrismaModule } from '../shared/prisma/prisma.module'
     },
     {
       provide: SignInWithUser,
+      inject: [PrismaService],
       useFactory: makeSignInWithUser
     }
   ]
