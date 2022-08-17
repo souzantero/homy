@@ -1,14 +1,14 @@
-import { FoodNotFoundError } from "../errors/food-not-found-error";
-import { LoadFoodsRepository } from "../repositories/load-foods-repository";
-import { AddFoodSupply } from "../usecases/add-food-supply";
+import { FoodNotFoundError } from "../errors/food-not-found-error"
+import { AddFoodSupply } from "../usecases/add-food-supply"
+import { LoadFoods } from "../usecases/load-foods"
 
 export class AddFoodSupplyValidator {
   constructor(
-    private readonly loadFoodsRepository: LoadFoodsRepository
+    private readonly loadFoods: LoadFoods
   ) { }
 
   async validate(addFoodSupplyParams: AddFoodSupply.Params): Promise<void> {
-    const foods = await this.loadFoodsRepository.loadAll()
+    const foods = await this.loadFoods.load()
     const foodIds = foods.map(food => food.id)
 
     for (const suppliedFood of addFoodSupplyParams) {
