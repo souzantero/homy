@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { INestApplication } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { PrismaClient } from '@prisma/client'
 import * as request from 'supertest'
 import { AppModule } from '../src/app/app.module'
@@ -36,17 +37,17 @@ describe('App (e2e)', () => {
   let decrypter: Decrypter
 
   beforeEach(async () => {
-    identifier = new UuidAdapter()
-    hasher = new BcryptAdapter(12)
-    hashComparer = new BcryptAdapter(12)
-    decrypter = new JwtAdapter('my-secret')
-
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
-    prisma = prisma ? prisma : moduleFixture.get<PrismaService>(PrismaService)
+    const config = app.get<ConfigService>(ConfigService)
+    identifier = new UuidAdapter()
+    hasher = new BcryptAdapter(+config.get<number>('BCRYPT_SALT'))
+    hashComparer = new BcryptAdapter(+config.get<number>('BCRYPT_SALT'))
+    decrypter = new JwtAdapter(config.get<string>('JWT_SECRET'))
+    prisma = prisma ? prisma : app.get<PrismaService>(PrismaService)
     await dropDatabase(prisma)
     await app.init();
   });

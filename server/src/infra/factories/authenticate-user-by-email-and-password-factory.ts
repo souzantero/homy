@@ -3,8 +3,8 @@ import { AuthenticateUserByEmailAndPassword } from "../../domain/usecases/authen
 import { BcryptAdapter } from "../adapters/bcrypt-adapter"
 import { UserPrismaRepository } from "../repositories/prisma/user-prisma-repository"
 
-export const makeAuthenticateUserByEmailAndPassword = (prisma: PrismaClient) => {
-  const bcrypt = new BcryptAdapter(12)
+export const makeAuthenticateUserByEmailAndPassword = (prisma: PrismaClient, bcryptSalt: number) => {
+  const bcrypt = new BcryptAdapter(bcryptSalt)
   const userRepository = new UserPrismaRepository(prisma)
   return new AuthenticateUserByEmailAndPassword(bcrypt, userRepository)
 }

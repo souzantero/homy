@@ -4,9 +4,9 @@ import { BcryptAdapter } from "../adapters/bcrypt-adapter"
 import { UuidAdapter } from "../adapters/uuid-adapter"
 import { UserPrismaRepository } from "../repositories/prisma/user-prisma-repository"
 
-export const makeAddUser = (prisma: PrismaClient) => {
+export const makeAddUser = (prisma: PrismaClient, bcryptSalt: number) => {
   const identifier = new UuidAdapter()
-  const hasher = new BcryptAdapter(12)
+  const hasher = new BcryptAdapter(bcryptSalt)
   const userRepository = new UserPrismaRepository(prisma)
 
   return new AddUser(
