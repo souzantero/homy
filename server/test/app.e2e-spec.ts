@@ -301,6 +301,59 @@ describe('App (e2e)', () => {
     })
 
     describe('/me', () => {
+      it('should be unauthorized when authorization token is not sent', async () => {
+        const { status, body } = await request(app.getHttpServer())
+          .get('/auth/me')
+
+        expect(status).toBe(401)
+        expect(body).toHaveProperty('message', 'Unauthorized')
+      })
+
+      it('should be unauthorized when authorization token is invalid', async () => {
+        const id = identifier.identify()
+        const createdUser = await prisma.user.create({
+          data: {
+            id,
+            name: 'Felipe Antero',
+            email: 'souzantero@gmail.com',
+            password: await hasher.hash('12345678'),
+            authorizationToken: await encrypter.encrypt(id),
+            createdAt: new Date(),
+            updatedAt: new Date()
+          }
+        })
+
+        const { status, body } = await request(app.getHttpServer())
+          .get('/auth/me')
+          .set('Authorization', `Bearer ${createdUser.authorizationToken}invalid`)
+
+        expect(status).toBe(401)
+        expect(body).toHaveProperty('message', 'Unauthorized')
+      })
+
+      it('should be unauthorized when authorization token is valid but user not has authorization token saved', async () => {
+        const id = identifier.identify()
+        await prisma.user.create({
+          data: {
+            id,
+            name: 'Felipe Antero',
+            email: 'souzantero@gmail.com',
+            password: await hasher.hash('12345678'),
+            createdAt: new Date(),
+            updatedAt: new Date()
+          }
+        })
+
+        const authorizationToken = await encrypter.encrypt(id)
+
+        const { status, body } = await request(app.getHttpServer())
+          .get('/auth/me')
+          .set('Authorization', `Bearer ${authorizationToken}`)
+
+        expect(status).toBe(401)
+        expect(body).toHaveProperty('message', 'Unauthorized')
+      })
+
       it('should return authenticated user', async () => {
         const id = identifier.identify()
         const createdUser = await prisma.user.create({
