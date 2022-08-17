@@ -14,6 +14,8 @@ import { Hasher } from '../src/domain/protocols/hasher'
 import { Decrypter } from '../src/domain/protocols/decrypter'
 import { Encrypter } from '../src/domain/protocols/encrypter'
 import { AddUser } from '../src/domain/usecases/add-user'
+import { SignInWithUser } from '../src/domain/usecases/sign-in-with-user'
+import { User } from '../src/domain/models/user'
 
 const serialize = (data: any) => JSON.parse(JSON.stringify(data))
 
@@ -403,9 +405,28 @@ describe('App (e2e)', () => {
     })
 
     describe('(POST)', () => {
+      let authorizationToken
+
+      beforeEach(async () => {
+        const addedUser = await app.get<AddUser>(AddUser).add({ name: 'Felipe Antero', email: 'souzantero@gmail.com', password: '12345678' })
+        const signature = await app.get<SignInWithUser>(SignInWithUser).sign(addedUser as User)
+        authorizationToken = signature.authorizationToken
+      })
+
+      it('should be unauthorized when authorization token is not sent', () => {
+        return request(app.getHttpServer())
+          .post('/foods')
+          .send({
+            name: 'Banana',
+            expiresIn: 90
+          })
+          .expect(401)
+      })
+
       it('should create a new food', async () => {
         const response = await request(app.getHttpServer())
           .post('/foods')
+          .set('Authorization', `Bearer ${authorizationToken}`)
           .send({
             name: 'Banana',
             expiresIn: 90
@@ -427,6 +448,7 @@ describe('App (e2e)', () => {
       it('should fail when name is empty', async () => {
         const response = await request(app.getHttpServer())
           .post('/foods')
+          .set('Authorization', `Bearer ${authorizationToken}`)
           .send({
             name: '',
             expiresIn: 90
@@ -439,6 +461,7 @@ describe('App (e2e)', () => {
       it('should fail when name is a number', async () => {
         const response = await request(app.getHttpServer())
           .post('/foods')
+          .set('Authorization', `Bearer ${authorizationToken}`)
           .send({
             name: 10,
             expiresIn: 90
@@ -500,10 +523,30 @@ describe('App (e2e)', () => {
     })
 
     describe('/:foodId (PUT)', () => {
+      let authorizationToken
+
+      beforeEach(async () => {
+        const addedUser = await app.get<AddUser>(AddUser).add({ name: 'Felipe Antero', email: 'souzantero@gmail.com', password: '12345678' })
+        const signature = await app.get<SignInWithUser>(SignInWithUser).sign(addedUser as User)
+        authorizationToken = signature.authorizationToken
+      })
+
+      it('should be unauthorized when authorization token is not sent', () => {
+        return request(app.getHttpServer())
+          .put('/foods/fakeId')
+          .set('Content-Type', 'application/json')
+          .send({
+            name: 'Banana',
+            expiresIn: 90
+          })
+          .expect(401)
+      })
+
       it('should update a exited food', async () => {
         const createdFood = await prisma.food.create({ data: { id: identifier.identify(), name: 'Banana', expiresIn: 5, createdAt: new Date() } })
         const { status } = await request(app.getHttpServer())
           .put(`/foods/${createdFood.id}`)
+          .set('Authorization', `Bearer ${authorizationToken}`)
           .set('Content-Type', 'application/json')
           .send({
             name: 'Caju',
@@ -525,6 +568,7 @@ describe('App (e2e)', () => {
       it('should be not found if food not exists', async () => {
         const { status, body } = await request(app.getHttpServer())
           .put('/foods/fakeId')
+          .set('Authorization', `Bearer ${authorizationToken}`)
           .set('Content-Type', 'application/json')
           .send({
             name: 'Caju',
@@ -539,6 +583,7 @@ describe('App (e2e)', () => {
         const food = await prisma.food.create({ data: { id: identifier.identify(), name: 'Banana', expiresIn: 5, createdAt: new Date(), deletedAt: new Date() } })
         const { status, body } = await request(app.getHttpServer())
           .put(`/foods/${food.id}`)
+          .set('Authorization', `Bearer ${authorizationToken}`)
           .set('Content-Type', 'application/json')
           .send({
             name: 'Caju',
@@ -551,6 +596,21 @@ describe('App (e2e)', () => {
     })
 
     describe('/:foodId (DELETE)', () => {
+      let authorizationToken
+
+      beforeEach(async () => {
+        const addedUser = await app.get<AddUser>(AddUser).add({ name: 'Felipe Antero', email: 'souzantero@gmail.com', password: '12345678' })
+        const signature = await app.get<SignInWithUser>(SignInWithUser).sign(addedUser as User)
+        authorizationToken = signature.authorizationToken
+      })
+
+      it('should be unauthorized when authorization token is not sent', () => {
+        return request(app.getHttpServer())
+          .delete('/foods/fakeId')
+          .set('Content-Type', 'application/json')
+          .expect(401)
+      })
+
       it('should delete a existed food', async () => {
         const createdFoods = await prisma.$transaction([
           prisma.food.create({ data: { id: identifier.identify(), name: 'Banana', expiresIn: 8, createdAt: new Date() } }),
@@ -558,7 +618,9 @@ describe('App (e2e)', () => {
           prisma.food.create({ data: { id: identifier.identify(), name: 'Mamão', expiresIn: 90, createdAt: new Date() } })
         ])
 
-        const { status, body } = await request(app.getHttpServer()).delete(`/foods/${createdFoods[0].id}`)
+        const { status, body } = await request(app.getHttpServer())
+          .delete(`/foods/${createdFoods[0].id}`)
+          .set('Authorization', `Bearer ${authorizationToken}`)
 
         expect(status).toBe(200)
         expect(body).toEqual({})
@@ -570,7 +632,9 @@ describe('App (e2e)', () => {
       })
 
       it('should be not found if food not exists', async () => {
-        const { status, body } = await request(app.getHttpServer()).delete('/foods/fakeId')
+        const { status, body } = await request(app.getHttpServer())
+          .delete('/foods/fakeId')
+          .set('Authorization', `Bearer ${authorizationToken}`)
 
         expect(status).toBe(404)
         expect(body).toHaveProperty('message', 'food not found')
@@ -578,7 +642,9 @@ describe('App (e2e)', () => {
 
       it('should be not found if food is deleted', async () => {
         const food = await prisma.food.create({ data: { id: identifier.identify(), name: 'Banana', expiresIn: 5, createdAt: new Date(), deletedAt: new Date() } })
-        const { status, body } = await request(app.getHttpServer()).delete(`/foods/${food.id}`)
+        const { status, body } = await request(app.getHttpServer())
+          .delete(`/foods/${food.id}`)
+          .set('Authorization', `Bearer ${authorizationToken}`)
 
         expect(status).toBe(404)
         expect(body).toHaveProperty('message', 'food not found')
@@ -607,6 +673,23 @@ describe('App (e2e)', () => {
     })
 
     describe('/supplies (POST)', () => {
+      let authorizationToken
+
+      beforeEach(async () => {
+        const addedUser = await app.get<AddUser>(AddUser).add({ name: 'Felipe Antero', email: 'souzantero@gmail.com', password: '12345678' })
+        const signature = await app.get<SignInWithUser>(SignInWithUser).sign(addedUser as User)
+        authorizationToken = signature.authorizationToken
+      })
+
+      it('should be unauthorized when authorization token is not sent', () => {
+        return request(app.getHttpServer())
+          .post('/foods/supplies')
+          .send({
+            suppliedFoods: []
+          })
+          .expect(401)
+      })
+
       it('should create a new food supply', async () => {
         const createdFoods = await prisma.$transaction([
           prisma.food.create({ data: { id: identifier.identify(), name: 'Banana', expiresIn: 8, createdAt: new Date() } }),
@@ -616,6 +699,7 @@ describe('App (e2e)', () => {
 
         const { status, body } = await request(app.getHttpServer())
           .post('/foods/supplies')
+          .set('Authorization', `Bearer ${authorizationToken}`)
           .send({
             suppliedFoods: createdFoods.map(food => ({ foodId: food.id }))
           })
@@ -644,6 +728,7 @@ describe('App (e2e)', () => {
 
         const { status, body } = await request(app.getHttpServer())
           .post('/foods/supplies')
+          .set('Authorization', `Bearer ${authorizationToken}`)
           .send({
             suppliedFoods: [{ foodId }]
           })

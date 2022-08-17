@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, ValidationPipe } from '@nestjs/common'
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, UseGuards, ValidationPipe } from '@nestjs/common'
 import { AddFoodSupply } from '../../domain/usecases/add-food-supply'
 import { AddFood } from '../../domain/usecases/add-food'
 import { LoadFoods } from '../../domain/usecases/load-foods'
@@ -11,6 +11,7 @@ import { UpdateFoodById } from '../../domain/usecases/update-food-by-id'
 import { CreateFoodInput } from './dtos/create-food-input'
 import { CreateFoodSupplyInput } from './dtos/create-food-supply-input'
 import { UpdateFoodInput } from './dtos/update-food-input'
+import { AuthorizationTokenGuard } from '../auth/auth.guards'
 
 @Controller('foods')
 export class FoodController {
@@ -50,11 +51,13 @@ export class FoodController {
     return food
   }
 
+  @UseGuards(AuthorizationTokenGuard)
   @Post()
   createFood(@Body(ValidationPipe) data: CreateFoodInput) {
     return this.addFood.add(data)
   }
 
+  @UseGuards(AuthorizationTokenGuard)
   @Post('supplies')
   async createFoodSupply(@Body(ValidationPipe) data: CreateFoodSupplyInput) {
     try {
@@ -65,6 +68,7 @@ export class FoodController {
     }
   }
 
+  @UseGuards(AuthorizationTokenGuard)
   @Put(':id')
   async updateFood(@Param('id') id: string, @Body(ValidationPipe) data: UpdateFoodInput) {
     try {
@@ -75,6 +79,7 @@ export class FoodController {
     }
   }
 
+  @UseGuards(AuthorizationTokenGuard)
   @Delete(':id')
   async deleteFood(@Param('id') id: string) {
     try {
