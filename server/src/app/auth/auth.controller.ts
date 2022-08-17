@@ -1,10 +1,10 @@
-import { Body, Controller, ForbiddenException, Post, UseGuards, ValidationPipe } from '@nestjs/common'
+import { Body, Controller, ForbiddenException, Get, Post, UseGuards, ValidationPipe } from '@nestjs/common'
 import { EmailInUseError } from '../../domain/errors/email-in-use-error'
 import { User } from '../../domain/models/user'
 import { AddUser } from '../../domain/usecases/add-user'
 import { SignInWithUser } from '../../domain/usecases/sign-in-with-user'
 import { AuthenticatedUser } from './decorators/authenticated-user.decorator'
-import { EmailAndPasswordGuard } from './auth.guards'
+import { AuthorizationTokenGuard, EmailAndPasswordGuard } from './auth.guards'
 import { SignUpInput } from './dtos/sign-up-input'
 
 @Controller('auth')
@@ -28,5 +28,11 @@ export class AuthController {
   @Post('sign-in')
   async signIn(@AuthenticatedUser() user: User) {
     return this.signInWithUser.sign(user)
+  }
+
+  @UseGuards(AuthorizationTokenGuard)
+  @Get('me')
+  async me(@AuthenticatedUser() user: User) {
+    return user
   }
 }

@@ -12,6 +12,7 @@ import { JwtAdapter } from '../src/infra/adapters/jwt-adapter'
 import { HashComparer } from '../src/domain/protocols/hash-comparer'
 import { Hasher } from '../src/domain/protocols/hasher'
 import { Decrypter } from '../src/domain/protocols/decrypter'
+import { Encrypter } from '../src/domain/protocols/encrypter'
 import { AddUser } from '../src/domain/usecases/add-user'
 
 const serialize = (data: any) => JSON.parse(JSON.stringify(data))
@@ -35,6 +36,7 @@ describe('App (e2e)', () => {
   let hasher: Hasher
   let hashComparer: HashComparer
   let decrypter: Decrypter
+  let encrypter: Encrypter
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -47,6 +49,7 @@ describe('App (e2e)', () => {
     hasher = new BcryptAdapter(+config.get<number>('BCRYPT_SALT'))
     hashComparer = new BcryptAdapter(+config.get<number>('BCRYPT_SALT'))
     decrypter = new JwtAdapter(config.get<string>('JWT_SECRET'))
+    encrypter = new JwtAdapter(config.get<string>('JWT_SECRET'))
     prisma = prisma ? prisma : app.get<PrismaService>(PrismaService)
     await dropDatabase(prisma)
     await app.init();
@@ -294,6 +297,31 @@ describe('App (e2e)', () => {
 
         expect(status).toBe(401)
         expect(body).toHaveProperty('message', 'Unauthorized')
+      })
+    })
+
+    describe('/me', () => {
+      it('should return authenticated user', async () => {
+        const id = identifier.identify()
+        const createdUser = await prisma.user.create({
+          data: {
+            id,
+            name: 'Felipe Antero',
+            email: 'souzantero@gmail.com',
+            password: await hasher.hash('12345678'),
+            authorizationToken: await encrypter.encrypt(id),
+            createdAt: new Date(),
+            updatedAt: new Date()
+          }
+        })
+
+        const { status, body } = await request(app.getHttpServer())
+          .get('/auth/me')
+          .set('Authorization', `Bearer ${createdUser.authorizationToken}`)
+
+        expect(status).toBe(200)
+        expect(body).toBeDefined()
+        expect(body).toEqual(serialize(createdUser))
       })
     })
   })
