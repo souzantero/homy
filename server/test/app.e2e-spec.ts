@@ -237,14 +237,16 @@ describe('App (e2e)', () => {
           })
 
         expect(status).toBe(201)
-        expect(body).toHaveProperty('authorizationToken')
-
-        const decrypted = await decrypter.decrypt(body.authorizationToken)
-        expect(decrypted).toHaveProperty('sub', addedUser.id)
 
         const users = await findAllUsers(prisma)
         expect(users).toHaveLength(1)
-        expect(users[0]).toHaveProperty('authorizationToken', body.authorizationToken)
+        const user = users[0]
+        delete user.deletedAt
+        delete user.password
+        expect(body).toEqual(serialize(user))
+
+        const decrypted = await decrypter.decrypt(body.authorizationToken)
+        expect(decrypted).toHaveProperty('sub', addedUser.id)
       })
 
       it('should be unauthorized when is invalid email', async () => {
@@ -373,6 +375,10 @@ describe('App (e2e)', () => {
         const { status, body } = await request(app.getHttpServer())
           .get('/auth/me')
           .set('Authorization', `Bearer ${createdUser.authorizationToken}`)
+
+        delete createdUser.deletedAt
+        delete createdUser.password
+        delete createdUser.authorizationToken
 
         expect(status).toBe(200)
         expect(body).toBeDefined()

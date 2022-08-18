@@ -10,13 +10,13 @@ export class SignInWithUser {
 
   async sign(user: User): Promise<SignInWithUser.Result> {
     const authorizationToken = await this.encrypter.encrypt(user.id)
-    await this.updateUserRepository.updateById(user.id, { authorizationToken })
-    return { authorizationToken }
+    const updatedUser = await this.updateUserRepository.updateById(user.id, { authorizationToken })
+    delete updatedUser.deletedAt
+    delete updatedUser.password
+    return updatedUser
   }
 }
 
 export namespace SignInWithUser {
-  export type Result = {
-    authorizationToken: string
-  }
+  export type Result = Omit<User, 'deletedAt' | 'password'>
 }

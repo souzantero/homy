@@ -33,6 +33,9 @@ export class AuthController {
   @UseGuards(AuthorizationTokenGuard)
   @Get('me')
   async me(@AuthenticatedUser() user: User) {
+    delete user.deletedAt
+    delete user.password
+    delete user.authorizationToken
     return user
   }
 }
