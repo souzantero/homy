@@ -1,6 +1,6 @@
 import { useState } from "react"
-import { SignIn } from "../../domain/usecases/sign-in"
-import { UserLocalStorageRepository } from "../../infra/repositories/local-storage/user-local-storage-repository"
+import { SignIn } from "../../domain/services/sign-in"
+import { SignedUserLocalStorageRepository } from "../../infra/repositories/local-storage/signed-user-local-storage-repository"
 import { useNotifier } from "./useNotifier"
 import { useRepository } from "./useRepository"
 
@@ -18,7 +18,7 @@ export function useSignIn(): Result {
     try {
       setIsSigning(true)
 
-      const signIn = new SignIn(repository.auth, new UserLocalStorageRepository())
+      const signIn = new SignIn(repository.auth, new SignedUserLocalStorageRepository())
       const signedUser = await signIn.signIn(params)
 
       notify({
