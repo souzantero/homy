@@ -17,6 +17,13 @@ export class AuthenticationFetchRepository implements AuthenticationRepository {
       throw new Error(body.message)
     }
 
-    return body
+    return {
+      id: body.id,
+      createdAt: new Date(body.createdAt),
+      updatedAt: body.updatedAt && new Date(body.createdAt),
+      name: body.name,
+      email: body.email,
+      authorizationToken: body.authorizationToken
+    }
   }
 }

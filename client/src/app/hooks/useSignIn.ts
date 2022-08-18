@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { SignIn } from "../../domain/usecases/sign-in"
+import { UserLocalStorageRepository } from "../../infra/repositories/local-storage/user-local-storage-repository"
 import { useNotifier } from "./useNotifier"
 import { useRepository } from "./useRepository"
 
@@ -17,8 +18,8 @@ export function useSignIn(): Result {
     try {
       setIsSigning(true)
 
-      const signIn = new SignIn(repository.auth)
-      const signature = await signIn.signIn(params)
+      const signIn = new SignIn(repository.auth, new UserLocalStorageRepository())
+      const signedUser = await signIn.signIn(params)
 
       notify({
         status: 'success',
@@ -26,7 +27,7 @@ export function useSignIn(): Result {
         description: "Conexão realizada com sucesso.",
       })
 
-      return signature
+      return signedUser
     } catch (error) {
       const status = 'error'
       const title = 'Falha ao conectar-se a sua conta.'

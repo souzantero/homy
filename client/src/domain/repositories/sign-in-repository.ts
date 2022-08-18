@@ -1,3 +1,5 @@
+import { User } from "../models/user"
+
 export interface SignInRepository {
   signIn(params: SignInRepository.Params): Promise<SignInRepository.Result>
 }
@@ -7,7 +9,5 @@ export namespace SignInRepository {
     password: string
   }
 
-  export type Result = {
-    authorizationToken: string
-  }
+  export type Result = User
 }
