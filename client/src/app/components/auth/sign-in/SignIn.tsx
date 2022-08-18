@@ -13,10 +13,12 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { ChangeEvent, FormEvent, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { useSignIn } from '../../../hooks/useSignIn'
 
 export function SignIn() {
   const { signIn, isSigning } = useSignIn()
+  const navigate = useNavigate()
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const handleChangeEmail = (event: ChangeEvent<HTMLInputElement>) => setEmail(event.target.value)
@@ -28,6 +30,7 @@ export function SignIn() {
     if (signature) {
       setEmail('')
       setPassword('')
+      navigate('/')
     }
   }
 
