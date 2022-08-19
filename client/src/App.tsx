@@ -16,6 +16,7 @@ import { AddFood } from './app/components/food/AddFood'
 import { Food } from './app/components/food/Food'
 import { EditFood } from './app/components/food/EditFood'
 import { SignIn } from './app/components/auth/sign-in/SignIn'
+import { Authenticate } from './app/components/auth/Authenticate';
 
 export type AppManager = {}
 const app: AppManager = {}
@@ -37,10 +38,10 @@ function App() {
               <Route path='/' element={<Sidebar/>}>
                 <Route path='foods'>
                   <Route index element={<Foods />}/>
-                  <Route path='new' element={<AddFood/>}/>
+                  <Route path='new' element={<Authenticate redirect><AddFood/></Authenticate>}/>
                   <Route path=':foodId'>
                     <Route index element={<Food/>}/>
-                    <Route path='edit' element={<EditFood/>}/>
+                    <Route path='edit' element={<Authenticate redirect><EditFood/></Authenticate>}/>
                   </Route>
                 </Route>
               </Route>

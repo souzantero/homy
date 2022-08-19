@@ -1,3 +1,5 @@
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Flex,
   Box,
@@ -11,16 +13,23 @@ import {
   Heading,
   Text,
   useColorModeValue,
-} from '@chakra-ui/react';
-import { ChangeEvent, FormEvent, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+} from '@chakra-ui/react'
+import { useSignedUser } from '../../../hooks/useSignedUser'
 import { useSignIn } from '../../../hooks/useSignIn'
 
 export function SignIn() {
+  const { signedUser, isLoading } = useSignedUser()
   const { signIn, isSigning } = useSignIn()
   const navigate = useNavigate()
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+
+  useEffect(() => {
+    if (signedUser) {
+      navigate('/')
+    }
+  }, [signedUser])
+
   const handleChangeEmail = (event: ChangeEvent<HTMLInputElement>) => setEmail(event.target.value)
   const handleChangePassword = (event: ChangeEvent<HTMLInputElement>) => setPassword(event.target.value)
   const handleSubmit = async (event: FormEvent) => {
@@ -53,11 +62,11 @@ export function SignIn() {
           boxShadow={'lg'}
           p={8}>
           <Stack as={'form'} spacing={4} onSubmit={handleSubmit}>
-            <FormControl id="email" isRequired isDisabled={isSigning}>
+            <FormControl id="email" isRequired isDisabled={isSigning || isLoading}>
               <FormLabel>E-mail</FormLabel>
               <Input type="email" autoComplete='email' value={email} onChange={handleChangeEmail} />
             </FormControl>
-            <FormControl id="password" isRequired isDisabled={isSigning}>
+            <FormControl id="password" isRequired isDisabled={isSigning || isLoading}>
               <FormLabel>Senha</FormLabel>
               <Input type="password" autoComplete='password' minLength={8} value={password} onChange={handleChangePassword} />
             </FormControl>
@@ -66,10 +75,10 @@ export function SignIn() {
                 direction={{ base: 'column', sm: 'row' }}
                 align={'start'}
                 justify={'space-between'}>
-                <Checkbox isDisabled={isSigning}>Lembrar</Checkbox>
+                <Checkbox isDisabled={isSigning || isLoading}>Lembrar</Checkbox>
                 <Link color={'blue'}>Esqueceu a senha?</Link>
               </Stack>
-              <Button type='submit' bg={'blue'} color={'white'} isDisabled={isSigning} isLoading={isSigning}>
+              <Button type='submit' bg={'blue'} color={'white'} isDisabled={isSigning || isLoading} isLoading={isSigning || isLoading}>
                 Entrar
               </Button>
             </Stack>

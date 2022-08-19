@@ -1,6 +1,7 @@
 import { ButtonGroup, Td, Tr } from "@chakra-ui/react"
 import { Food } from "../../../domain/models/food"
 import { useRemoveFood } from "../../hooks/useRemoveFood"
+import { Authenticate } from "../auth/Authenticate"
 import { NavButton } from "../button/NavButton"
 import { RemoveFoodButton } from "./RemoveFoodButton"
 
@@ -21,9 +22,11 @@ export function FoodTableRow({
           <NavButton to={`/foods/${food.id}`}>
             Abrir
           </NavButton>
-          <RemoveFoodButton 
-            isRemoving={isRemoving} 
-            onRemove={() => removeFood(food)} />
+          <Authenticate>
+            <RemoveFoodButton 
+              isRemoving={isRemoving} 
+              onRemove={() => removeFood(food)} />
+          </Authenticate>
         </ButtonGroup>
       </Td>
     </Tr>
