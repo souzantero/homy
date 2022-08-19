@@ -2,8 +2,8 @@ import { useState } from "react"
 import { useQueryClient } from '@tanstack/react-query'
 import { Food } from "../../domain/models/food"
 import { AddFoodRepository } from "../../domain/repositories/add-food-repository"
-import { useRepository } from "./useRepository"
 import { useToast } from "@chakra-ui/react"
+import { makeAddFoodService } from "../factories/add-food-service-factory"
 
 export type Result = {
   isAdding: boolean
@@ -14,12 +14,12 @@ export function useAddFood(): Result {
   const notify = useToast()
   const queryClient = useQueryClient()
   const [isAdding, setIsAdding] = useState(false)
-  const repository = useRepository()
 
   const addFood = async (params: AddFoodRepository.Params) => {
     try {
       setIsAdding(true)
-      const food = await repository.food.add(params)
+      const createFood = makeAddFoodService()
+      const food = await createFood.add(params)
 
       notify({
         status: 'success',

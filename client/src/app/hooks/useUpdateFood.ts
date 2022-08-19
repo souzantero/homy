@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useToast } from "@chakra-ui/react"
 import { useQueryClient } from '@tanstack/react-query'
 import { Food } from "../../domain/models/food"
-import { useRepository } from "./useRepository"
+import { makeUpdateFoodByIdService } from "../factories/update-food-by-id-service-factory"
 
 export type Result = {
   isUpdating: boolean
@@ -13,14 +13,14 @@ export function useUpdateFood(): Result {
   const notify = useToast()
   const queryClient = useQueryClient()
   const [isUpdating, setIsUpdating] = useState(false)
-  const repository = useRepository()
-
+  
   const updateFood = async (food: Food) => {
     try {
       setIsUpdating(true)
       const { id } = food
       const data = { name: food.name, expiresIn: food.expiresIn }
-      const updatedFood = await repository.food.updateById(id, data)
+      const updateFoodById = makeUpdateFoodByIdService()
+      const updatedFood = await updateFoodById.update(id, data)
 
       notify({
         status: 'success',

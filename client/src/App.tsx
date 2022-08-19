@@ -4,7 +4,7 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
-import { ChakraProvider, useToast } from '@chakra-ui/react'
+import { ChakraProvider } from '@chakra-ui/react'
 import {
   QueryClient,
   QueryClientProvider,
@@ -13,7 +13,6 @@ import {
 import env from './app/config/env'
 import { Repository } from './domain/repositories/repository'
 import { AuthenticationFetchRepository } from './infra/repositories/fetch/authentication-fetch-repository'
-import { FoodFetchRepository } from './infra/repositories/fetch/food-fetch-repository'
 import { Foods } from './app/components/food/Foods'
 import { Sidebar } from './app/components/layout/Sidebar'
 import { AddFood } from './app/components/food/AddFood'
@@ -27,8 +26,7 @@ export type AppManager = {
 
 const app: AppManager = {
   repository: {
-    auth: new AuthenticationFetchRepository(env.serverHostAddress),
-    food: new FoodFetchRepository(env.serverHostAddress)
+    auth: new AuthenticationFetchRepository(env.serverHostAddress)
   }
 }
 
