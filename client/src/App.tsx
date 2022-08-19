@@ -19,20 +19,17 @@ import { Sidebar } from './app/components/layout/Sidebar'
 import { AddFood } from './app/components/food/AddFood'
 import { Food } from './app/components/food/Food'
 import { EditFood } from './app/components/food/EditFood'
-import { Notifier } from './domain/protocols/notifier'
 import { SignIn } from './app/components/auth/sign-in/SignIn'
 
 export type AppManager = {
-  repository: Repository,
-  useNotify: () => (paras: Notifier.Params) => void
+  repository: Repository
 }
 
 const app: AppManager = {
   repository: {
     auth: new AuthenticationFetchRepository(env.serverHostAddress),
     food: new FoodFetchRepository(env.serverHostAddress)
-  },
-  useNotify: useToast
+  }
 }
 
 export const AppContext = createContext(app)

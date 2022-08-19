@@ -1,7 +1,7 @@
+import { useToast } from "@chakra-ui/react"
 import { useQuery } from "@tanstack/react-query"
 import { useEffect } from "react"
 import { Food } from "../../domain/models/food"
-import { useNotifier } from "./useNotifier"
 import { useRepository } from "./useRepository"
 
 export type Result = {
@@ -10,7 +10,7 @@ export type Result = {
 }
 
 export function useFood(foodId: string): Result {
-  const { notify } = useNotifier()
+  const notify = useToast()
   const repository = useRepository()
   const { data: food, isLoading, error } = useQuery([`food/${foodId}`], () => repository.food.loadOneById(foodId), {
     refetchOnWindowFocus: true

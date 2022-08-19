@@ -1,7 +1,7 @@
 import { useState } from "react"
+import { useToast } from "@chakra-ui/react"
 import { SignIn } from "../../domain/services/sign-in"
 import { SignedUserLocalStorageRepository } from "../../infra/repositories/local-storage/signed-user-local-storage-repository"
-import { useNotifier } from "./useNotifier"
 import { useRepository } from "./useRepository"
 
 export type Result = {
@@ -10,7 +10,7 @@ export type Result = {
 }
 
 export function useSignIn(): Result {
-  const { notify } = useNotifier()
+  const notify = useToast()
   const [isSigning, setIsSigning] = useState(false)
   const repository = useRepository()
 

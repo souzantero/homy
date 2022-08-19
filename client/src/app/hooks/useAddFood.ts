@@ -3,8 +3,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { Food } from "../../domain/models/food"
 import { AddFoodRepository } from "../../domain/repositories/add-food-repository"
 import { useRepository } from "./useRepository"
-import { useNotifier } from "./useNotifier"
-
+import { useToast } from "@chakra-ui/react"
 
 export type Result = {
   isAdding: boolean
@@ -12,7 +11,7 @@ export type Result = {
 }
 
 export function useAddFood(): Result {
-  const { notify } = useNotifier()
+  const notify = useToast()
   const queryClient = useQueryClient()
   const [isAdding, setIsAdding] = useState(false)
   const repository = useRepository()

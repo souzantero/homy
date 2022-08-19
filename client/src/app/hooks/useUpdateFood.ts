@@ -1,8 +1,8 @@
 import { useState } from "react"
+import { useToast } from "@chakra-ui/react"
 import { useQueryClient } from '@tanstack/react-query'
 import { Food } from "../../domain/models/food"
 import { useRepository } from "./useRepository"
-import { useNotifier } from "./useNotifier"
 
 export type Result = {
   isUpdating: boolean
@@ -10,7 +10,7 @@ export type Result = {
 }
 
 export function useUpdateFood(): Result {
-  const { notify } = useNotifier()
+  const notify = useToast()
   const queryClient = useQueryClient()
   const [isUpdating, setIsUpdating] = useState(false)
   const repository = useRepository()

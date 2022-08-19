@@ -1,8 +1,8 @@
 import { useState } from "react"
+import { useToast } from "@chakra-ui/react"
 import { useQueryClient } from '@tanstack/react-query'
 import { Food } from "../../domain/models/food"
 import { useRepository } from "./useRepository"
-import { useNotifier } from "./useNotifier"
 
 export type Result = {
   isRemoving: boolean
@@ -10,7 +10,7 @@ export type Result = {
 }
 
 export function useRemoveFood(): Result {
-  const { notify } = useNotifier()
+  const notify = useToast()
   const queryClient = useQueryClient()
   const [isRemoving, setIsRemoving] = useState(false)
   const repository = useRepository()
