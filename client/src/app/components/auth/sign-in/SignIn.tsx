@@ -54,7 +54,7 @@ export function SignIn() {
           p={8}>
           <Stack as={'form'} spacing={4} onSubmit={handleSubmit}>
             <FormControl id="email" isRequired isDisabled={isSigning}>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>E-mail</FormLabel>
               <Input type="email" autoComplete='email' value={email} onChange={handleChangeEmail} />
             </FormControl>
             <FormControl id="password" isRequired isDisabled={isSigning}>
