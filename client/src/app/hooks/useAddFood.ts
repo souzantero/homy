@@ -4,6 +4,7 @@ import { Food } from "../../domain/models/food"
 import { useToast } from "@chakra-ui/react"
 import { makeAddFoodService } from "../factories/add-food-service-factory"
 import { AddFoodService } from "../../domain/services/add-food-service"
+import { useSignedUser } from "./useSignedUser"
 
 export type Result = {
   isAdding: boolean
@@ -13,12 +14,13 @@ export type Result = {
 export function useAddFood(): Result {
   const notify = useToast()
   const queryClient = useQueryClient()
+  const { signedUser } = useSignedUser()
   const [isAdding, setIsAdding] = useState(false)
 
   const addFood = async (params: AddFoodService.Params) => {
     try {
       setIsAdding(true)
-      const createFood = makeAddFoodService()
+      const createFood = makeAddFoodService(signedUser?.authorizationToken || '')
       const food = await createFood.add(params)
 
       notify({

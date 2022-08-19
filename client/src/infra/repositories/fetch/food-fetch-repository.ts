@@ -5,8 +5,11 @@ import { UpdateFoodRepository } from "../../../domain/repositories/update-food-r
 import { parseIntOrZeroIfNaN } from "../../../domain/utils"
 
 export class FoodFetchRepository implements FoodRepository {
-  constructor(private readonly hostAddress: string) { }
-  
+  constructor(
+    private readonly hostAddress: string,
+    private readonly authorizationToken: string = ''
+  ) { }
+
   private toModel(food: any) {
     return {
       id: food.id,
@@ -32,7 +35,10 @@ export class FoodFetchRepository implements FoodRepository {
     const response = await fetch(`${this.hostAddress}/foods`, {
       method: 'POST',
       body: JSON.stringify(params),
-      headers: { 'Content-Type': 'application/json' }
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.authorizationToken}`
+      }
     })
 
     const body = await response.json()
