@@ -1,14 +1,16 @@
 import { Skeleton } from "@chakra-ui/react"
-import { PropsWithChildren, useEffect } from "react"
+import { PropsWithChildren, ReactNode, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useSignedUser } from "../../hooks/useSignedUser"
 
 export interface AuthenticateProps {
   redirect?: boolean
+  unauthenticated?: ReactNode
 }
 
 export function Authenticate({
   redirect,
+  unauthenticated,
   children
 }: PropsWithChildren<AuthenticateProps>) {
   const { signedUser, isLoading } = useSignedUser()
@@ -21,6 +23,7 @@ export function Authenticate({
   }, [signedUser, isLoading])
 
   if (isLoading) return <Skeleton/>
+  if (!isLoading && !signedUser && unauthenticated) return (<>{unauthenticated}</>)
   if (!isLoading && !signedUser) return (<></>)
   return (<>{children}</>)
 }
