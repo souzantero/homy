@@ -20,7 +20,7 @@ export function useAddFood(): Result {
   const addFood = async (params: AddFoodService.Params) => {
     try {
       setIsAdding(true)
-      const createFood = makeAddFoodService(signedUser?.authorizationToken || '')
+      const createFood = makeAddFoodService(signedUser!)
       const food = await createFood.add(params)
 
       notify({

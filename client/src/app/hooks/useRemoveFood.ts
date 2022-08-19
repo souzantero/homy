@@ -3,6 +3,7 @@ import { useToast } from "@chakra-ui/react"
 import { useQueryClient } from '@tanstack/react-query'
 import { Food } from "../../domain/models/food"
 import { makeRemoveFoodByIdService } from "../factories/remove-food-by-id-service-factory"
+import { useSignedUser } from "./useSignedUser"
 
 export type Result = {
   isRemoving: boolean
@@ -12,13 +13,14 @@ export type Result = {
 export function useRemoveFood(): Result {
   const notify = useToast()
   const queryClient = useQueryClient()
+  const { signedUser } = useSignedUser()
   const [isRemoving, setIsRemoving] = useState(false)
-  
+
   const removeFood = async (food: Food) => {
     try {
       setIsRemoving(true)
 
-      const removeFoodById = makeRemoveFoodByIdService()
+      const removeFoodById = makeRemoveFoodByIdService(signedUser!)
       await removeFoodById.remove(food.id)
 
       notify({

@@ -22,7 +22,10 @@ export class FoodFetchRepository implements FoodRepository {
 
   async removeById(id: string): Promise<void> {
     const response = await fetch(`${this.hostAddress}/foods/${id}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${this.authorizationToken}`
+      }
     })
 
     if (!response.ok) {
@@ -54,7 +57,10 @@ export class FoodFetchRepository implements FoodRepository {
     const response = await fetch(`${this.hostAddress}/foods/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
-      headers: { 'Content-Type': 'application/json' }
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.authorizationToken}`
+      }
     })
 
     const body = await response.json()
