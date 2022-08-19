@@ -1,24 +1,22 @@
 import { useState } from "react"
 import { useToast } from "@chakra-ui/react"
-import { SignIn } from "../../domain/services/sign-in"
-import { SignedUserLocalStorageRepository } from "../../infra/repositories/local-storage/signed-user-local-storage-repository"
-import { useRepository } from "./useRepository"
+import { SignInService } from "../../domain/services/sign-in-service"
+import { makeSignInService } from "../factories/sign-in-service-factory"
 
 export type Result = {
   isSigning: boolean
-  signIn: (params: SignIn.Params) => Promise<SignIn.Result | undefined>
+  signIn: (params: SignInService.Params) => Promise<SignInService.Result | undefined>
 }
 
 export function useSignIn(): Result {
   const notify = useToast()
   const [isSigning, setIsSigning] = useState(false)
-  const repository = useRepository()
-
-  const signIn = async (params: SignIn.Params) => {
+  
+  const signIn = async (params: SignInService.Params) => {
     try {
       setIsSigning(true)
 
-      const signIn = new SignIn(repository.auth, new SignedUserLocalStorageRepository())
+      const signIn = makeSignInService()
       const signedUser = await signIn.signIn(params)
 
       notify({

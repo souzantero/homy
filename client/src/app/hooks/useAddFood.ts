@@ -1,13 +1,13 @@
 import { useState } from "react"
 import { useQueryClient } from '@tanstack/react-query'
 import { Food } from "../../domain/models/food"
-import { AddFoodRepository } from "../../domain/repositories/add-food-repository"
 import { useToast } from "@chakra-ui/react"
 import { makeAddFoodService } from "../factories/add-food-service-factory"
+import { AddFoodService } from "../../domain/services/add-food-service"
 
 export type Result = {
   isAdding: boolean
-  addFood: (params: AddFoodRepository.Params) => Promise<Food | undefined>
+  addFood: (params: AddFoodService.Params) => Promise<Food | undefined>
 }
 
 export function useAddFood(): Result {
@@ -15,7 +15,7 @@ export function useAddFood(): Result {
   const queryClient = useQueryClient()
   const [isAdding, setIsAdding] = useState(false)
 
-  const addFood = async (params: AddFoodRepository.Params) => {
+  const addFood = async (params: AddFoodService.Params) => {
     try {
       setIsAdding(true)
       const createFood = makeAddFoodService()
