@@ -1,5 +1,5 @@
 import { ButtonGroup } from '@chakra-ui/react'
-import { Authenticate } from '../auth/Authenticate'
+import { Signed } from '../auth/sign-in/Signed'
 import { NavButton } from '../button/NavButton'
 import { Page } from '../layout/Page'
 import { PageBody } from '../layout/PageBody'
@@ -11,11 +11,11 @@ export function Foods() {
     <Page>
       <PageHeader title='Alimentos'>
         <ButtonGroup>
-          <Authenticate>
+          <Signed>
             <NavButton to={'/foods/new'}>
               Adicionar
             </NavButton>
-          </Authenticate>
+          </Signed>
         </ButtonGroup>
       </PageHeader>
       <PageBody>

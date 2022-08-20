@@ -1,7 +1,7 @@
 import { Flex, Heading, Link, Stack, Text } from "@chakra-ui/react"
 import { Link as RouterLink } from 'react-router-dom'
 
-export function UnauthenticatedUser() {
+export function UnsignedUser() {
   return (
     <Flex
       minH={'100vh'}

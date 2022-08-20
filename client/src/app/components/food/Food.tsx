@@ -1,7 +1,7 @@
 import { Box, ButtonGroup, Flex, Skeleton, Text } from "@chakra-ui/react"
 import { useParams } from "react-router-dom"
 import { useFood } from "../../hooks/useFood"
-import { Authenticate } from "../auth/Authenticate"
+import { Signed } from "../auth/sign-in/Signed"
 import { NavButton } from "../button/NavButton"
 import { Page } from "../layout/Page"
 import { PageBody } from "../layout/PageBody"
@@ -28,11 +28,11 @@ export function Food() {
     <Page>
       <PageHeader title={'Alimento'}>
         <ButtonGroup>
-          <Authenticate>
+          <Signed>
             <NavButton to={`/foods/${foodId}/edit`} isLoading={isLoading} isDisabled={isLoading || !food}>
               Editar
             </NavButton>
-          </Authenticate>
+          </Signed>
         </ButtonGroup>
       </PageHeader>
       <PageBody>
