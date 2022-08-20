@@ -11,13 +11,13 @@ import {
 } from '@tanstack/react-query'
 
 import { Foods } from './app/components/food/Foods'
-import { Sidebar } from './app/components/layout/Sidebar'
+import { SidebarWithHeader } from './app/components/layout/SidebarWithHeader'
 import { AddFood } from './app/components/food/AddFood'
 import { Food } from './app/components/food/Food'
 import { EditFood } from './app/components/food/EditFood'
 import { SignIn } from './app/components/auth/sign-in/SignIn'
-import { Authenticate } from './app/components/auth/Authenticate';
-import { UnauthenticatedUser } from './app/components/auth/UnauthenticatedUser';
+import { Signed } from './app/components/auth/sign-in/Signed'
+import { UnsignedUser } from './app/components/auth/sign-in/UnsignedUser'
 
 export type AppManager = {}
 const app: AppManager = {}
@@ -36,13 +36,13 @@ function App() {
               <Route path='auth'>
                 <Route path='sign-in' element={<SignIn/>} />
               </Route>
-              <Route path='/' element={<Sidebar/>}>
+              <Route path='/' element={<SidebarWithHeader/>}>
                 <Route path='foods'>
                   <Route index element={<Foods />}/>
-                  <Route path='new' element={<Authenticate unauthenticated={<UnauthenticatedUser/>}><AddFood/></Authenticate>}/>
+                  <Route path='new' element={<Signed unsigned={<UnsignedUser/>}><AddFood/></Signed>}/>
                   <Route path=':foodId'>
                     <Route index element={<Food/>}/>
-                    <Route path='edit' element={<Authenticate unauthenticated={<UnauthenticatedUser/>}><EditFood/></Authenticate>}/>
+                    <Route path='edit' element={<Signed unsigned={<UnsignedUser/>}><EditFood/></Signed>}/>
                   </Route>
                 </Route>
               </Route>
