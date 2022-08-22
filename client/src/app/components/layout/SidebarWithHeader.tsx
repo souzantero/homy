@@ -26,7 +26,7 @@ import { Outlet } from 'react-router-dom'
 import { Link as RouterLink } from 'react-router-dom'
 import { Signed } from '../auth/sign-in/Signed'
 import { SignInLink } from '../auth/sign-in/SignInLink'
-import { SignedUserMenu } from '../auth/sign-in/SignedUserMenu'
+import { SignedUserMenu } from '../user/SignedUserMenu'
 
 interface LinkItemProps {
   name: string

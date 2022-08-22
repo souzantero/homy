@@ -1,5 +1,5 @@
 import { Skeleton, Text, VStack } from "@chakra-ui/react"
-import { useSignedUser } from "../../../hooks/useSignedUser"
+import { useSignedUser } from "../../hooks/useSignedUser"
 
 export function SignedUserInfo() {
   const { signedUser, isLoading } = useSignedUser()

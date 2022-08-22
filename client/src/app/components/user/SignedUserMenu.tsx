@@ -1,6 +1,6 @@
 import { Box, HStack, Menu, MenuButton, MenuDivider, MenuItem, MenuList, useColorModeValue, } from "@chakra-ui/react"
 import { AiOutlineDown } from "react-icons/ai"
-import { useSignOut } from "../../../hooks/useSignOut"
+import { useSignOut } from "../../hooks/useSignOut"
 import { SignedUserAvatar } from "./SignedUserAvatar"
 import { SignedUserInfo } from "./SignedUserInfo"
 
