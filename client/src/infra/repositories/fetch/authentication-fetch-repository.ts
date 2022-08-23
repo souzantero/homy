@@ -4,7 +4,7 @@ import { SignInRepository } from '../../../domain/repositories/sign-in-repositor
 import { SignUpRepository } from '../../../domain/repositories/sign-up-repository'
 
 export class AuthenticationFetchRepository implements AuthenticationRepository {
-  constructor(private readonly hostAddress: string) { }
+  constructor(private readonly hostAddress: string) {}
 
   async signUp(params: SignUpRepository.Params): Promise<User> {
     const response = await fetch(`${this.hostAddress}/auth/sign-up`, {

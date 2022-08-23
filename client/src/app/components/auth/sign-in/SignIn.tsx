@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link as RouterLink } from 'react-router-dom'
 import {
   FormControl,
   FormLabel,
@@ -85,6 +85,11 @@ export function SignIn() {
           >
             Entrar
           </Button>
+          <Stack align={'center'}>
+            <Link as={RouterLink} to={'/auth/sign-up'} color={'blue'}>
+              Cadastre-se
+            </Link>
+          </Stack>
         </Stack>
       </Stack>
     </AuthenticationLayout>

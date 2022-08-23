@@ -1,4 +1,3 @@
-
 import { SignUpRepository } from '../repositories/sign-up-repository'
 import { UpdateSignedUserRepository } from '../repositories/update-signed-user-repository'
 
@@ -6,7 +5,7 @@ export class SignUpService {
   constructor(
     private readonly signUpRepository: SignUpRepository,
     private readonly updateSignedUserRepository: UpdateSignedUserRepository
-  ) { }
+  ) {}
 
   async signUp({
     name,
@@ -18,7 +17,11 @@ export class SignUpService {
       throw new Error('passwords does not match')
     }
 
-    const signedUser = await this.signUpRepository.signUp({ name, email, password })
+    const signedUser = await this.signUpRepository.signUp({
+      name,
+      email,
+      password
+    })
     await this.updateSignedUserRepository.updateSignedUser(signedUser)
     return signedUser
   }

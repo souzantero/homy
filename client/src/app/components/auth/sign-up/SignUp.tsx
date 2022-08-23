@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link as RouterLink } from 'react-router-dom'
 import {
   FormControl,
   FormLabel,
@@ -105,14 +105,7 @@ export function SignUp() {
           />
         </FormControl>
         <Stack spacing={10}>
-          <Stack
-            direction={{ base: 'column', sm: 'row' }}
-            align={'start'}
-            justify={'space-between'}
-          >
-            <Checkbox isDisabled={isSigning || isLoading}>Lembrar</Checkbox>
-            <Link color={'blue'}>Já possui uma conta? Entrar</Link>
-          </Stack>
+          <Stack />
           <Button
             type="submit"
             bg={'blue'}
@@ -122,6 +115,11 @@ export function SignUp() {
           >
             Cadastrar
           </Button>
+          <Stack align={'center'}>
+            <Link as={RouterLink} to="/auth/sign-in" color={'blue'}>
+              Já possui uma conta? Entrar
+            </Link>
+          </Stack>
         </Stack>
       </Stack>
     </AuthenticationLayout>
