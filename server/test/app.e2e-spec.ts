@@ -80,6 +80,8 @@ describe('App (e2e)', () => {
         expect(body).not.toHaveProperty('password')
         expect(body).toHaveProperty('createdAt')
         expect(body.createdAt).toBeDefined()
+        expect(body).toHaveProperty('authorizationToken')
+        expect(body.authorizationToken).not.toBeNull()
 
         const users = await findAllUsers(prisma)
         expect(users).toHaveLength(1)
@@ -89,9 +91,16 @@ describe('App (e2e)', () => {
         expect(users[0]).toHaveProperty('createdAt', new Date(body.createdAt))
         expect(users[0]).toHaveProperty('updatedAt', null)
         expect(users[0]).toHaveProperty('deletedAt', null)
+        expect(users[0]).toHaveProperty(
+          'authorizationToken',
+          body.authorizationToken
+        )
         expect(
           await hashComparer.compare('12345678', users[0].password)
         ).toBeTruthy()
+
+        const decrypted = await decrypter.decrypt(users[0].authorizationToken)
+        expect(decrypted).toHaveProperty('sub', users[0].id)
       })
 
       it('should fail when user already exists with the same email', async () => {
@@ -276,13 +285,11 @@ describe('App (e2e)', () => {
       })
 
       it('should be unauthorized when is invalid email', async () => {
-        await app
-          .get<AddUser>(AddUser)
-          .add({
-            name: 'Felipe',
-            email: 'souzantero@gmail.com',
-            password: '12345678'
-          })
+        await app.get<AddUser>(AddUser).add({
+          name: 'Felipe',
+          email: 'souzantero@gmail.com',
+          password: '12345678'
+        })
 
         const { status, body } = await request(app.getHttpServer())
           .post('/auth/sign-in')
@@ -297,13 +304,11 @@ describe('App (e2e)', () => {
       })
 
       it('should be unauthorized when is invalid password', async () => {
-        await app
-          .get<AddUser>(AddUser)
-          .add({
-            name: 'Felipe',
-            email: 'souzantero@gmail.com',
-            password: '12345678'
-          })
+        await app.get<AddUser>(AddUser).add({
+          name: 'Felipe',
+          email: 'souzantero@gmail.com',
+          password: '12345678'
+        })
 
         const { status, body } = await request(app.getHttpServer())
           .post('/auth/sign-in')
@@ -480,13 +485,11 @@ describe('App (e2e)', () => {
       let authorizationToken
 
       beforeEach(async () => {
-        const addedUser = await app
-          .get<AddUser>(AddUser)
-          .add({
-            name: 'Felipe Antero',
-            email: 'souzantero@gmail.com',
-            password: '12345678'
-          })
+        const addedUser = await app.get<AddUser>(AddUser).add({
+          name: 'Felipe Antero',
+          email: 'souzantero@gmail.com',
+          password: '12345678'
+        })
         const signature = await app
           .get<SignInWithUser>(SignInWithUser)
           .sign(addedUser as User)
@@ -647,13 +650,11 @@ describe('App (e2e)', () => {
       let authorizationToken
 
       beforeEach(async () => {
-        const addedUser = await app
-          .get<AddUser>(AddUser)
-          .add({
-            name: 'Felipe Antero',
-            email: 'souzantero@gmail.com',
-            password: '12345678'
-          })
+        const addedUser = await app.get<AddUser>(AddUser).add({
+          name: 'Felipe Antero',
+          email: 'souzantero@gmail.com',
+          password: '12345678'
+        })
         const signature = await app
           .get<SignInWithUser>(SignInWithUser)
           .sign(addedUser as User)
@@ -745,13 +746,11 @@ describe('App (e2e)', () => {
       let authorizationToken
 
       beforeEach(async () => {
-        const addedUser = await app
-          .get<AddUser>(AddUser)
-          .add({
-            name: 'Felipe Antero',
-            email: 'souzantero@gmail.com',
-            password: '12345678'
-          })
+        const addedUser = await app.get<AddUser>(AddUser).add({
+          name: 'Felipe Antero',
+          email: 'souzantero@gmail.com',
+          password: '12345678'
+        })
         const signature = await app
           .get<SignInWithUser>(SignInWithUser)
           .sign(addedUser as User)
@@ -872,13 +871,11 @@ describe('App (e2e)', () => {
       let authorizationToken
 
       beforeEach(async () => {
-        const addedUser = await app
-          .get<AddUser>(AddUser)
-          .add({
-            name: 'Felipe Antero',
-            email: 'souzantero@gmail.com',
-            password: '12345678'
-          })
+        const addedUser = await app.get<AddUser>(AddUser).add({
+          name: 'Felipe Antero',
+          email: 'souzantero@gmail.com',
+          password: '12345678'
+        })
         const signature = await app
           .get<SignInWithUser>(SignInWithUser)
           .sign(addedUser as User)

@@ -31,7 +31,7 @@ export class AddUser {
       id,
       createdAt
     })
-    delete addedUser.password
+
     return addedUser
   }
 }
@@ -43,5 +43,5 @@ export namespace AddUser {
     password: string
   }
 
-  export type Result = Omit<User, 'password'>
+  export type Result = User
 }

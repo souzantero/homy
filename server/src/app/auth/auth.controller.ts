@@ -25,7 +25,8 @@ export class AuthController {
   @Post('sign-up')
   async signUp(@Body(ValidationPipe) data: SignUpInput) {
     try {
-      return await this.addUser.add(data)
+      const addedUser = await this.addUser.add(data)
+      return this.signInWithUser.sign(addedUser)
     } catch (error) {
       if (error instanceof EmailInUseError)
         throw new ForbiddenException(error.message)
