@@ -9,13 +9,11 @@ import {
   useColorModeValue
 } from '@chakra-ui/react'
 import { AiOutlineDown } from 'react-icons/ai'
-import { useSignOut } from '../../hooks/useSignOut'
+import { SignOutMenuItem } from '../auth/sign-out/SignOutMenuItem'
 import { SignedUserAvatar } from './SignedUserAvatar'
 import { SignedUserInfo } from './SignedUserInfo'
 
 export function SignedUserMenu() {
-  const { signOut } = useSignOut()
-
   return (
     <Menu>
       <MenuButton py={2} transition="all 0.3s" _focus={{ boxShadow: 'none' }}>
@@ -33,7 +31,7 @@ export function SignedUserMenu() {
       >
         <MenuItem>Perfil</MenuItem>
         <MenuDivider />
-        <MenuItem onClick={() => signOut()}>Sair</MenuItem>
+        <SignOutMenuItem />
       </MenuList>
     </Menu>
   )
