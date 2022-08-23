@@ -4,7 +4,25 @@ import { SignInRepository } from '../../../domain/repositories/sign-in-repositor
 import { SignUpRepository } from '../../../domain/repositories/sign-up-repository'
 
 export class AuthenticationFetchRepository implements AuthenticationRepository {
-  constructor(private readonly hostAddress: string) {}
+  constructor(
+    private readonly hostAddress: string,
+    private readonly authorizationToken?: string
+  ) {}
+
+  async signOut(): Promise<void> {
+    const response = await fetch(`${this.hostAddress}/auth/sign-out`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.authorizationToken}`
+      }
+    })
+
+    if (!response.ok) {
+      const body = await response.json()
+      throw new Error(body.message)
+    }
+  }
 
   async signUp(params: SignUpRepository.Params): Promise<User> {
     const response = await fetch(`${this.hostAddress}/auth/sign-up`, {

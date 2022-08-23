@@ -1,11 +1,16 @@
 import { RemoveSignedUserRepository } from '../repositories/remove-signed-user-repository'
+import { SignOutRepository } from '../repositories/sign-out-repository'
 
 export class SignOutService {
   constructor(
+    private readonly signOutRepository: SignOutRepository,
     private readonly removeSignedUserRepository: RemoveSignedUserRepository
   ) {}
 
-  signOut(): Promise<void> {
+  async signOut(): Promise<void> {
+    try {
+      await this.signOutRepository.signOut()
+    } catch {}
     return this.removeSignedUserRepository.removeSignedUser()
   }
 }
