@@ -89,7 +89,7 @@ describe('App (e2e)', () => {
         expect(users[0]).toHaveProperty('name', body.name)
         expect(users[0]).toHaveProperty('email', body.email)
         expect(users[0]).toHaveProperty('createdAt', new Date(body.createdAt))
-        expect(users[0]).toHaveProperty('updatedAt', null)
+        expect(users[0]).toHaveProperty('updatedAt', new Date(body.updatedAt))
         expect(users[0]).toHaveProperty('deletedAt', null)
         expect(users[0]).toHaveProperty(
           'authorizationToken',
@@ -271,7 +271,7 @@ describe('App (e2e)', () => {
             password: '12345678'
           })
 
-        expect(status).toBe(201)
+        expect(status).toBe(200)
 
         const users = await findAllUsers(prisma)
         expect(users).toHaveLength(1)
@@ -344,6 +344,39 @@ describe('App (e2e)', () => {
 
         expect(status).toBe(401)
         expect(body).toHaveProperty('message', 'Unauthorized')
+      })
+    })
+
+    describe('/sign-out', () => {
+      it('should be success', async () => {
+        const id = identifier.identify()
+        const createdUser = await prisma.user.create({
+          data: {
+            id,
+            name: 'Felipe Antero',
+            email: 'souzantero@gmail.com',
+            password: await hasher.hash('12345678'),
+            authorizationToken: await encrypter.encrypt(id),
+            createdAt: new Date(),
+            updatedAt: new Date()
+          }
+        })
+
+        const { status, body } = await request(app.getHttpServer())
+          .post('/auth/sign-out')
+          .set('Authorization', `Bearer ${createdUser.authorizationToken}`)
+
+        expect(status).toBe(205)
+        expect(body).toBeDefined()
+        expect(body).toEqual({})
+
+        const users = await findAllUsers(prisma)
+        expect(users).toHaveLength(1)
+        expect(users[0]).toHaveProperty('id', createdUser.id)
+        expect(users[0]).toHaveProperty('authorizationToken', null)
+        expect(users[0].updatedAt.getTime()).toBeGreaterThan(
+          createdUser.updatedAt.getTime()
+        )
       })
     })
 

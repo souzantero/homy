@@ -3,6 +3,7 @@ import {
   Controller,
   ForbiddenException,
   Get,
+  HttpCode,
   Post,
   UseGuards,
   ValidationPipe
@@ -11,6 +12,7 @@ import { EmailInUseError } from '../../domain/errors/email-in-use-error'
 import { User } from '../../domain/models/user'
 import { AddUser } from '../../domain/usecases/add-user'
 import { SignInWithUser } from '../../domain/usecases/sign-in-with-user'
+import { SignOutWithUser } from '../../domain/usecases/sign-out-with-user'
 import { AuthenticatedUser } from './decorators/authenticated-user.decorator'
 import { AuthorizationTokenGuard, EmailAndPasswordGuard } from './auth.guards'
 import { SignUpInput } from './dtos/sign-up-input'
@@ -19,7 +21,8 @@ import { SignUpInput } from './dtos/sign-up-input'
 export class AuthController {
   constructor(
     private readonly addUser: AddUser,
-    private readonly signInWithUser: SignInWithUser
+    private readonly signInWithUser: SignInWithUser,
+    private readonly signOutWithUser: SignOutWithUser
   ) {}
 
   @Post('sign-up')
@@ -36,8 +39,16 @@ export class AuthController {
 
   @UseGuards(EmailAndPasswordGuard)
   @Post('sign-in')
+  @HttpCode(200)
   async signIn(@AuthenticatedUser() user: User) {
     return this.signInWithUser.sign(user)
+  }
+
+  @UseGuards(AuthorizationTokenGuard)
+  @Post('sign-out')
+  @HttpCode(205)
+  async signOut(@AuthenticatedUser() user: User) {
+    return this.signOutWithUser.signOut(user)
   }
 
   @UseGuards(AuthorizationTokenGuard)

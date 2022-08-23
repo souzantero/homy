@@ -10,9 +10,12 @@ export class SignInWithUser {
 
   async sign(user: User): Promise<SignInWithUser.Result> {
     const authorizationToken = await this.encrypter.encrypt(user.id)
+    const updatedAt = new Date()
     const updatedUser = await this.updateUserRepository.updateById(user.id, {
-      authorizationToken
+      authorizationToken,
+      updatedAt
     })
+
     delete updatedUser.deletedAt
     delete updatedUser.password
     return updatedUser
