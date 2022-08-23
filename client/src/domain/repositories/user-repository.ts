@@ -1,4 +1,3 @@
-import { UpdateUserRepository } from "./update-user-repository";
+import { UpdateUserRepository } from './update-user-repository'
 
-export interface UserRepository
-  extends UpdateUserRepository { }
+export interface UserRepository extends UpdateUserRepository {}

@@ -1,9 +1,14 @@
-import { User } from "../../../domain/models/user"
-import { LoadSignedUserRepository } from "../../../domain/repositories/load-signed-user-repository"
-import { RemoveSignedUserRepository } from "../../../domain/repositories/remove-signed-user-repository"
-import { UpdateSignedUserRepository } from "../../../domain/repositories/update-signed-user-repository"
+import { User } from '../../../domain/models/user'
+import { LoadSignedUserRepository } from '../../../domain/repositories/load-signed-user-repository'
+import { RemoveSignedUserRepository } from '../../../domain/repositories/remove-signed-user-repository'
+import { UpdateSignedUserRepository } from '../../../domain/repositories/update-signed-user-repository'
 
-export class SignedUserLocalStorageRepository implements UpdateSignedUserRepository, LoadSignedUserRepository, RemoveSignedUserRepository {
+export class SignedUserLocalStorageRepository
+  implements
+    UpdateSignedUserRepository,
+    LoadSignedUserRepository,
+    RemoveSignedUserRepository
+{
   private readonly key = 'signed-user'
 
   async removeSignedUser(): Promise<void> {

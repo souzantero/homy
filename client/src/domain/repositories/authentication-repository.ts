@@ -1,4 +1,3 @@
-import { SignInRepository } from "./sign-in-repository"
+import { SignInRepository } from './sign-in-repository'
 
-export interface AuthenticationRepository
-  extends SignInRepository { }
+export interface AuthenticationRepository extends SignInRepository {}

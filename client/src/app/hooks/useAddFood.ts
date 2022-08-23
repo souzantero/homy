@@ -1,10 +1,10 @@
-import { useState } from "react"
+import { useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { Food } from "../../domain/models/food"
-import { useToast } from "@chakra-ui/react"
-import { makeAddFoodService } from "../factories/add-food-service-factory"
-import { AddFoodService } from "../../domain/services/add-food-service"
-import { useSignedUser } from "./useSignedUser"
+import { Food } from '../../domain/models/food'
+import { useToast } from '@chakra-ui/react'
+import { makeAddFoodService } from '../factories/add-food-service-factory'
+import { AddFoodService } from '../../domain/services/add-food-service'
+import { useSignedUser } from './useSignedUser'
 
 export type Result = {
   isAdding: boolean
@@ -26,7 +26,7 @@ export function useAddFood(): Result {
       notify({
         status: 'success',
         title: 'Alimento adicionado.',
-        description: "Alimento adicionado com sucesso.",
+        description: 'Alimento adicionado com sucesso.'
       })
 
       queryClient.invalidateQueries(['foods'])
@@ -35,7 +35,10 @@ export function useAddFood(): Result {
     } catch (error) {
       const status = 'error'
       const title = 'Falha ao adicionar alimento.'
-      const description = error instanceof Error ? error.message : 'Não foi possível adicionar o alimento no momento, tente novamente mais tarde.'
+      const description =
+        error instanceof Error
+          ? error.message
+          : 'Não foi possível adicionar o alimento no momento, tente novamente mais tarde.'
       notify({ status, title, description })
     } finally {
       setIsAdding(false)

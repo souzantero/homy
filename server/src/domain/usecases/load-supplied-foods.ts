@@ -1,13 +1,15 @@
-import { SuppliedFood } from "../models/supplied-food"
-import { LoadSuppliedFoodsRepository } from "../repositories/load-supplied-foods-repository"
+import { SuppliedFood } from '../models/supplied-food'
+import { LoadSuppliedFoodsRepository } from '../repositories/load-supplied-foods-repository'
 
 export class LoadSuppliedFoods {
   constructor(
     private loadSuppliedFoodsRepository: LoadSuppliedFoodsRepository
-  ) { }
+  ) {}
 
   load(filter: LoadSuppliedFoods.Params): Promise<LoadSuppliedFoods.Result> {
-    return this.loadSuppliedFoodsRepository.loadManyByFoodSupplyId(filter.foodSupplyId)
+    return this.loadSuppliedFoodsRepository.loadManyByFoodSupplyId(
+      filter.foodSupplyId
+    )
   }
 }
 

@@ -9,12 +9,10 @@ import { FoodTable } from './FoodTable'
 export function Foods() {
   return (
     <Page>
-      <PageHeader title='Alimentos'>
+      <PageHeader title="Alimentos">
         <ButtonGroup>
           <Signed>
-            <NavButton to={'/foods/new'}>
-              Adicionar
-            </NavButton>
+            <NavButton to={'/foods/new'}>Adicionar</NavButton>
           </Signed>
         </ButtonGroup>
       </PageHeader>

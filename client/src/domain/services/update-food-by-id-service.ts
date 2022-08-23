@@ -1,11 +1,12 @@
-import { UpdateFoodRepository } from "../repositories/update-food-repository"
+import { UpdateFoodRepository } from '../repositories/update-food-repository'
 
 export class UpdateFoodByIdService {
-  constructor(
-    private readonly updateFoodRepository: UpdateFoodRepository
-  ) { }
+  constructor(private readonly updateFoodRepository: UpdateFoodRepository) {}
 
-  update(id: string, data: UpdateFoodByIdService.Data): Promise<UpdateFoodByIdService.Result> {
+  update(
+    id: string,
+    data: UpdateFoodByIdService.Data
+  ): Promise<UpdateFoodByIdService.Result> {
     return this.updateFoodRepository.updateById(id, data)
   }
 }

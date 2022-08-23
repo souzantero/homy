@@ -1,11 +1,14 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common"
-import { PassportStrategy } from "@nestjs/passport"
-import { Strategy } from "passport-local"
-import { User } from "../../../domain/models/user"
-import { AuthenticateUserByEmailAndPassword } from "../../../domain/usecases/authenticate-user-by-email-and-password"
+import { Injectable, UnauthorizedException } from '@nestjs/common'
+import { PassportStrategy } from '@nestjs/passport'
+import { Strategy } from 'passport-local'
+import { User } from '../../../domain/models/user'
+import { AuthenticateUserByEmailAndPassword } from '../../../domain/usecases/authenticate-user-by-email-and-password'
 
 @Injectable()
-export class EmailAndPasswordStrategy extends PassportStrategy(Strategy, 'email-and-password') {
+export class EmailAndPasswordStrategy extends PassportStrategy(
+  Strategy,
+  'email-and-password'
+) {
   constructor(
     private readonly authenticateUser: AuthenticateUserByEmailAndPassword
   ) {

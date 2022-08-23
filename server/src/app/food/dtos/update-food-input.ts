@@ -1,8 +1,7 @@
-import { Type } from "class-transformer";
-import { IsInt, IsNotEmpty, IsString, Min } from "class-validator";
+import { Type } from 'class-transformer'
+import { IsInt, IsNotEmpty, IsString, Min } from 'class-validator'
 
 export class UpdateFoodInput {
-
   @IsString()
   @IsNotEmpty()
   name: string

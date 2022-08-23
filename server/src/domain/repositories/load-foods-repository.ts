@@ -1,8 +1,10 @@
-import { Food } from "../models/food";
+import { Food } from '../models/food'
 
 export interface LoadFoodsRepository {
   loadAll(): Promise<LoadFoodsRepository.Result>
-  loadMany(where: LoadFoodsRepository.Where): Promise<LoadFoodsRepository.Result>
+  loadMany(
+    where: LoadFoodsRepository.Where
+  ): Promise<LoadFoodsRepository.Result>
 }
 
 export namespace LoadFoodsRepository {

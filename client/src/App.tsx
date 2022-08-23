@@ -1,14 +1,7 @@
 import { createContext, useContext } from 'react'
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ChakraProvider } from '@chakra-ui/react'
-import {
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { Foods } from './app/components/food/Foods'
 import { SidebarWithHeader } from './app/components/layout/SidebarWithHeader'
@@ -33,16 +26,30 @@ function App() {
         <AppContext.Provider value={app}>
           <BrowserRouter>
             <Routes>
-              <Route path='auth'>
-                <Route path='sign-in' element={<SignIn/>} />
+              <Route path="auth">
+                <Route path="sign-in" element={<SignIn />} />
               </Route>
-              <Route path='/' element={<SidebarWithHeader/>}>
-                <Route path='foods'>
-                  <Route index element={<Foods />}/>
-                  <Route path='new' element={<Signed unsigned={<UnsignedUser/>}><AddFood/></Signed>}/>
-                  <Route path=':foodId'>
-                    <Route index element={<Food/>}/>
-                    <Route path='edit' element={<Signed unsigned={<UnsignedUser/>}><EditFood/></Signed>}/>
+              <Route path="/" element={<SidebarWithHeader />}>
+                <Route path="foods">
+                  <Route index element={<Foods />} />
+                  <Route
+                    path="new"
+                    element={
+                      <Signed unsigned={<UnsignedUser />}>
+                        <AddFood />
+                      </Signed>
+                    }
+                  />
+                  <Route path=":foodId">
+                    <Route index element={<Food />} />
+                    <Route
+                      path="edit"
+                      element={
+                        <Signed unsigned={<UnsignedUser />}>
+                          <EditFood />
+                        </Signed>
+                      }
+                    />
                   </Route>
                 </Route>
               </Route>
@@ -51,7 +58,7 @@ function App() {
         </AppContext.Provider>
       </QueryClientProvider>
     </ChakraProvider>
-  );
+  )
 }
 
-export default App;
+export default App

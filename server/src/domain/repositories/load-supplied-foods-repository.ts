@@ -1,7 +1,9 @@
-import { SuppliedFood } from "../models/supplied-food"
+import { SuppliedFood } from '../models/supplied-food'
 
 export interface LoadSuppliedFoodsRepository {
-  loadManyByFoodSupplyId(foodSupplyId: string): Promise<LoadSuppliedFoodsRepository.Result>
+  loadManyByFoodSupplyId(
+    foodSupplyId: string
+  ): Promise<LoadSuppliedFoodsRepository.Result>
 }
 
 export namespace LoadSuppliedFoodsRepository {

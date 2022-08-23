@@ -1,23 +1,25 @@
-import { Food } from "../../../domain/models/food"
-import { AddFoodRepository } from "../../../domain/repositories/add-food-repository"
-import { FoodRepository } from "../../../domain/repositories/food-repository"
-import { UpdateFoodRepository } from "../../../domain/repositories/update-food-repository"
+import { Food } from '../../../domain/models/food'
+import { AddFoodRepository } from '../../../domain/repositories/add-food-repository'
+import { FoodRepository } from '../../../domain/repositories/food-repository'
+import { UpdateFoodRepository } from '../../../domain/repositories/update-food-repository'
 
 export class FoodMemoryRepository implements FoodRepository {
-  constructor(
-    private readonly foods: Food[]
-  ) { }
-  
+  constructor(private readonly foods: Food[]) {}
+
   updateById(id: string, data: UpdateFoodRepository.Data): Promise<Food> {
-    throw new Error("Method not implemented.")
+    throw new Error('Method not implemented.')
   }
-  
+
   removeById(id: string): Promise<void> {
-    throw new Error("Method not implemented.")
+    throw new Error('Method not implemented.')
   }
 
   async add(params: AddFoodRepository.Params): Promise<Food> {
-    const food: Food = { id: Date.now().toString(), createdAt: new Date(), ...params }
+    const food: Food = {
+      id: Date.now().toString(),
+      createdAt: new Date(),
+      ...params
+    }
     this.foods.push(food)
     return food
   }
@@ -27,7 +29,7 @@ export class FoodMemoryRepository implements FoodRepository {
   }
 
   async loadOneById(foodId: string): Promise<Food> {
-    const food = this.foods.find(food => food.id === foodId)
+    const food = this.foods.find((food) => food.id === foodId)
 
     if (!food) {
       throw new Error('Food not found')

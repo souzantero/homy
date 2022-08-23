@@ -1,6 +1,6 @@
-import { CautionButton } from "../button/CautionButton"
+import { CautionButton } from '../button/CautionButton'
 export interface RemoveFoodButtonProps {
-  isRemoving: boolean,
+  isRemoving: boolean
   onRemove: () => void
 }
 

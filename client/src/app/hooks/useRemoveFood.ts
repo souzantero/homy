@@ -1,9 +1,9 @@
-import { useState } from "react"
-import { useToast } from "@chakra-ui/react"
+import { useState } from 'react'
+import { useToast } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
-import { Food } from "../../domain/models/food"
-import { makeRemoveFoodByIdService } from "../factories/remove-food-by-id-service-factory"
-import { useSignedUser } from "./useSignedUser"
+import { Food } from '../../domain/models/food'
+import { makeRemoveFoodByIdService } from '../factories/remove-food-by-id-service-factory'
+import { useSignedUser } from './useSignedUser'
 
 export type Result = {
   isRemoving: boolean
@@ -26,7 +26,7 @@ export function useRemoveFood(): Result {
       notify({
         status: 'success',
         title: 'Alimento removido.',
-        description: "Alimento removido com sucesso.",
+        description: 'Alimento removido com sucesso.'
       })
 
       queryClient.invalidateQueries(['foods'])
@@ -34,7 +34,10 @@ export function useRemoveFood(): Result {
     } catch (error) {
       const status = 'error'
       const title = 'Falha ao remover alimento.'
-      const description = error instanceof Error ? error.message : 'Não foi possível remover o alimento no momento, tente novamente mais tarde.'
+      const description =
+        error instanceof Error
+          ? error.message
+          : 'Não foi possível remover o alimento no momento, tente novamente mais tarde.'
       notify({ status, title, description })
       return false
     } finally {

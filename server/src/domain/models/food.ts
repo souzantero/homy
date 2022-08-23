@@ -1,4 +1,4 @@
-import { SuppliedFood } from "./supplied-food"
+import { SuppliedFood } from './supplied-food'
 
 export type Food = {
   id: string

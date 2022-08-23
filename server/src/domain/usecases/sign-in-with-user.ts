@@ -6,11 +6,13 @@ export class SignInWithUser {
   constructor(
     private readonly encrypter: Encrypter,
     private readonly updateUserRepository: UpdateUserByIdRepository
-  ) { }
+  ) {}
 
   async sign(user: User): Promise<SignInWithUser.Result> {
     const authorizationToken = await this.encrypter.encrypt(user.id)
-    const updatedUser = await this.updateUserRepository.updateById(user.id, { authorizationToken })
+    const updatedUser = await this.updateUserRepository.updateById(user.id, {
+      authorizationToken
+    })
     delete updatedUser.deletedAt
     delete updatedUser.password
     return updatedUser

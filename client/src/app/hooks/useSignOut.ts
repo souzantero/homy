@@ -1,9 +1,9 @@
-import { useToast } from "@chakra-ui/react"
-import { useState } from "react"
-import { makeSignOutService } from "../factories/sign-out-service-factory"
+import { useToast } from '@chakra-ui/react'
+import { useState } from 'react'
+import { makeSignOutService } from '../factories/sign-out-service-factory'
 
 export type Result = {
-  isSigningOut: boolean,
+  isSigningOut: boolean
   signOut: () => Promise<void>
 }
 
@@ -19,14 +19,17 @@ export function useSignOut(): Result {
       notify({
         status: 'success',
         title: 'Desconectado.',
-        description: "Desconexão realizada com sucesso.",
+        description: 'Desconexão realizada com sucesso.'
       })
 
       window.location.reload()
     } catch (error) {
       const status = 'error'
       const title = 'Falha ao desconectar da sua conta.'
-      const description = error instanceof Error ? error.message : 'Não foi possível desconectar da sua conta no momento, tente novamente mais tarde.'
+      const description =
+        error instanceof Error
+          ? error.message
+          : 'Não foi possível desconectar da sua conta no momento, tente novamente mais tarde.'
       notify({ status, title, description })
     } finally {
       setIsSigningOut(false)

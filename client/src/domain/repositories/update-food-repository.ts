@@ -1,7 +1,10 @@
-import { Food } from "../models/food"
+import { Food } from '../models/food'
 
 export interface UpdateFoodRepository {
-  updateById(id: string, data: UpdateFoodRepository.Data): Promise<UpdateFoodRepository.Result>
+  updateById(
+    id: string,
+    data: UpdateFoodRepository.Data
+  ): Promise<UpdateFoodRepository.Result>
 }
 export namespace UpdateFoodRepository {
   export type Data = {

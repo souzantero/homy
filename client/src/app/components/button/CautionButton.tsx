@@ -1,21 +1,21 @@
-import { 
-  Button, 
-  ButtonGroup, 
-  Popover, 
-  PopoverArrow, 
-  PopoverBody, 
-  PopoverCloseButton, 
-  PopoverContent, 
-  PopoverFooter, 
-  PopoverTrigger, 
-  Portal, 
-  useDisclosure 
-} from "@chakra-ui/react"
-import { PropsWithChildren } from "react"
+import {
+  Button,
+  ButtonGroup,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverFooter,
+  PopoverTrigger,
+  Portal,
+  useDisclosure
+} from '@chakra-ui/react'
+import { PropsWithChildren } from 'react'
 
 export interface CautionButtonProps {
-  cautionMessage?: string,
-  isLoading?: boolean,
+  cautionMessage?: string
+  isLoading?: boolean
   onConfirm: () => void
 }
 
@@ -30,13 +30,9 @@ export function CautionButton({
     onConfirm()
     onClose()
   }
-  
+
   return (
-    <Popover
-      isOpen={isOpen}
-      onOpen={onOpen}
-      onClose={onClose}
-    >
+    <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose}>
       <PopoverTrigger>
         <Button
           color={'red'}
@@ -54,17 +50,19 @@ export function CautionButton({
           <PopoverArrow />
           <PopoverCloseButton />
           <PopoverBody>
-            {cautionMessage ? cautionMessage : 'Você tem certeza que deseja fazer isso?'}
+            {cautionMessage
+              ? cautionMessage
+              : 'Você tem certeza que deseja fazer isso?'}
           </PopoverBody>
           <PopoverFooter>
-            <ButtonGroup display='flex' justifyContent='flex-end'>
-              <Button variant='outline' size='sm' onClick={onClose}>
+            <ButtonGroup display="flex" justifyContent="flex-end">
+              <Button variant="outline" size="sm" onClick={onClose}>
                 Não
               </Button>
-              <Button colorScheme='red' size='sm' onClick={handleClickYes}>
+              <Button colorScheme="red" size="sm" onClick={handleClickYes}>
                 Sim
               </Button>
-            </ButtonGroup>  
+            </ButtonGroup>
           </PopoverFooter>
         </PopoverContent>
       </Portal>

@@ -1,11 +1,11 @@
-import { SignInRepository } from "../repositories/sign-in-repository"
-import { UpdateSignedUserRepository } from "../repositories/update-signed-user-repository"
+import { SignInRepository } from '../repositories/sign-in-repository'
+import { UpdateSignedUserRepository } from '../repositories/update-signed-user-repository'
 
 export class SignInService {
   constructor(
     private readonly signInRepository: SignInRepository,
     private readonly updateSignedUserRepository: UpdateSignedUserRepository
-  ) { }
+  ) {}
 
   async signIn(params: SignInService.Params): Promise<SignInService.Result> {
     const signedUser = await this.signInRepository.signIn(params)

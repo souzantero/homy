@@ -1,9 +1,6 @@
-import { Button, ButtonProps } from "@chakra-ui/react";
+import { Button, ButtonProps } from '@chakra-ui/react'
 
-export function ActionButton({
-  children,
-  ...rest
-}: ButtonProps) {
+export function ActionButton({ children, ...rest }: ButtonProps) {
   return (
     <Button
       {...rest}

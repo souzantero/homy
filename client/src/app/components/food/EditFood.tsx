@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
-import { Page } from "../layout/Page"
-import { PageHeader } from "../layout/PageHeader"
-import { PageBody } from "../layout/PageBody"
-import { FoodForm, Period } from "./FoodForm"
-import { useFood } from "../../hooks/useFood"
-import { useUpdateFood } from "../../hooks/useUpdateFood"
+import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { Page } from '../layout/Page'
+import { PageHeader } from '../layout/PageHeader'
+import { PageBody } from '../layout/PageBody'
+import { FoodForm, Period } from './FoodForm'
+import { useFood } from '../../hooks/useFood'
+import { useUpdateFood } from '../../hooks/useUpdateFood'
 
 export function EditFood() {
   const { updateFood, isUpdating } = useUpdateFood()
@@ -16,7 +16,7 @@ export function EditFood() {
   const [expiresIn, setExpiresIn] = useState<number>(0)
   const [period, setPeriod] = useState<Period>(Period.Day)
 
-  const{ food, isLoading } = useFood(foodId || '')
+  const { food, isLoading } = useFood(foodId || '')
 
   useEffect(() => {
     if (food) {
@@ -24,7 +24,7 @@ export function EditFood() {
       setExpiresIn(food.expiresIn)
     }
   }, [food])
-  
+
   const handleSubmit = async () => {
     if (food) {
       food.name = name
@@ -45,7 +45,7 @@ export function EditFood() {
 
   return (
     <Page>
-      <PageHeader title="Editar alimento"/>
+      <PageHeader title="Editar alimento" />
       <PageBody>
         <FoodForm
           value={{

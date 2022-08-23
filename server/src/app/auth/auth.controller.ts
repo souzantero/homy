@@ -1,4 +1,12 @@
-import { Body, Controller, ForbiddenException, Get, Post, UseGuards, ValidationPipe } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  ForbiddenException,
+  Get,
+  Post,
+  UseGuards,
+  ValidationPipe
+} from '@nestjs/common'
 import { EmailInUseError } from '../../domain/errors/email-in-use-error'
 import { User } from '../../domain/models/user'
 import { AddUser } from '../../domain/usecases/add-user'
@@ -12,14 +20,15 @@ export class AuthController {
   constructor(
     private readonly addUser: AddUser,
     private readonly signInWithUser: SignInWithUser
-  ) { }
+  ) {}
 
   @Post('sign-up')
   async signUp(@Body(ValidationPipe) data: SignUpInput) {
     try {
       return await this.addUser.add(data)
     } catch (error) {
-      if (error instanceof EmailInUseError) throw new ForbiddenException(error.message)
+      if (error instanceof EmailInUseError)
+        throw new ForbiddenException(error.message)
       else throw error
     }
   }

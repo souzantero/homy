@@ -1,14 +1,16 @@
-import { Food } from "../../../domain/models/food";
-import { AddFoodRepository } from "../../../domain/repositories/add-food-repository";
-import { LoadFoodsRepository } from "../../../domain/repositories/load-foods-repository";
+import { Food } from '../../../domain/models/food'
+import { AddFoodRepository } from '../../../domain/repositories/add-food-repository'
+import { LoadFoodsRepository } from '../../../domain/repositories/load-foods-repository'
 
-export class FoodMemoryRepository implements AddFoodRepository, LoadFoodsRepository {
-  constructor(
-    private readonly foods: Food[] = []
-  ) { }
+export class FoodMemoryRepository
+  implements AddFoodRepository, LoadFoodsRepository
+{
+  constructor(private readonly foods: Food[] = []) {}
 
-  loadMany(where: LoadFoodsRepository.Where): Promise<LoadFoodsRepository.Result> {
-    throw new Error("Method not implemented.");
+  loadMany(
+    where: LoadFoodsRepository.Where
+  ): Promise<LoadFoodsRepository.Result> {
+    throw new Error('Method not implemented.')
   }
 
   async add(food: AddFoodRepository.Params): Promise<Food> {

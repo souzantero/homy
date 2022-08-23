@@ -1,6 +1,6 @@
-import { User } from "../../../domain/models/user";
-import { UpdateUserRepository } from "../../../domain/repositories/update-user-repository";
-import { UserRepository } from "../../../domain/repositories/user-repository";
+import { User } from '../../../domain/models/user'
+import { UpdateUserRepository } from '../../../domain/repositories/update-user-repository'
+import { UserRepository } from '../../../domain/repositories/user-repository'
 
 export class UserLocalStorageRepository implements UserRepository {
   private getKeyById(id: string) {

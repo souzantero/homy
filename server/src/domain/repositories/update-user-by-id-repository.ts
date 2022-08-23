@@ -1,7 +1,10 @@
-import { User } from "../models/user"
+import { User } from '../models/user'
 
 export interface UpdateUserByIdRepository {
-  updateById(id: string, data: UpdateUserByIdRepository.Data): Promise<UpdateUserByIdRepository.Result>
+  updateById(
+    id: string,
+    data: UpdateUserByIdRepository.Data
+  ): Promise<UpdateUserByIdRepository.Result>
 }
 
 export namespace UpdateUserByIdRepository {

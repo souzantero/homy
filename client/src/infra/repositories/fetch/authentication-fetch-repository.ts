@@ -1,10 +1,12 @@
-import { AuthenticationRepository } from "../../../domain/repositories/authentication-repository"
-import { SignInRepository } from "../../../domain/repositories/sign-in-repository"
+import { AuthenticationRepository } from '../../../domain/repositories/authentication-repository'
+import { SignInRepository } from '../../../domain/repositories/sign-in-repository'
 
 export class AuthenticationFetchRepository implements AuthenticationRepository {
-  constructor(private readonly hostAddress: string) { }
+  constructor(private readonly hostAddress: string) {}
 
-  async signIn(params: SignInRepository.Params): Promise<SignInRepository.Result> {
+  async signIn(
+    params: SignInRepository.Params
+  ): Promise<SignInRepository.Result> {
     const response = await fetch(`${this.hostAddress}/auth/sign-in`, {
       method: 'POST',
       body: JSON.stringify(params),

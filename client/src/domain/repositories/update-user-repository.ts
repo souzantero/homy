@@ -1,4 +1,4 @@
-import { User } from "../models/user"
+import { User } from '../models/user'
 
 export interface UpdateUserRepository {
   updateById(id: string, data: UpdateUserRepository.Data): Promise<User>

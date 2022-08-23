@@ -1,5 +1,5 @@
 export class EmailInUseError extends Error {
-  constructor () {
+  constructor() {
     super('the received email is already in use')
     this.name = 'EmailInUse'
   }

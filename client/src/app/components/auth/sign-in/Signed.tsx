@@ -1,7 +1,7 @@
-import { Skeleton } from "@chakra-ui/react"
-import { PropsWithChildren, ReactNode, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
-import { useSignedUser } from "../../../hooks/useSignedUser"
+import { Skeleton } from '@chakra-ui/react'
+import { PropsWithChildren, ReactNode, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useSignedUser } from '../../../hooks/useSignedUser'
 
 export interface SignedProps {
   redirect?: boolean
@@ -22,8 +22,8 @@ export function Signed({
     }
   }, [signedUser, isLoading])
 
-  if (isLoading) return <Skeleton/>
-  if (!isLoading && !signedUser && unsigned) return (<>{unsigned}</>)
-  if (!isLoading && !signedUser) return (<></>)
-  return (<>{children}</>)
+  if (isLoading) return <Skeleton />
+  if (!isLoading && !signedUser && unsigned) return <>{unsigned}</>
+  if (!isLoading && !signedUser) return <></>
+  return <>{children}</>
 }

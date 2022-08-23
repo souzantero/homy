@@ -24,23 +24,33 @@ import { AuthorizationTokenStrategy } from './strategies/authorization-token.str
     {
       provide: AddUser,
       inject: [PrismaService, ConfigService],
-      useFactory: (prisma: PrismaService, config: ConfigService) => makeAddUser(prisma, +config.get<number>('BCRYPT_SALT'))
+      useFactory: (prisma: PrismaService, config: ConfigService) =>
+        makeAddUser(prisma, +config.get<number>('BCRYPT_SALT'))
     },
     {
       provide: AuthenticateUserByEmailAndPassword,
       inject: [PrismaService, ConfigService],
-      useFactory: (prisma: PrismaService, config: ConfigService) => makeAuthenticateUserByEmailAndPassword(prisma, +config.get<number>('BCRYPT_SALT'))
+      useFactory: (prisma: PrismaService, config: ConfigService) =>
+        makeAuthenticateUserByEmailAndPassword(
+          prisma,
+          +config.get<number>('BCRYPT_SALT')
+        )
     },
     {
       provide: AuthenticateUserByAuthorizationToken,
       inject: [PrismaService, ConfigService],
-      useFactory: (prisma: PrismaService, config: ConfigService) => makeAuthenticateUserByAuthorizationToken(prisma, config.get<string>('JWT_SECRET'))
+      useFactory: (prisma: PrismaService, config: ConfigService) =>
+        makeAuthenticateUserByAuthorizationToken(
+          prisma,
+          config.get<string>('JWT_SECRET')
+        )
     },
     {
       provide: SignInWithUser,
       inject: [PrismaService, ConfigService],
-      useFactory: (prisma: PrismaService, config: ConfigService) => makeSignInWithUser(prisma, config.get<string>('JWT_SECRET'))
+      useFactory: (prisma: PrismaService, config: ConfigService) =>
+        makeSignInWithUser(prisma, config.get<string>('JWT_SECRET'))
     }
   ]
 })
-export class AuthModule { }
+export class AuthModule {}

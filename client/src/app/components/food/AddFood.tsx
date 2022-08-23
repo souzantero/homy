@@ -1,10 +1,10 @@
-import { useState } from "react"
-import { useAddFood } from "../../hooks/useAddFood"
-import { useNavigate } from "react-router-dom"
-import { Page } from "../layout/Page"
-import { PageHeader } from "../layout/PageHeader"
-import { PageBody } from "../layout/PageBody"
-import { FoodForm, Period } from "./FoodForm"
+import { useState } from 'react'
+import { useAddFood } from '../../hooks/useAddFood'
+import { useNavigate } from 'react-router-dom'
+import { Page } from '../layout/Page'
+import { PageHeader } from '../layout/PageHeader'
+import { PageBody } from '../layout/PageBody'
+import { FoodForm, Period } from './FoodForm'
 
 export function AddFood() {
   const { addFood, isAdding } = useAddFood()
@@ -12,14 +12,14 @@ export function AddFood() {
   const [name, setName] = useState<string>('')
   const [expiresIn, setExpiresIn] = useState<number>(0)
   const [period, setPeriod] = useState<Period>(Period.Day)
-  
-  const handleSubmit = async () => {    
+
+  const handleSubmit = async () => {
     const params = { name, expiresIn: expiresIn * period }
     const createdFood = await addFood(params)
     if (createdFood) {
       clear()
       navigate('/foods')
-    }    
+    }
   }
 
   const clear = () => {
@@ -30,7 +30,7 @@ export function AddFood() {
 
   return (
     <Page>
-      <PageHeader title="Adicionar alimento"/>
+      <PageHeader title="Adicionar alimento" />
       <PageBody>
         <FoodForm
           value={{

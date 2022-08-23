@@ -13,7 +13,7 @@ import { useSignedUser } from '../../../hooks/useSignedUser'
 import { useSignIn } from '../../../hooks/useSignIn'
 import { AuthenticationLayout } from '../AuthenticationLayout'
 
-export function SignIn() {
+export function SignUp() {
   const { signedUser, isLoading } = useSignedUser()
   const { signIn, isSigning } = useSignIn()
   const navigate = useNavigate()
@@ -42,7 +42,7 @@ export function SignIn() {
   }
 
   return (
-    <AuthenticationLayout title="Conecte-se">
+    <AuthenticationLayout title="Cadastre-se">
       <Stack as={'form'} spacing={4} onSubmit={handleSubmit}>
         <FormControl id="email" isRequired isDisabled={isSigning || isLoading}>
           <FormLabel>E-mail</FormLabel>

@@ -19,20 +19,23 @@ import { User } from '../src/domain/models/user'
 
 const serialize = (data: any) => JSON.parse(JSON.stringify(data))
 
-const dropDatabase = async (prisma: PrismaClient) => prisma.$transaction([
-  prisma.user.deleteMany(),
-  prisma.suppliedFood.deleteMany(),
-  prisma.foodSupply.deleteMany(),
-  prisma.food.deleteMany()
-])
+const dropDatabase = async (prisma: PrismaClient) =>
+  prisma.$transaction([
+    prisma.user.deleteMany(),
+    prisma.suppliedFood.deleteMany(),
+    prisma.foodSupply.deleteMany(),
+    prisma.food.deleteMany()
+  ])
 
 const findAllFoods = (prisma: PrismaClient) => prisma.food.findMany()
-const findAllFoodSupplies = (prisma: PrismaClient) => prisma.foodSupply.findMany()
-const findAllSuppliedFoods = (prisma: PrismaClient) => prisma.suppliedFood.findMany()
+const findAllFoodSupplies = (prisma: PrismaClient) =>
+  prisma.foodSupply.findMany()
+const findAllSuppliedFoods = (prisma: PrismaClient) =>
+  prisma.suppliedFood.findMany()
 const findAllUsers = (prisma: PrismaClient) => prisma.user.findMany()
 
 describe('App (e2e)', () => {
-  let app: INestApplication;
+  let app: INestApplication
   let prisma: PrismaClient
   let identifier: Identifier
   let hasher: Hasher
@@ -42,10 +45,10 @@ describe('App (e2e)', () => {
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
+      imports: [AppModule]
+    }).compile()
 
-    app = moduleFixture.createNestApplication();
+    app = moduleFixture.createNestApplication()
     const config = app.get<ConfigService>(ConfigService)
     identifier = new UuidAdapter()
     hasher = new BcryptAdapter(+config.get<number>('BCRYPT_SALT'))
@@ -54,8 +57,8 @@ describe('App (e2e)', () => {
     encrypter = new JwtAdapter(config.get<string>('JWT_SECRET'))
     prisma = prisma ? prisma : app.get<PrismaService>(PrismaService)
     await dropDatabase(prisma)
-    await app.init();
-  });
+    await app.init()
+  })
 
   describe('/auth', () => {
     describe('/sign-up', () => {
@@ -86,7 +89,9 @@ describe('App (e2e)', () => {
         expect(users[0]).toHaveProperty('createdAt', new Date(body.createdAt))
         expect(users[0]).toHaveProperty('updatedAt', null)
         expect(users[0]).toHaveProperty('deletedAt', null)
-        expect(await hashComparer.compare('12345678', users[0].password)).toBeTruthy()
+        expect(
+          await hashComparer.compare('12345678', users[0].password)
+        ).toBeTruthy()
       })
 
       it('should fail when user already exists with the same email', async () => {
@@ -110,7 +115,10 @@ describe('App (e2e)', () => {
           })
 
         expect(status).toBe(403)
-        expect(body).toHaveProperty('message', 'the received email is already in use')
+        expect(body).toHaveProperty(
+          'message',
+          'the received email is already in use'
+        )
       })
 
       it('should fail when name is not sent', async () => {
@@ -150,7 +158,9 @@ describe('App (e2e)', () => {
           })
 
         expect(status).toBe(400)
-        expect(body.message.some(m => m === 'email should not be empty')).toBeTruthy()
+        expect(
+          body.message.some((m) => m === 'email should not be empty')
+        ).toBeTruthy()
       })
 
       it('should fail when email is empty', async () => {
@@ -164,7 +174,9 @@ describe('App (e2e)', () => {
           })
 
         expect(status).toBe(400)
-        expect(body.message.some(m => m === 'email should not be empty')).toBeTruthy()
+        expect(
+          body.message.some((m) => m === 'email should not be empty')
+        ).toBeTruthy()
       })
 
       it('should fail when email is not a valid email format', async () => {
@@ -178,7 +190,9 @@ describe('App (e2e)', () => {
           })
 
         expect(status).toBe(400)
-        expect(body.message.some(m => m === 'email must be an email')).toBeTruthy()
+        expect(
+          body.message.some((m) => m === 'email must be an email')
+        ).toBeTruthy()
       })
 
       it('should fail when password is not sent', async () => {
@@ -191,7 +205,9 @@ describe('App (e2e)', () => {
           })
 
         expect(status).toBe(400)
-        expect(body.message.some(m => m === 'password should not be empty')).toBeTruthy()
+        expect(
+          body.message.some((m) => m === 'password should not be empty')
+        ).toBeTruthy()
       })
 
       it('should fail when password is emtpy', async () => {
@@ -205,7 +221,9 @@ describe('App (e2e)', () => {
           })
 
         expect(status).toBe(400)
-        expect(body.message.some(m => m === 'password should not be empty')).toBeTruthy()
+        expect(
+          body.message.some((m) => m === 'password should not be empty')
+        ).toBeTruthy()
       })
 
       it('should fail when password is grether than 8', async () => {
@@ -219,14 +237,22 @@ describe('App (e2e)', () => {
           })
 
         expect(status).toBe(400)
-        expect(body.message.some(m => m === 'password must be longer than or equal to 8 characters')).toBeTruthy()
+        expect(
+          body.message.some(
+            (m) => m === 'password must be longer than or equal to 8 characters'
+          )
+        ).toBeTruthy()
       })
     })
 
     describe('/sign-in', () => {
       it('should sign user authentication token', async () => {
         const addUser = app.get<AddUser>(AddUser)
-        const addedUser = await addUser.add({ name: 'Felipe', email: 'souzantero@gmail.com', password: '12345678' })
+        const addedUser = await addUser.add({
+          name: 'Felipe',
+          email: 'souzantero@gmail.com',
+          password: '12345678'
+        })
 
         const { status, body } = await request(app.getHttpServer())
           .post('/auth/sign-in')
@@ -250,7 +276,13 @@ describe('App (e2e)', () => {
       })
 
       it('should be unauthorized when is invalid email', async () => {
-        await app.get<AddUser>(AddUser).add({ name: 'Felipe', email: 'souzantero@gmail.com', password: '12345678' })
+        await app
+          .get<AddUser>(AddUser)
+          .add({
+            name: 'Felipe',
+            email: 'souzantero@gmail.com',
+            password: '12345678'
+          })
 
         const { status, body } = await request(app.getHttpServer())
           .post('/auth/sign-in')
@@ -265,7 +297,13 @@ describe('App (e2e)', () => {
       })
 
       it('should be unauthorized when is invalid password', async () => {
-        await app.get<AddUser>(AddUser).add({ name: 'Felipe', email: 'souzantero@gmail.com', password: '12345678' })
+        await app
+          .get<AddUser>(AddUser)
+          .add({
+            name: 'Felipe',
+            email: 'souzantero@gmail.com',
+            password: '12345678'
+          })
 
         const { status, body } = await request(app.getHttpServer())
           .post('/auth/sign-in')
@@ -306,8 +344,9 @@ describe('App (e2e)', () => {
 
     describe('/me', () => {
       it('should be unauthorized when authorization token is not sent', async () => {
-        const { status, body } = await request(app.getHttpServer())
-          .get('/auth/me')
+        const { status, body } = await request(app.getHttpServer()).get(
+          '/auth/me'
+        )
 
         expect(status).toBe(401)
         expect(body).toHaveProperty('message', 'Unauthorized')
@@ -329,7 +368,10 @@ describe('App (e2e)', () => {
 
         const { status, body } = await request(app.getHttpServer())
           .get('/auth/me')
-          .set('Authorization', `Bearer ${createdUser.authorizationToken}invalid`)
+          .set(
+            'Authorization',
+            `Bearer ${createdUser.authorizationToken}invalid`
+          )
 
         expect(status).toBe(401)
         expect(body).toHaveProperty('message', 'Unauthorized')
@@ -390,23 +432,47 @@ describe('App (e2e)', () => {
   describe('/foods', () => {
     describe('(GET)', () => {
       it('should be success', () => {
-        return request(app.getHttpServer())
-          .get('/foods')
-          .expect(200)
+        return request(app.getHttpServer()).get('/foods').expect(200)
       })
 
       it('should not get deleted foods', async () => {
         const createdFoods = await prisma.$transaction([
-          prisma.food.create({ data: { id: identifier.identify(), name: 'Banana', expiresIn: 8, createdAt: new Date(), deletedAt: new Date() } }),
-          prisma.food.create({ data: { id: identifier.identify(), name: 'Maçã', expiresIn: 10, createdAt: new Date() } }),
-          prisma.food.create({ data: { id: identifier.identify(), name: 'Mamão', expiresIn: 90, createdAt: new Date() } })
+          prisma.food.create({
+            data: {
+              id: identifier.identify(),
+              name: 'Banana',
+              expiresIn: 8,
+              createdAt: new Date(),
+              deletedAt: new Date()
+            }
+          }),
+          prisma.food.create({
+            data: {
+              id: identifier.identify(),
+              name: 'Maçã',
+              expiresIn: 10,
+              createdAt: new Date()
+            }
+          }),
+          prisma.food.create({
+            data: {
+              id: identifier.identify(),
+              name: 'Mamão',
+              expiresIn: 90,
+              createdAt: new Date()
+            }
+          })
         ])
 
-        const { status, body } = await request(app.getHttpServer()).get('/foods')
+        const { status, body } = await request(app.getHttpServer()).get(
+          '/foods'
+        )
 
         expect(status).toBe(200)
         expect(body).toHaveLength(2)
-        expect(body.find(item => item.id === createdFoods[0].id)).toBeUndefined()
+        expect(
+          body.find((item) => item.id === createdFoods[0].id)
+        ).toBeUndefined()
       })
     })
 
@@ -414,8 +480,16 @@ describe('App (e2e)', () => {
       let authorizationToken
 
       beforeEach(async () => {
-        const addedUser = await app.get<AddUser>(AddUser).add({ name: 'Felipe Antero', email: 'souzantero@gmail.com', password: '12345678' })
-        const signature = await app.get<SignInWithUser>(SignInWithUser).sign(addedUser as User)
+        const addedUser = await app
+          .get<AddUser>(AddUser)
+          .add({
+            name: 'Felipe Antero',
+            email: 'souzantero@gmail.com',
+            password: '12345678'
+          })
+        const signature = await app
+          .get<SignInWithUser>(SignInWithUser)
+          .sign(addedUser as User)
         authorizationToken = signature.authorizationToken
       })
 
@@ -461,7 +535,9 @@ describe('App (e2e)', () => {
           })
 
         expect(response.status).toBe(400)
-        expect(response.body).toHaveProperty('message', ['name should not be empty'])
+        expect(response.body).toHaveProperty('message', [
+          'name should not be empty'
+        ])
       })
 
       it('should fail when name is a number', async () => {
@@ -474,19 +550,42 @@ describe('App (e2e)', () => {
           })
 
         expect(response.status).toBe(400)
-        expect(response.body).toHaveProperty('message', ['name must be a string'])
+        expect(response.body).toHaveProperty('message', [
+          'name must be a string'
+        ])
       })
     })
 
     describe('/:foodId (GET)', () => {
       it('should get a food with supplied foods', async () => {
         const createdFoods = await prisma.$transaction([
-          prisma.food.create({ data: { id: identifier.identify(), name: 'Banana', expiresIn: 5, createdAt: new Date() } }),
-          prisma.food.create({ data: { id: identifier.identify(), name: 'Maçã', expiresIn: 14, createdAt: new Date() } }),
-          prisma.food.create({ data: { id: identifier.identify(), name: 'Mamão', expiresIn: 7, createdAt: new Date() } })
+          prisma.food.create({
+            data: {
+              id: identifier.identify(),
+              name: 'Banana',
+              expiresIn: 5,
+              createdAt: new Date()
+            }
+          }),
+          prisma.food.create({
+            data: {
+              id: identifier.identify(),
+              name: 'Maçã',
+              expiresIn: 14,
+              createdAt: new Date()
+            }
+          }),
+          prisma.food.create({
+            data: {
+              id: identifier.identify(),
+              name: 'Mamão',
+              expiresIn: 7,
+              createdAt: new Date()
+            }
+          })
         ])
 
-        const suppliedFoods = createdFoods.map(createdFood => ({
+        const suppliedFoods = createdFoods.map((createdFood) => ({
           foodId: createdFood.id,
           createdAt: new Date()
         }))
@@ -503,9 +602,13 @@ describe('App (e2e)', () => {
 
         const food = createdFoods[0]
         const createdSuppliedFoods = await findAllSuppliedFoods(prisma)
-        const filteredSuppliedFoods = createdSuppliedFoods.filter(suppliedFood => suppliedFood.foodId === food.id)
+        const filteredSuppliedFoods = createdSuppliedFoods.filter(
+          (suppliedFood) => suppliedFood.foodId === food.id
+        )
 
-        const { status, body } = await request(app.getHttpServer()).get(`/foods/${food.id}`)
+        const { status, body } = await request(app.getHttpServer()).get(
+          `/foods/${food.id}`
+        )
         expect(status).toBe(200)
         expect(body).toBeDefined()
         expect(body).toEqual({
@@ -515,14 +618,26 @@ describe('App (e2e)', () => {
       })
 
       it('should be not found if food not exists', async () => {
-        const { status, body } = await request(app.getHttpServer()).get('/foods/fakeId')
+        const { status, body } = await request(app.getHttpServer()).get(
+          '/foods/fakeId'
+        )
         expect(status).toBe(404)
         expect(body).toHaveProperty('message', 'food not found')
       })
 
       it('should be not found if food is deleted', async () => {
-        const food = await prisma.food.create({ data: { id: identifier.identify(), name: 'Banana', expiresIn: 5, createdAt: new Date(), deletedAt: new Date() } })
-        const { status, body } = await request(app.getHttpServer()).get(`/foods/${food.id}`)
+        const food = await prisma.food.create({
+          data: {
+            id: identifier.identify(),
+            name: 'Banana',
+            expiresIn: 5,
+            createdAt: new Date(),
+            deletedAt: new Date()
+          }
+        })
+        const { status, body } = await request(app.getHttpServer()).get(
+          `/foods/${food.id}`
+        )
         expect(status).toBe(404)
         expect(body).toHaveProperty('message', 'food not found')
       })
@@ -532,8 +647,16 @@ describe('App (e2e)', () => {
       let authorizationToken
 
       beforeEach(async () => {
-        const addedUser = await app.get<AddUser>(AddUser).add({ name: 'Felipe Antero', email: 'souzantero@gmail.com', password: '12345678' })
-        const signature = await app.get<SignInWithUser>(SignInWithUser).sign(addedUser as User)
+        const addedUser = await app
+          .get<AddUser>(AddUser)
+          .add({
+            name: 'Felipe Antero',
+            email: 'souzantero@gmail.com',
+            password: '12345678'
+          })
+        const signature = await app
+          .get<SignInWithUser>(SignInWithUser)
+          .sign(addedUser as User)
         authorizationToken = signature.authorizationToken
       })
 
@@ -549,7 +672,14 @@ describe('App (e2e)', () => {
       })
 
       it('should update a exited food', async () => {
-        const createdFood = await prisma.food.create({ data: { id: identifier.identify(), name: 'Banana', expiresIn: 5, createdAt: new Date() } })
+        const createdFood = await prisma.food.create({
+          data: {
+            id: identifier.identify(),
+            name: 'Banana',
+            expiresIn: 5,
+            createdAt: new Date()
+          }
+        })
         const { status } = await request(app.getHttpServer())
           .put(`/foods/${createdFood.id}`)
           .set('Authorization', `Bearer ${authorizationToken}`)
@@ -568,7 +698,9 @@ describe('App (e2e)', () => {
         expect(foods[0]).toHaveProperty('expiresIn', 10)
         expect(foods[0]).toHaveProperty('createdAt', createdFood.createdAt)
         expect(foods[0].updatedAt).toBeDefined()
-        expect(foods[0].updatedAt.getTime()).toBeGreaterThan(createdFood.createdAt.getTime())
+        expect(foods[0].updatedAt.getTime()).toBeGreaterThan(
+          createdFood.createdAt.getTime()
+        )
       })
 
       it('should be not found if food not exists', async () => {
@@ -586,7 +718,15 @@ describe('App (e2e)', () => {
       })
 
       it('should be not found if food is deleted', async () => {
-        const food = await prisma.food.create({ data: { id: identifier.identify(), name: 'Banana', expiresIn: 5, createdAt: new Date(), deletedAt: new Date() } })
+        const food = await prisma.food.create({
+          data: {
+            id: identifier.identify(),
+            name: 'Banana',
+            expiresIn: 5,
+            createdAt: new Date(),
+            deletedAt: new Date()
+          }
+        })
         const { status, body } = await request(app.getHttpServer())
           .put(`/foods/${food.id}`)
           .set('Authorization', `Bearer ${authorizationToken}`)
@@ -605,8 +745,16 @@ describe('App (e2e)', () => {
       let authorizationToken
 
       beforeEach(async () => {
-        const addedUser = await app.get<AddUser>(AddUser).add({ name: 'Felipe Antero', email: 'souzantero@gmail.com', password: '12345678' })
-        const signature = await app.get<SignInWithUser>(SignInWithUser).sign(addedUser as User)
+        const addedUser = await app
+          .get<AddUser>(AddUser)
+          .add({
+            name: 'Felipe Antero',
+            email: 'souzantero@gmail.com',
+            password: '12345678'
+          })
+        const signature = await app
+          .get<SignInWithUser>(SignInWithUser)
+          .sign(addedUser as User)
         authorizationToken = signature.authorizationToken
       })
 
@@ -619,9 +767,30 @@ describe('App (e2e)', () => {
 
       it('should delete a existed food', async () => {
         const createdFoods = await prisma.$transaction([
-          prisma.food.create({ data: { id: identifier.identify(), name: 'Banana', expiresIn: 8, createdAt: new Date() } }),
-          prisma.food.create({ data: { id: identifier.identify(), name: 'Maçã', expiresIn: 10, createdAt: new Date() } }),
-          prisma.food.create({ data: { id: identifier.identify(), name: 'Mamão', expiresIn: 90, createdAt: new Date() } })
+          prisma.food.create({
+            data: {
+              id: identifier.identify(),
+              name: 'Banana',
+              expiresIn: 8,
+              createdAt: new Date()
+            }
+          }),
+          prisma.food.create({
+            data: {
+              id: identifier.identify(),
+              name: 'Maçã',
+              expiresIn: 10,
+              createdAt: new Date()
+            }
+          }),
+          prisma.food.create({
+            data: {
+              id: identifier.identify(),
+              name: 'Mamão',
+              expiresIn: 90,
+              createdAt: new Date()
+            }
+          })
         ])
 
         const { status, body } = await request(app.getHttpServer())
@@ -632,7 +801,7 @@ describe('App (e2e)', () => {
         expect(body).toEqual({})
 
         const foods = await findAllFoods(prisma)
-        const deletedFood = foods.find(food => food.id === createdFoods[0].id)
+        const deletedFood = foods.find((food) => food.id === createdFoods[0].id)
         expect(deletedFood).toBeDefined()
         expect(deletedFood.deletedAt).not.toBeNull()
       })
@@ -647,7 +816,15 @@ describe('App (e2e)', () => {
       })
 
       it('should be not found if food is deleted', async () => {
-        const food = await prisma.food.create({ data: { id: identifier.identify(), name: 'Banana', expiresIn: 5, createdAt: new Date(), deletedAt: new Date() } })
+        const food = await prisma.food.create({
+          data: {
+            id: identifier.identify(),
+            name: 'Banana',
+            expiresIn: 5,
+            createdAt: new Date(),
+            deletedAt: new Date()
+          }
+        })
         const { status, body } = await request(app.getHttpServer())
           .delete(`/foods/${food.id}`)
           .set('Authorization', `Bearer ${authorizationToken}`)
@@ -660,20 +837,33 @@ describe('App (e2e)', () => {
     describe('/supplies (GET)', () => {
       it('should get all food supplies', async () => {
         const createdFoodSupplies = await prisma.$transaction([
-          prisma.foodSupply.create({ data: { id: identifier.identify(), createdAt: new Date() } }),
-          prisma.foodSupply.create({ data: { id: identifier.identify(), createdAt: new Date() } }),
-          prisma.foodSupply.create({ data: { id: identifier.identify(), createdAt: new Date() } })
+          prisma.foodSupply.create({
+            data: { id: identifier.identify(), createdAt: new Date() }
+          }),
+          prisma.foodSupply.create({
+            data: { id: identifier.identify(), createdAt: new Date() }
+          }),
+          prisma.foodSupply.create({
+            data: { id: identifier.identify(), createdAt: new Date() }
+          })
         ])
 
-        const { status, body } = await request(app.getHttpServer()).get('/foods/supplies')
+        const { status, body } = await request(app.getHttpServer()).get(
+          '/foods/supplies'
+        )
 
         expect(status).toBe(200)
         expect(body).toHaveLength(3)
 
-        createdFoodSupplies.forEach(createdFoodSupply => {
-          const foodSupply = body.find(item => item.id === createdFoodSupply.id)
+        createdFoodSupplies.forEach((createdFoodSupply) => {
+          const foodSupply = body.find(
+            (item) => item.id === createdFoodSupply.id
+          )
           expect(foodSupply).toBeDefined()
-          expect(foodSupply).toHaveProperty('createdAt', createdFoodSupply.createdAt.toISOString())
+          expect(foodSupply).toHaveProperty(
+            'createdAt',
+            createdFoodSupply.createdAt.toISOString()
+          )
         })
       })
     })
@@ -682,8 +872,16 @@ describe('App (e2e)', () => {
       let authorizationToken
 
       beforeEach(async () => {
-        const addedUser = await app.get<AddUser>(AddUser).add({ name: 'Felipe Antero', email: 'souzantero@gmail.com', password: '12345678' })
-        const signature = await app.get<SignInWithUser>(SignInWithUser).sign(addedUser as User)
+        const addedUser = await app
+          .get<AddUser>(AddUser)
+          .add({
+            name: 'Felipe Antero',
+            email: 'souzantero@gmail.com',
+            password: '12345678'
+          })
+        const signature = await app
+          .get<SignInWithUser>(SignInWithUser)
+          .sign(addedUser as User)
         authorizationToken = signature.authorizationToken
       })
 
@@ -698,16 +896,37 @@ describe('App (e2e)', () => {
 
       it('should create a new food supply', async () => {
         const createdFoods = await prisma.$transaction([
-          prisma.food.create({ data: { id: identifier.identify(), name: 'Banana', expiresIn: 8, createdAt: new Date() } }),
-          prisma.food.create({ data: { id: identifier.identify(), name: 'Maçã', expiresIn: 10, createdAt: new Date() } }),
-          prisma.food.create({ data: { id: identifier.identify(), name: 'Mamão', expiresIn: 90, createdAt: new Date() } })
+          prisma.food.create({
+            data: {
+              id: identifier.identify(),
+              name: 'Banana',
+              expiresIn: 8,
+              createdAt: new Date()
+            }
+          }),
+          prisma.food.create({
+            data: {
+              id: identifier.identify(),
+              name: 'Maçã',
+              expiresIn: 10,
+              createdAt: new Date()
+            }
+          }),
+          prisma.food.create({
+            data: {
+              id: identifier.identify(),
+              name: 'Mamão',
+              expiresIn: 90,
+              createdAt: new Date()
+            }
+          })
         ])
 
         const { status, body } = await request(app.getHttpServer())
           .post('/foods/supplies')
           .set('Authorization', `Bearer ${authorizationToken}`)
           .send({
-            suppliedFoods: createdFoods.map(food => ({ foodId: food.id }))
+            suppliedFoods: createdFoods.map((food) => ({ foodId: food.id }))
           })
 
         expect(status).toBe(201)
@@ -721,8 +940,10 @@ describe('App (e2e)', () => {
         const suppliedFoods = await findAllSuppliedFoods(prisma)
         expect(suppliedFoods).toHaveLength(3)
 
-        createdFoods.forEach(createdFood => {
-          const suppliedFood = suppliedFoods.find(suppliedFood => suppliedFood.foodId === createdFood.id)
+        createdFoods.forEach((createdFood) => {
+          const suppliedFood = suppliedFoods.find(
+            (suppliedFood) => suppliedFood.foodId === createdFood.id
+          )
           expect(suppliedFood).toBeDefined()
           expect(suppliedFood).toHaveProperty('foodSupplyId', body.id)
           expect(suppliedFood).toHaveProperty('createdAt')
@@ -747,12 +968,33 @@ describe('App (e2e)', () => {
     describe('/supplies/:foodSupplyId/supplied-foods (GET)', () => {
       it('should get all supplied foods', async () => {
         const createdFoods = await prisma.$transaction([
-          prisma.food.create({ data: { id: identifier.identify(), name: 'Banana', expiresIn: 5, createdAt: new Date() } }),
-          prisma.food.create({ data: { id: identifier.identify(), name: 'Maçã', expiresIn: 14, createdAt: new Date() } }),
-          prisma.food.create({ data: { id: identifier.identify(), name: 'Mamão', expiresIn: 7, createdAt: new Date() } })
+          prisma.food.create({
+            data: {
+              id: identifier.identify(),
+              name: 'Banana',
+              expiresIn: 5,
+              createdAt: new Date()
+            }
+          }),
+          prisma.food.create({
+            data: {
+              id: identifier.identify(),
+              name: 'Maçã',
+              expiresIn: 14,
+              createdAt: new Date()
+            }
+          }),
+          prisma.food.create({
+            data: {
+              id: identifier.identify(),
+              name: 'Mamão',
+              expiresIn: 7,
+              createdAt: new Date()
+            }
+          })
         ])
 
-        const suppliedFoods = createdFoods.map(createdFood => ({
+        const suppliedFoods = createdFoods.map((createdFood) => ({
           foodId: createdFood.id,
           createdAt: new Date()
         }))
@@ -767,24 +1009,38 @@ describe('App (e2e)', () => {
           }
         })
 
-        const { status, body } = await request(app.getHttpServer())
-          .get(`/foods/supplies/${createdFoodSupply.id}/supplied-foods`)
+        const { status, body } = await request(app.getHttpServer()).get(
+          `/foods/supplies/${createdFoodSupply.id}/supplied-foods`
+        )
 
         expect(status).toBe(200)
         expect(body).toHaveLength(3)
 
-        suppliedFoods.forEach(suppliedFood => {
-          const createdSuppliedFood = body.find(item => item.foodId === suppliedFood.foodId)
+        suppliedFoods.forEach((suppliedFood) => {
+          const createdSuppliedFood = body.find(
+            (item) => item.foodId === suppliedFood.foodId
+          )
           expect(createdSuppliedFood).toBeDefined()
-          expect(createdSuppliedFood).toHaveProperty('foodSupplyId', createdFoodSupply.id)
-          expect(createdSuppliedFood).toHaveProperty('createdAt', suppliedFood.createdAt.toISOString())
+          expect(createdSuppliedFood).toHaveProperty(
+            'foodSupplyId',
+            createdFoodSupply.id
+          )
+          expect(createdSuppliedFood).toHaveProperty(
+            'createdAt',
+            suppliedFood.createdAt.toISOString()
+          )
           expect(createdSuppliedFood).toHaveProperty('food')
           expect(createdSuppliedFood.food).toBeDefined()
 
-          const createdFood = createdFoods.find(createdFood => createdFood.id === suppliedFood.foodId)
-          expect(createdSuppliedFood.food).toEqual({ ...createdFood, createdAt: createdFood.createdAt.toISOString() })
+          const createdFood = createdFoods.find(
+            (createdFood) => createdFood.id === suppliedFood.foodId
+          )
+          expect(createdSuppliedFood.food).toEqual({
+            ...createdFood,
+            createdAt: createdFood.createdAt.toISOString()
+          })
         })
       })
     })
   })
-});
+})

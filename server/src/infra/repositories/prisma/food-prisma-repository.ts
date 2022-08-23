@@ -1,14 +1,18 @@
-import { PrismaClient } from '@prisma/client';
-import { AddFoodRepository } from '../../../domain/repositories/add-food-repository';
-import { Food } from "../../../domain/models/food";
-import { LoadFoodsRepository } from "../../../domain/repositories/load-foods-repository";
-import { UpdateFoodByIdRepository } from '../../../domain/repositories/update-food-by-id-repository';
-import { LoadFoodRepository } from '../../../domain/repositories/load-food-repository';
+import { PrismaClient } from '@prisma/client'
+import { AddFoodRepository } from '../../../domain/repositories/add-food-repository'
+import { Food } from '../../../domain/models/food'
+import { LoadFoodsRepository } from '../../../domain/repositories/load-foods-repository'
+import { UpdateFoodByIdRepository } from '../../../domain/repositories/update-food-by-id-repository'
+import { LoadFoodRepository } from '../../../domain/repositories/load-food-repository'
 
-export class FoodPrismaRepository implements AddFoodRepository, LoadFoodRepository, LoadFoodsRepository, UpdateFoodByIdRepository {
-  constructor(
-    private readonly prisma: PrismaClient
-  ) { }
+export class FoodPrismaRepository
+  implements
+    AddFoodRepository,
+    LoadFoodRepository,
+    LoadFoodsRepository,
+    UpdateFoodByIdRepository
+{
+  constructor(private readonly prisma: PrismaClient) {}
 
   loadOneWithSupplies(where: LoadFoodRepository.Where): Promise<Food> {
     return this.prisma.food.findFirst({
@@ -19,11 +23,16 @@ export class FoodPrismaRepository implements AddFoodRepository, LoadFoodReposito
     })
   }
 
-  loadMany(where: LoadFoodsRepository.Where): Promise<LoadFoodsRepository.Result> {
+  loadMany(
+    where: LoadFoodsRepository.Where
+  ): Promise<LoadFoodsRepository.Result> {
     return this.prisma.food.findMany({ where })
   }
 
-  updateById(id: string, data: UpdateFoodByIdRepository.Data): Promise<UpdateFoodByIdRepository.Result> {
+  updateById(
+    id: string,
+    data: UpdateFoodByIdRepository.Data
+  ): Promise<UpdateFoodByIdRepository.Result> {
     return this.prisma.food.update({
       where: { id },
       data

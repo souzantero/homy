@@ -1,12 +1,12 @@
-import { Food } from "../models/food";
-import { Identifier } from "../protocols/identifier";
-import { AddFoodRepository } from "../repositories/add-food-repository";
+import { Food } from '../models/food'
+import { Identifier } from '../protocols/identifier'
+import { AddFoodRepository } from '../repositories/add-food-repository'
 
 export class AddFood {
   constructor(
     private readonly identifier: Identifier,
     private readonly foodRepository: AddFoodRepository
-  ) { }
+  ) {}
 
   async add(data: AddFood.Params): Promise<AddFood.Result> {
     const { name, expiresIn } = data

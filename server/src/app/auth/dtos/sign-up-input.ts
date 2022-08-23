@@ -1,8 +1,7 @@
-import { Type } from "class-transformer"
-import { IsEmail, IsNotEmpty, MinLength } from "class-validator"
+import { Type } from 'class-transformer'
+import { IsEmail, IsNotEmpty, MinLength } from 'class-validator'
 
 export class SignUpInput {
-
   @IsNotEmpty()
   @Type(() => String)
   name: string

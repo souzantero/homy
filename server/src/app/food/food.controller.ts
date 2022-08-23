@@ -1,4 +1,15 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, UseGuards, ValidationPipe } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  NotFoundException,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+  ValidationPipe
+} from '@nestjs/common'
 import { AddFoodSupply } from '../../domain/usecases/add-food-supply'
 import { AddFood } from '../../domain/usecases/add-food'
 import { LoadFoods } from '../../domain/usecases/load-foods'
@@ -24,7 +35,7 @@ export class FoodController {
     private readonly removeFoodById: RemoveFoodById,
     private readonly loadFoodById: LoadFoodById,
     private readonly updateFoodById: UpdateFoodById
-  ) { }
+  ) {}
 
   @Get()
   getFoods() {
@@ -45,7 +56,7 @@ export class FoodController {
   async getFood(@Param('id') id: string) {
     const food = await this.loadFoodById.load(id)
     if (!food) {
-      throw new NotFoundException("food not found")
+      throw new NotFoundException('food not found')
     }
 
     return food
@@ -63,18 +74,23 @@ export class FoodController {
     try {
       return await this.addFoodSupply.add(data.suppliedFoods)
     } catch (error) {
-      if (error instanceof FoodNotFoundError) throw new NotFoundException(error.message)
+      if (error instanceof FoodNotFoundError)
+        throw new NotFoundException(error.message)
       else throw error
     }
   }
 
   @UseGuards(AuthorizationTokenGuard)
   @Put(':id')
-  async updateFood(@Param('id') id: string, @Body(ValidationPipe) data: UpdateFoodInput) {
+  async updateFood(
+    @Param('id') id: string,
+    @Body(ValidationPipe) data: UpdateFoodInput
+  ) {
     try {
       return await this.updateFoodById.updateById(id, data)
     } catch (error) {
-      if (error instanceof FoodNotFoundError) throw new NotFoundException('food not found')
+      if (error instanceof FoodNotFoundError)
+        throw new NotFoundException('food not found')
       else throw error
     }
   }
@@ -85,7 +101,8 @@ export class FoodController {
     try {
       return await this.removeFoodById.remove(id)
     } catch (error) {
-      if (error instanceof FoodNotFoundError) throw new NotFoundException('food not found')
+      if (error instanceof FoodNotFoundError)
+        throw new NotFoundException('food not found')
       else throw error
     }
   }

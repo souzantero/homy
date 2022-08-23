@@ -1,7 +1,9 @@
-import { Food } from "../models/food"
+import { Food } from '../models/food'
 
 export interface LoadFoodRepository {
-  loadOneWithSupplies(where: LoadFoodRepository.Where): Promise<LoadFoodRepository.Result>
+  loadOneWithSupplies(
+    where: LoadFoodRepository.Where
+  ): Promise<LoadFoodRepository.Result>
 }
 
 export namespace LoadFoodRepository {
