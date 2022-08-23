@@ -1,8 +1,20 @@
+import { User } from '../../../domain/models/user'
 import { AuthenticationRepository } from '../../../domain/repositories/authentication-repository'
 import { SignInRepository } from '../../../domain/repositories/sign-in-repository'
+import { SignUpRepository } from '../../../domain/repositories/sign-up-repository'
 
 export class AuthenticationFetchRepository implements AuthenticationRepository {
-  constructor(private readonly hostAddress: string) {}
+  constructor(private readonly hostAddress: string) { }
+
+  async signUp(params: SignUpRepository.Params): Promise<User> {
+    const response = await fetch(`${this.hostAddress}/auth/sign-up`, {
+      method: 'POST',
+      body: JSON.stringify(params),
+      headers: { 'Content-Type': 'application/json' }
+    })
+
+    return this.handleResponse(response)
+  }
 
   async signIn(
     params: SignInRepository.Params
@@ -13,6 +25,10 @@ export class AuthenticationFetchRepository implements AuthenticationRepository {
       headers: { 'Content-Type': 'application/json' }
     })
 
+    return this.handleResponse(response)
+  }
+
+  private async handleResponse(response: Response) {
     const body = await response.json()
 
     if (!response.ok) {

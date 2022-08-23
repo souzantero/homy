@@ -10,15 +10,17 @@ import {
   Button
 } from '@chakra-ui/react'
 import { useSignedUser } from '../../../hooks/useSignedUser'
-import { useSignIn } from '../../../hooks/useSignIn'
 import { AuthenticationLayout } from '../AuthenticationLayout'
+import { useSignUp } from '../../../hooks/useSignUp'
 
 export function SignUp() {
   const { signedUser, isLoading } = useSignedUser()
-  const { signIn, isSigning } = useSignIn()
+  const { signUp, isSigning } = useSignUp()
   const navigate = useNavigate()
+  const [name, setName] = useState<string>('')
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+  const [confirmedPassword, setConfirmedPassword] = useState<string>('')
 
   useEffect(() => {
     if (signedUser) {
@@ -26,17 +28,28 @@ export function SignUp() {
     }
   }, [signedUser])
 
+  const handleChangeName = (event: ChangeEvent<HTMLInputElement>) =>
+    setName(event.target.value)
+
   const handleChangeEmail = (event: ChangeEvent<HTMLInputElement>) =>
     setEmail(event.target.value)
+
   const handleChangePassword = (event: ChangeEvent<HTMLInputElement>) =>
     setPassword(event.target.value)
+
+  const handleChangeConfirmedPassword = (
+    event: ChangeEvent<HTMLInputElement>
+  ) => setConfirmedPassword(event.target.value)
+
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
-    const params = { email, password }
-    const signature = await signIn(params)
+    const params = { name, email, password, confirmedPassword }
+    const signature = await signUp(params)
     if (signature) {
+      setName('')
       setEmail('')
       setPassword('')
+      setConfirmedPassword('')
       navigate('/')
     }
   }
@@ -44,6 +57,15 @@ export function SignUp() {
   return (
     <AuthenticationLayout title="Cadastre-se">
       <Stack as={'form'} spacing={4} onSubmit={handleSubmit}>
+        <FormControl id="name" isRequired isDisabled={isSigning || isLoading}>
+          <FormLabel>Nome</FormLabel>
+          <Input
+            type="text"
+            autoComplete="name"
+            value={name}
+            onChange={handleChangeName}
+          />
+        </FormControl>
         <FormControl id="email" isRequired isDisabled={isSigning || isLoading}>
           <FormLabel>E-mail</FormLabel>
           <Input
@@ -67,6 +89,21 @@ export function SignUp() {
             onChange={handleChangePassword}
           />
         </FormControl>
+
+        <FormControl
+          id="confirmed-password"
+          isRequired
+          isDisabled={isSigning || isLoading}
+        >
+          <FormLabel>Confirmar senha</FormLabel>
+          <Input
+            type="password"
+            autoComplete="confirmed-password"
+            minLength={8}
+            value={confirmedPassword}
+            onChange={handleChangeConfirmedPassword}
+          />
+        </FormControl>
         <Stack spacing={10}>
           <Stack
             direction={{ base: 'column', sm: 'row' }}
@@ -74,7 +111,7 @@ export function SignUp() {
             justify={'space-between'}
           >
             <Checkbox isDisabled={isSigning || isLoading}>Lembrar</Checkbox>
-            <Link color={'blue'}>Esqueceu a senha?</Link>
+            <Link color={'blue'}>Já possui uma conta? Entrar</Link>
           </Stack>
           <Button
             type="submit"
@@ -83,7 +120,7 @@ export function SignUp() {
             isDisabled={isSigning || isLoading}
             isLoading={isSigning || isLoading}
           >
-            Entrar
+            Cadastrar
           </Button>
         </Stack>
       </Stack>

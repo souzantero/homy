@@ -11,6 +11,7 @@ import { EditFood } from './app/components/food/EditFood'
 import { SignIn } from './app/components/auth/sign-in/SignIn'
 import { Signed } from './app/components/auth/sign-in/Signed'
 import { UnsignedUser } from './app/components/auth/sign-in/UnsignedUser'
+import { SignUp } from './app/components/auth/sign-up/SignUp'
 
 export type AppManager = {}
 const app: AppManager = {}
@@ -28,6 +29,7 @@ function App() {
             <Routes>
               <Route path="auth">
                 <Route path="sign-in" element={<SignIn />} />
+                <Route path="sign-up" element={<SignUp />} />
               </Route>
               <Route path="/" element={<SidebarWithHeader />}>
                 <Route path="foods">
