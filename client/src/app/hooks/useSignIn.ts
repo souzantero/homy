@@ -6,19 +6,27 @@ import { makeSignInService } from '../factories/sign-in-service-factory'
 export type Result = {
   isSigning: boolean
   signIn: (
-    params: SignInService.Params
+    params: SignInService.Params,
+    options: SignInOptions
   ) => Promise<SignInService.Result | undefined>
+}
+
+export type SignInOptions = {
+  remind: boolean
 }
 
 export function useSignIn(): Result {
   const notify = useToast()
   const [isSigning, setIsSigning] = useState(false)
 
-  const signIn = async (params: SignInService.Params) => {
+  const signIn = async (
+    params: SignInService.Params,
+    { remind }: SignInOptions
+  ) => {
     try {
       setIsSigning(true)
 
-      const signIn = makeSignInService()
+      const signIn = makeSignInService(remind)
       const signedUser = await signIn.signIn(params)
 
       notify({

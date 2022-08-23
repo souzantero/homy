@@ -19,6 +19,7 @@ export function SignIn() {
   const navigate = useNavigate()
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+  const [remindMe, setRemindMe] = useState<boolean>(false)
 
   useEffect(() => {
     if (signedUser) {
@@ -30,10 +31,13 @@ export function SignIn() {
     setEmail(event.target.value)
   const handleChangePassword = (event: ChangeEvent<HTMLInputElement>) =>
     setPassword(event.target.value)
+  const handleChangeRemindMe = (event: ChangeEvent<HTMLInputElement>) =>
+    setRemindMe(event.target.checked)
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
     const params = { email, password }
-    const signature = await signIn(params)
+    const options = { remind: remindMe }
+    const signature = await signIn(params, options)
     if (signature) {
       setEmail('')
       setPassword('')
@@ -73,7 +77,13 @@ export function SignIn() {
             align={'start'}
             justify={'space-between'}
           >
-            <Checkbox isDisabled={isSigning || isLoading}>Lembrar</Checkbox>
+            <Checkbox
+              isChecked={remindMe}
+              onChange={handleChangeRemindMe}
+              isDisabled={isSigning || isLoading}
+            >
+              Lembrar
+            </Checkbox>
             <Link color={'blue'}>Esqueceu a senha?</Link>
           </Stack>
           <Button
