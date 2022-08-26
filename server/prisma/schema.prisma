@@ -6,19 +6,25 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("POSTGRES_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
 }
 
 model User {
-  id        String    @id
-  createdAt DateTime
-  updatedAt DateTime?
-  deletedAt DateTime?
-  name      String
-  email     String    @unique
-  password  String
+  id                 String    @id
+  createdAt          DateTime
+  updatedAt          DateTime?
+  deletedAt          DateTime?
+  name               String
+  email              String    @unique
+  password           String
   authorizationToken String?
+  role               Role      @default(USER)
 }
 
 model Food {
