@@ -15,7 +15,7 @@ import { Decrypter } from '../src/domain/protocols/decrypter'
 import { Encrypter } from '../src/domain/protocols/encrypter'
 import { AddUser } from '../src/domain/usecases/add-user'
 import { SignInWithUser } from '../src/domain/usecases/sign-in-with-user'
-import { User } from '../src/domain/models/user'
+import { Role, User } from '../src/domain/models/user'
 
 const serialize = (data: any) => JSON.parse(JSON.stringify(data))
 
@@ -521,7 +521,8 @@ describe('App (e2e)', () => {
         const addedUser = await app.get<AddUser>(AddUser).add({
           name: 'Felipe Antero',
           email: 'souzantero@gmail.com',
-          password: '12345678'
+          password: '12345678',
+          role: Role.ADMIN
         })
         const signature = await app
           .get<SignInWithUser>(SignInWithUser)

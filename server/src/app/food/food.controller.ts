@@ -10,6 +10,7 @@ import {
   UseGuards,
   ValidationPipe
 } from '@nestjs/common'
+import { Role } from '../../domain/models/user'
 import { AddFoodSupply } from '../../domain/usecases/add-food-supply'
 import { AddFood } from '../../domain/usecases/add-food'
 import { LoadFoods } from '../../domain/usecases/load-foods'
@@ -23,6 +24,8 @@ import { CreateFoodInput } from './dtos/create-food-input'
 import { CreateFoodSupplyInput } from './dtos/create-food-supply-input'
 import { UpdateFoodInput } from './dtos/update-food-input'
 import { AuthorizationTokenGuard } from '../auth/auth.guards'
+import { Roles } from '../role/roles.decorator'
+import { RolesGuard } from '../role/roles.guard'
 
 @Controller('foods')
 export class FoodController {
@@ -62,7 +65,8 @@ export class FoodController {
     return food
   }
 
-  @UseGuards(AuthorizationTokenGuard)
+  @UseGuards(AuthorizationTokenGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   @Post()
   createFood(@Body(ValidationPipe) data: CreateFoodInput) {
     return this.addFood.add(data)
