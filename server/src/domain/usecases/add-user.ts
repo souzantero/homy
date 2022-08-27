@@ -1,5 +1,5 @@
 import { EmailInUseError } from '../errors/email-in-use-error'
-import { Role, User } from '../models/user'
+import { User } from '../models/user'
 import { Hasher } from '../protocols/hasher'
 import { Identifier } from '../protocols/identifier'
 import { AddUserRepository } from '../repositories/add-user-repository'
@@ -27,7 +27,6 @@ export class AddUser {
     const hashedPassword = await this.hasher.hash(data.password)
     const addedUser = await this.addUserRepository.add({
       ...data,
-      role: data.role ? data.role : Role.USER,
       password: hashedPassword,
       id,
       createdAt
@@ -42,7 +41,6 @@ export namespace AddUser {
     name: string
     email: string
     password: string
-    role?: Role
   }
 
   export type Result = User

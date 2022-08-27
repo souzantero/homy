@@ -521,9 +521,14 @@ describe('App (e2e)', () => {
         const addedUser = await app.get<AddUser>(AddUser).add({
           name: 'Felipe Antero',
           email: 'souzantero@gmail.com',
-          password: '12345678',
-          role: Role.ADMIN
+          password: '12345678'
         })
+
+        await prisma.user.update({
+          where: { id: addedUser.id },
+          data: { role: Role.ADMIN }
+        })
+
         const signature = await app
           .get<SignInWithUser>(SignInWithUser)
           .sign(addedUser as User)
@@ -689,6 +694,12 @@ describe('App (e2e)', () => {
           email: 'souzantero@gmail.com',
           password: '12345678'
         })
+
+        await prisma.user.update({
+          where: { id: addedUser.id },
+          data: { role: Role.ADMIN }
+        })
+
         const signature = await app
           .get<SignInWithUser>(SignInWithUser)
           .sign(addedUser as User)
@@ -785,6 +796,12 @@ describe('App (e2e)', () => {
           email: 'souzantero@gmail.com',
           password: '12345678'
         })
+
+        await prisma.user.update({
+          where: { id: addedUser.id },
+          data: { role: Role.ADMIN }
+        })
+
         const signature = await app
           .get<SignInWithUser>(SignInWithUser)
           .sign(addedUser as User)

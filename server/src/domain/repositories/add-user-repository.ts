@@ -1,4 +1,4 @@
-import { Role, User } from '../models/user'
+import { User } from '../models/user'
 
 export interface AddUserRepository {
   add(user: AddUserRepository.Params): Promise<AddUserRepository.Result>
@@ -11,7 +11,6 @@ export namespace AddUserRepository {
     name: string
     email: string
     password: string
-    role: Role
   }
 
   export type Result = User

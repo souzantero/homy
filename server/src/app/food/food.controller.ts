@@ -84,7 +84,8 @@ export class FoodController {
     }
   }
 
-  @UseGuards(AuthorizationTokenGuard)
+  @UseGuards(AuthorizationTokenGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   @Put(':id')
   async updateFood(
     @Param('id') id: string,
@@ -99,7 +100,8 @@ export class FoodController {
     }
   }
 
-  @UseGuards(AuthorizationTokenGuard)
+  @UseGuards(AuthorizationTokenGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   @Delete(':id')
   async deleteFood(@Param('id') id: string) {
     try {
