@@ -66,7 +66,7 @@ export class FoodController {
   }
 
   @UseGuards(AuthorizationTokenGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.Admin)
   @Post()
   createFood(@Body(ValidationPipe) data: CreateFoodInput) {
     return this.addFood.add(data)
@@ -85,7 +85,7 @@ export class FoodController {
   }
 
   @UseGuards(AuthorizationTokenGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.Admin)
   @Put(':id')
   async updateFood(
     @Param('id') id: string,
@@ -101,7 +101,7 @@ export class FoodController {
   }
 
   @UseGuards(AuthorizationTokenGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.Admin)
   @Delete(':id')
   async deleteFood(@Param('id') id: string) {
     try {

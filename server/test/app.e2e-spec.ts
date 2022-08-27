@@ -526,7 +526,7 @@ describe('App (e2e)', () => {
 
         await prisma.user.update({
           where: { id: addedUser.id },
-          data: { role: Role.ADMIN }
+          data: { role: Role.Admin }
         })
 
         const signature = await app
@@ -697,7 +697,7 @@ describe('App (e2e)', () => {
 
         await prisma.user.update({
           where: { id: addedUser.id },
-          data: { role: Role.ADMIN }
+          data: { role: Role.Admin }
         })
 
         const signature = await app
@@ -799,7 +799,7 @@ describe('App (e2e)', () => {
 
         await prisma.user.update({
           where: { id: addedUser.id },
-          data: { role: Role.ADMIN }
+          data: { role: Role.Admin }
         })
 
         const signature = await app

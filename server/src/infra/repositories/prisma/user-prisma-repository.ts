@@ -12,7 +12,7 @@ export class UserPrismaRepository
   private toModel(user: UserPrisma): User {
     return {
       ...user,
-      role: user.role === 'ADMIN' ? Role.ADMIN : Role.USER
+      role: user.role === 'ADMIN' ? Role.Admin : Role.User
     }
   }
 
