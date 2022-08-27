@@ -1,4 +1,4 @@
-import { User } from '../../../domain/models/user'
+import { Role, User } from '../../../domain/models/user'
 import { AuthenticationRepository } from '../../../domain/repositories/authentication-repository'
 import { SignInRepository } from '../../../domain/repositories/sign-in-repository'
 import { SignUpRepository } from '../../../domain/repositories/sign-up-repository'
@@ -53,12 +53,15 @@ export class AuthenticationFetchRepository implements AuthenticationRepository {
       throw new Error(body.message)
     }
 
+    const role = body.role === 'ADMIN' ? Role.Admin : Role.User
+
     return {
       id: body.id,
       createdAt: new Date(body.createdAt),
       updatedAt: body.updatedAt && new Date(body.createdAt),
       name: body.name,
       email: body.email,
+      role,
       authorizationToken: body.authorizationToken
     }
   }

@@ -1,6 +1,8 @@
 import { ButtonGroup, Td, Tr } from '@chakra-ui/react'
 import { Food } from '../../../domain/models/food'
+import { Role } from '../../../domain/models/user'
 import { useRemoveFood } from '../../hooks/useRemoveFood'
+import { Authorization } from '../auth/Authorization'
 import { Signed } from '../auth/sign-in/Signed'
 import { NavButton } from '../button/NavButton'
 import { RemoveFoodButton } from './RemoveFoodButton'
@@ -19,10 +21,12 @@ export function FoodTableRow({ food }: FoodTableRowProps) {
         <ButtonGroup>
           <NavButton to={`/foods/${food.id}`}>Abrir</NavButton>
           <Signed>
-            <RemoveFoodButton
-              isRemoving={isRemoving}
-              onRemove={() => removeFood(food)}
-            />
+            <Authorization roles={[Role.Admin]}>
+              <RemoveFoodButton
+                isRemoving={isRemoving}
+                onRemove={() => removeFood(food)}
+              />
+            </Authorization>
           </Signed>
         </ButtonGroup>
       </Td>

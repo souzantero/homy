@@ -1,4 +1,4 @@
-import { User } from '../../../domain/models/user'
+import { Role, User } from '../../../domain/models/user'
 import { LoadSignedUserRepository } from '../../../domain/repositories/load-signed-user-repository'
 import { RemoveSignedUserRepository } from '../../../domain/repositories/remove-signed-user-repository'
 import { UpdateSignedUserRepository } from '../../../domain/repositories/update-signed-user-repository'
@@ -23,6 +23,7 @@ export class SignedUserLocalStorageRepository
     const rawData = localStorage.getItem(this.key)
     if (!rawData) return null
     const data = JSON.parse(rawData)
+    const role = data.role === 'ADMIN' ? Role.Admin : Role.User
 
     return {
       id: data.id,
@@ -30,6 +31,7 @@ export class SignedUserLocalStorageRepository
       updatedAt: data.updatedAt && new Date(data.updatedAt),
       name: data.name,
       email: data.email,
+      role,
       authorizationToken: data.authorizationToken
     }
   }

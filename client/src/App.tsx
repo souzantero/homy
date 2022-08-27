@@ -12,6 +12,9 @@ import { SignIn } from './app/components/auth/sign-in/SignIn'
 import { Signed } from './app/components/auth/sign-in/Signed'
 import { UnsignedUser } from './app/components/auth/sign-in/UnsignedUser'
 import { SignUp } from './app/components/auth/sign-up/SignUp'
+import { Authorization } from './app/components/auth/Authorization'
+import { Role } from './domain/models/user'
+import { UnauthorizedUser } from './app/components/auth/UnauthorizedUser'
 
 export type AppManager = {}
 const app: AppManager = {}
@@ -38,7 +41,12 @@ function App() {
                     path="new"
                     element={
                       <Signed unsigned={<UnsignedUser />}>
-                        <AddFood />
+                        <Authorization
+                          roles={[Role.Admin]}
+                          unauthorized={<UnauthorizedUser />}
+                        >
+                          <AddFood />
+                        </Authorization>
                       </Signed>
                     }
                   />
@@ -48,7 +56,12 @@ function App() {
                       path="edit"
                       element={
                         <Signed unsigned={<UnsignedUser />}>
-                          <EditFood />
+                          <Authorization
+                            roles={[Role.Admin]}
+                            unauthorized={<UnauthorizedUser />}
+                          >
+                            <EditFood />
+                          </Authorization>
                         </Signed>
                       }
                     />

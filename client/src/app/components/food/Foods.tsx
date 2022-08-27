@@ -1,4 +1,6 @@
 import { ButtonGroup } from '@chakra-ui/react'
+import { Role } from '../../../domain/models/user'
+import { Authorization } from '../auth/Authorization'
 import { Signed } from '../auth/sign-in/Signed'
 import { NavButton } from '../button/NavButton'
 import { Page } from '../layout/Page'
@@ -12,7 +14,9 @@ export function Foods() {
       <PageHeader title="Alimentos">
         <ButtonGroup>
           <Signed>
-            <NavButton to={'/foods/new'}>Adicionar</NavButton>
+            <Authorization roles={[Role.Admin]}>
+              <NavButton to={'/foods/new'}>Adicionar</NavButton>
+            </Authorization>
           </Signed>
         </ButtonGroup>
       </PageHeader>
