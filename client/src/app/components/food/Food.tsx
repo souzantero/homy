@@ -28,7 +28,7 @@ export function Food() {
       <PageHeader title={'Alimento'}>
         <ButtonGroup>
           <Signed>
-            <Authorization roles={[Role.Admin]}>
+            <Authorization roles={[Role.Admin]} disable>
               <NavButton
                 to={`/foods/${foodId}/edit`}
                 isLoading={isLoading}

@@ -1,15 +1,24 @@
 import { Skeleton } from '@chakra-ui/react'
-import { PropsWithChildren, ReactNode, useMemo } from 'react'
+import {
+  Children,
+  cloneElement,
+  isValidElement,
+  PropsWithChildren,
+  ReactNode,
+  useMemo
+} from 'react'
 import { Role } from '../../../domain/models/user'
 import { useSignedUser } from '../../hooks/useSignedUser'
 
 export interface AuthorizationProps {
   roles: Role[]
+  disable?: boolean
   unauthorized?: ReactNode
 }
 
 export function Authorization({
   roles,
+  disable,
   unauthorized,
   children
 }: PropsWithChildren<AuthorizationProps>) {
@@ -22,6 +31,19 @@ export function Authorization({
   if (isLoading) return <Skeleton />
   if (!isLoading && !signedUser) return <></>
   if (!authorized && unauthorized) return <>{unauthorized}</>
+  if (!authorized && disable)
+    return (
+      <>
+        {Children.map(children, (child) => {
+          if (isValidElement(child)) {
+            return cloneElement(child, { isDisabled: true })
+          }
+
+          return child
+        })}
+      </>
+    )
+
   if (!authorized) return <></>
   return <>{children}</>
 }

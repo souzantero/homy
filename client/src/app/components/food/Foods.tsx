@@ -14,7 +14,7 @@ export function Foods() {
       <PageHeader title="Alimentos">
         <ButtonGroup>
           <Signed>
-            <Authorization roles={[Role.Admin]}>
+            <Authorization roles={[Role.Admin]} disable>
               <NavButton to={'/foods/new'}>Adicionar</NavButton>
             </Authorization>
           </Signed>

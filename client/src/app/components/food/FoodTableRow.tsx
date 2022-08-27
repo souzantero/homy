@@ -21,7 +21,7 @@ export function FoodTableRow({ food }: FoodTableRowProps) {
         <ButtonGroup>
           <NavButton to={`/foods/${food.id}`}>Abrir</NavButton>
           <Signed>
-            <Authorization roles={[Role.Admin]}>
+            <Authorization roles={[Role.Admin]} disable>
               <RemoveFoodButton
                 isRemoving={isRemoving}
                 onRemove={() => removeFood(food)}

@@ -1,6 +1,7 @@
 import {
   Button,
   ButtonGroup,
+  ButtonProps,
   Popover,
   PopoverArrow,
   PopoverBody,
@@ -13,7 +14,7 @@ import {
 } from '@chakra-ui/react'
 import { PropsWithChildren } from 'react'
 
-export interface CautionButtonProps {
+export interface CautionButtonProps extends ButtonProps {
   cautionMessage?: string
   isLoading?: boolean
   onConfirm: () => void
@@ -23,7 +24,9 @@ export function CautionButton({
   cautionMessage,
   isLoading,
   onConfirm,
-  children
+  children,
+  isDisabled,
+  ...rest
 }: PropsWithChildren<CautionButtonProps>) {
   const { onOpen, onClose, isOpen } = useDisclosure()
   const handleClickYes = () => {
@@ -35,11 +38,12 @@ export function CautionButton({
     <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose}>
       <PopoverTrigger>
         <Button
+          {...rest}
           color={'red'}
           borderColor={'red'}
           size={'sm'}
           variant={'outline'}
-          isDisabled={isLoading}
+          isDisabled={isDisabled || isLoading}
           isLoading={isLoading}
         >
           {children}

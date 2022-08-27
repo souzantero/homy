@@ -5,11 +5,12 @@ export interface NavButtonProps extends ButtonProps {
   to: string
 }
 
-export function NavButton({ to, children }: NavButtonProps) {
+export function NavButton({ to, children, ...rest }: NavButtonProps) {
   const navigate = useNavigate()
   const handleClickAdd = () => navigate(to)
   return (
     <Button
+      {...rest}
       color={'blue'}
       borderColor={'blue'}
       variant={'outline'}
