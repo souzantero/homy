@@ -16,6 +16,7 @@ import { SignOutWithUser } from '../../domain/usecases/sign-out-with-user'
 import { AuthenticatedUser } from './decorators/authenticated-user.decorator'
 import { AuthorizationTokenGuard, EmailAndPasswordGuard } from './auth.guards'
 import { SignUpInput } from './dtos/sign-up-input'
+import { SignUpOutput } from './dtos/sign-up-output'
 
 @Controller('auth')
 export class AuthController {
@@ -26,10 +27,16 @@ export class AuthController {
   ) {}
 
   @Post('sign-up')
-  async signUp(@Body(ValidationPipe) data: SignUpInput) {
+  async signUp(@Body(ValidationPipe) data: SignUpInput): Promise<SignUpOutput> {
     try {
       const addedUser = await this.addUser.add(data)
-      return this.signInWithUser.sign(addedUser)
+      const signedUser = await this.signInWithUser.sign(addedUser)
+
+      delete signedUser.deletedAt
+      delete signedUser.password
+      delete signedUser.emailConfirmationCode
+
+      return signedUser
     } catch (error) {
       if (error instanceof EmailInUseError)
         throw new ForbiddenException(error.message)

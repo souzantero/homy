@@ -23,5 +23,5 @@ export class SignInWithUser {
 }
 
 export namespace SignInWithUser {
-  export type Result = Omit<User, 'deletedAt' | 'password'>
+  export type Result = User
 }

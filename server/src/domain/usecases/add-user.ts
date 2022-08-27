@@ -6,6 +6,8 @@ import { AddUserRepository } from '../repositories/add-user-repository'
 import { LoadUserRepository } from '../repositories/load-user-repository'
 
 export class AddUser {
+  public readonly onAdded: AddUser.AddedEvent[] = []
+
   constructor(
     private readonly identifier: Identifier,
     private readonly hasher: Hasher,
@@ -32,6 +34,10 @@ export class AddUser {
       createdAt
     })
 
+    for (const event of this.onAdded) {
+      await event.onAdded(addedUser)
+    }
+
     return addedUser
   }
 }
@@ -44,4 +50,8 @@ export namespace AddUser {
   }
 
   export type Result = User
+
+  export interface AddedEvent {
+    onAdded(user: User): Promise<void>
+  }
 }

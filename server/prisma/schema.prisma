@@ -16,15 +16,16 @@ enum Role {
 }
 
 model User {
-  id                 String    @id
-  createdAt          DateTime
-  updatedAt          DateTime?
-  deletedAt          DateTime?
-  name               String
-  email              String    @unique
-  password           String
-  authorizationToken String?
-  role               Role      @default(USER)
+  id                    String    @id
+  createdAt             DateTime
+  updatedAt             DateTime?
+  deletedAt             DateTime?
+  name                  String
+  email                 String    @unique
+  password              String
+  role                  Role      @default(USER)
+  authorizationToken    String?
+  emailConfirmationCode String?
 }
 
 model Food {

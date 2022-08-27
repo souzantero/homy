@@ -103,6 +103,27 @@ describe('App (e2e)', () => {
         expect(decrypted).toHaveProperty('sub', users[0].id)
       })
 
+      it('should be generated a email confirmation code', async () => {
+        const { status, body } = await request(app.getHttpServer())
+          .post('/auth/sign-up')
+          .set('Content-Type', 'application/json')
+          .send({
+            name: 'Felipe Antero',
+            email: 'souzantero@gmail.com',
+            password: '12345678'
+          })
+
+        expect(status).toBe(201)
+        expect(body).not.toHaveProperty('emailConfirmationCode')
+
+        const users = await findAllUsers(prisma)
+        expect(users).toHaveLength(1)
+        expect(users[0]).toHaveProperty('emailConfirmationCode')
+        expect(users[0].emailConfirmationCode).not.toBeNull()
+        expect(users[0].emailConfirmationCode).toHaveLength(6)
+        expect(parseInt(users[0].emailConfirmationCode)).not.toBeNaN()
+      })
+
       it('should fail when user already exists with the same email', async () => {
         await prisma.user.create({
           data: {

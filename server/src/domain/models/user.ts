@@ -13,4 +13,5 @@ export type User = {
   password: string
   role: Role
   authorizationToken?: string
+  emailConfirmationCode?: string
 }
