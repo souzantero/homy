@@ -1,8 +1,8 @@
 import { PrismaClient } from '@prisma/client'
 import { SignOutWithUser } from '../../domain/usecases/sign-out-with-user'
-import { UserPrismaRepository } from '../repositories/prisma/user-prisma-repository'
+import { makeUpdateUserById } from './update-user-by-id-factory'
 
 export const makeSignOutWithUser = (prisma: PrismaClient) => {
-  const userRepository = new UserPrismaRepository(prisma)
-  return new SignOutWithUser(userRepository)
+  const updateUserById = makeUpdateUserById(prisma)
+  return new SignOutWithUser(updateUserById)
 }

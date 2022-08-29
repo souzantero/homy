@@ -4,17 +4,14 @@ import { BcryptAdapter } from '../adapters/bcrypt-adapter'
 import { UuidAdapter } from '../adapters/uuid-adapter'
 import { UserPrismaRepository } from '../repositories/prisma/user-prisma-repository'
 import { makeCreateUserEmailConfirmationCode } from './create-user-email-confirmation-code-factory'
+import { makeLoadUser } from './load-user-factory'
 
 export const makeAddUser = (prisma: PrismaClient, bcryptSalt: number) => {
   const identifier = new UuidAdapter()
   const hasher = new BcryptAdapter(bcryptSalt)
   const userRepository = new UserPrismaRepository(prisma)
-  const addUser = new AddUser(
-    identifier,
-    hasher,
-    userRepository,
-    userRepository
-  )
+  const loadUser = makeLoadUser(prisma)
+  const addUser = new AddUser(identifier, hasher, loadUser, userRepository)
   const createUserEmailConfirmationCode =
     makeCreateUserEmailConfirmationCode(prisma)
 

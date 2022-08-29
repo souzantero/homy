@@ -49,7 +49,10 @@ export class AuthController {
   @Post('sign-in')
   @HttpCode(HttpStatus.OK)
   async signIn(@AuthenticatedUser() user: User) {
-    return this.signInWithUser.sign(user)
+    const signedUser = await this.signInWithUser.sign(user)
+    delete signedUser.deletedAt
+    delete signedUser.password
+    return signedUser
   }
 
   @UseGuards(AuthorizationTokenGuard)

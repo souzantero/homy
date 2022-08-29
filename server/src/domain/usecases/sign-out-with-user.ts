@@ -1,18 +1,12 @@
 import { User } from '../models/user'
-import { UpdateUserByIdRepository } from '../repositories/update-user-by-id-repository'
+import { UpdateUserById } from './update-user-by-id'
 
 export class SignOutWithUser {
-  constructor(
-    private readonly updateUserRepository: UpdateUserByIdRepository
-  ) {}
+  constructor(private readonly updateUser: UpdateUserById) {}
 
   async signOut(user: User): Promise<void> {
     const { id } = user
-    const data = {
-      authorizationToken: null,
-      updatedAt: new Date()
-    }
-
-    await this.updateUserRepository.updateById(id, data)
+    const data = { authorizationToken: null }
+    await this.updateUser.updateById(id, data)
   }
 }
