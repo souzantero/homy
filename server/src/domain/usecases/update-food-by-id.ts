@@ -26,9 +26,6 @@ export class UpdateFoodById {
 }
 
 export namespace UpdateFoodById {
-  export type Data = Omit<
-    UpdateFoodByIdRepository.Data,
-    'updatedAt' | 'deletedAt'
-  >
+  export type Data = Omit<UpdateFoodByIdRepository.Data, 'updatedAt'>
   export type Result = Food
 }
