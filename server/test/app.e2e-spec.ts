@@ -518,6 +518,55 @@ describe('App (e2e)', () => {
         expect(users[0]).toHaveProperty('emailConfirmationCode', null)
         expect(users[0]).toHaveProperty('confirmedEmail', true)
       })
+
+      it('should be not found when user does not exists', async () => {
+        const { status, body } = await request(app.getHttpServer())
+          .post(`/users/fakeid/confirm-email`)
+          .set('Content-Type', 'application/json')
+          .send({
+            confirmationCode: '101010'
+          })
+
+        expect(status).toBe(404)
+        expect(body).toHaveProperty('message', 'user not found')
+      })
+
+      it('should be bad request when is invalid confirmation code', async () => {
+        const addUser = app.get<AddUser>(AddUser)
+        const addedUser = await addUser.add({
+          name: 'Felipe',
+          email: 'souzantero@gmail.com',
+          password: '12345678'
+        })
+
+        const { status, body } = await request(app.getHttpServer())
+          .post(`/users/${addedUser.id}/confirm-email`)
+          .set('Content-Type', 'application/json')
+          .send({
+            confirmationCode: '101010'
+          })
+
+        expect(status).toBe(400)
+        expect(body).toHaveProperty(
+          'message',
+          'invalid user email confirmation code'
+        )
+      })
+
+      it('should be bad request when confirmation code is not sent', async () => {
+        const { status, body } = await request(app.getHttpServer())
+          .post(`/users/fakeid/confirm-email`)
+          .set('Content-Type', 'application/json')
+          .send({})
+
+        expect(status).toBe(400)
+        expect(body).toHaveProperty('message')
+        expect(
+          body.message.some(
+            (message) => (message = 'confirmationCode should not be empty')
+          )
+        ).toBeTruthy()
+      })
     })
   })
 
