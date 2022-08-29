@@ -33,6 +33,8 @@ const findAllFoodSupplies = (prisma: PrismaClient) =>
 const findAllSuppliedFoods = (prisma: PrismaClient) =>
   prisma.suppliedFood.findMany()
 const findAllUsers = (prisma: PrismaClient) => prisma.user.findMany()
+const findOneUserById = (prisma: PrismaClient, id: string) =>
+  prisma.user.findUnique({ where: { id } })
 
 describe('App (e2e)', () => {
   let app: INestApplication
@@ -118,6 +120,7 @@ describe('App (e2e)', () => {
 
         const users = await findAllUsers(prisma)
         expect(users).toHaveLength(1)
+        expect(users[0]).toHaveProperty('confirmedEmail', false)
         expect(users[0]).toHaveProperty('emailConfirmationCode')
         expect(users[0].emailConfirmationCode).not.toBeNull()
         expect(users[0].emailConfirmationCode).toHaveLength(6)
@@ -484,6 +487,36 @@ describe('App (e2e)', () => {
         expect(status).toBe(200)
         expect(body).toBeDefined()
         expect(body).toEqual(serialize(createdUser))
+      })
+    })
+  })
+
+  describe('/users', () => {
+    describe('/:userId/confirm-email', () => {
+      it('should confirm user email', async () => {
+        const addUser = app.get<AddUser>(AddUser)
+        const { id } = await addUser.add({
+          name: 'Felipe',
+          email: 'souzantero@gmail.com',
+          password: '12345678'
+        })
+
+        const addedUser = await findOneUserById(prisma, id)
+
+        const { status, body } = await request(app.getHttpServer())
+          .post(`/users/${addedUser.id}/confirm-email`)
+          .set('Content-Type', 'application/json')
+          .send({
+            confirmationCode: addedUser.emailConfirmationCode
+          })
+
+        expect(status).toBe(204)
+        expect(body).toEqual({})
+
+        const users = await findAllUsers(prisma)
+        expect(users).toHaveLength(1)
+        expect(users[0]).toHaveProperty('emailConfirmationCode', null)
+        expect(users[0]).toHaveProperty('confirmedEmail', true)
       })
     })
   })

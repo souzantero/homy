@@ -4,6 +4,7 @@ import {
   ForbiddenException,
   Get,
   HttpCode,
+  HttpStatus,
   Post,
   UseGuards,
   ValidationPipe
@@ -46,14 +47,14 @@ export class AuthController {
 
   @UseGuards(EmailAndPasswordGuard)
   @Post('sign-in')
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   async signIn(@AuthenticatedUser() user: User) {
     return this.signInWithUser.sign(user)
   }
 
   @UseGuards(AuthorizationTokenGuard)
   @Post('sign-out')
-  @HttpCode(205)
+  @HttpCode(HttpStatus.RESET_CONTENT)
   async signOut(@AuthenticatedUser() user: User) {
     return this.signOutWithUser.signOut(user)
   }

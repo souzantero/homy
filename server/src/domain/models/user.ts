@@ -14,4 +14,5 @@ export type User = {
   role: Role
   authorizationToken?: string
   emailConfirmationCode?: string
+  confirmedEmail: boolean
 }

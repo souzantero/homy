@@ -26,6 +26,7 @@ model User {
   role                  Role      @default(USER)
   authorizationToken    String?
   emailConfirmationCode String?
+  confirmedEmail        Boolean   @default(false)
 }
 
 model Food {

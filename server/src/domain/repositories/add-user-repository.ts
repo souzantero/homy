@@ -5,13 +5,9 @@ export interface AddUserRepository {
 }
 
 export namespace AddUserRepository {
-  export type Params = {
-    id: string
-    createdAt: Date
-    name: string
-    email: string
-    password: string
-  }
-
+  export type Params = Omit<
+    User,
+    'updatedAt' | 'deletedAt' | 'authorizationToken' | 'emailConfirmationCode'
+  >
   export type Result = User
 }

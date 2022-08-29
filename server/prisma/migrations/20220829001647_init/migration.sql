@@ -13,6 +13,7 @@ CREATE TABLE "User" (
     "role" "Role" NOT NULL DEFAULT 'USER',
     "authorizationToken" TEXT,
     "emailConfirmationCode" TEXT,
+    "confirmedEmail" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
