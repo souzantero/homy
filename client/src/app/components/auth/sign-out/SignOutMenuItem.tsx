@@ -31,7 +31,7 @@ export function SignOutMenuItem() {
         onClose={onClose}
       >
         <AlertDialogOverlay>
-          <AlertDialogContent>
+          <AlertDialogContent className="sign-out-alert-dialog">
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
               Sair da conta
             </AlertDialogHeader>
@@ -50,6 +50,7 @@ export function SignOutMenuItem() {
                 Cancelar
               </Button>
               <Button
+                className="confirm-user-sign-out-button"
                 colorScheme="red"
                 onClick={handleSignOut}
                 ml={3}

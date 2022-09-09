@@ -15,8 +15,13 @@ import { SignedUserInfo } from './SignedUserInfo'
 
 export function SignedUserMenu() {
   return (
-    <Menu>
-      <MenuButton py={2} transition="all 0.3s" _focus={{ boxShadow: 'none' }}>
+    <Menu closeOnSelect={false}>
+      <MenuButton
+        className="user-menu-button"
+        py={2}
+        transition="all 0.3s"
+        _focus={{ boxShadow: 'none' }}
+      >
         <HStack>
           <SignedUserAvatar />
           <SignedUserInfo />
@@ -26,6 +31,7 @@ export function SignedUserMenu() {
         </HStack>
       </MenuButton>
       <MenuList
+        className="user-menu-list"
         bg={useColorModeValue('white', 'gray.900')}
         borderColor={useColorModeValue('gray.200', 'gray.700')}
       >
