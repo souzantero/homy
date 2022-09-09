@@ -15,6 +15,7 @@ import { SignUp } from './app/components/auth/sign-up/SignUp'
 import { Authorization } from './app/components/auth/Authorization'
 import { Role } from './domain/models/user'
 import { UnauthorizedUser } from './app/components/auth/UnauthorizedUser'
+import { ConfirmUserEmail } from './app/components/user/confirm-email/ConfirmUserEmail'
 
 export type AppManager = {}
 const app: AppManager = {}
@@ -34,6 +35,10 @@ function App() {
                 <Route path="sign-in" element={<SignIn />} />
                 <Route path="sign-up" element={<SignUp />} />
               </Route>
+              <Route
+                path="users/confirm-email"
+                element={<ConfirmUserEmail />}
+              />
               <Route path="/" element={<SidebarWithHeader />}>
                 <Route path="foods">
                   <Route index element={<Foods />} />
