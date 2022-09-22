@@ -602,6 +602,37 @@ describe('App (e2e)', () => {
         ).toBeTruthy()
       })
     })
+
+    describe('/refresh-email-confirmation-code', () => {
+      it('should refresh user email confirmation code', async () => {
+        const addUser = app.get<AddUser>(AddUser)
+        const { id } = await addUser.add({
+          name: 'Felipe',
+          email: 'souzantero@gmail.com',
+          password: '12345678'
+        })
+
+        const addedUser = await findOneUserById(prisma, id)
+
+        const { status, body } = await request(app.getHttpServer())
+          .patch(`/users/refresh-email-confirmation-code`)
+          .set('Content-Type', 'application/json')
+          .send({
+            email: 'souzantero@gmail.com'
+          })
+
+        expect(status).toBe(204)
+        expect(body).toEqual({})
+
+        const refreshedUser = await findOneUserById(prisma, id)
+
+        expect(refreshedUser.id).toEqual(addedUser.id)
+        expect(refreshedUser.emailConfirmationCode).not.toEqual(
+          addedUser.emailConfirmationCode
+        )
+        expect(refreshedUser.updatedAt).not.toBeNull()
+      })
+    })
   })
 
   describe('/foods', () => {
