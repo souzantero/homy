@@ -1,5 +1,6 @@
 import { InvalidUserEmailConfirmationCodeError } from '../errors/invalid-user-email-confirmation-code-error'
 import { UserNotFoundError } from '../errors/user-not-found-error'
+import { User } from '../models/user'
 import { LoadUser } from './load-user'
 import { UpdateUserById } from './update-user-by-id'
 
@@ -9,7 +10,7 @@ export class ConfirmUserEmail {
     private readonly updateUserById: UpdateUserById
   ) {}
 
-  async confirm(email: string, confirmationCode: string): Promise<void> {
+  async confirm(email: string, confirmationCode: string): Promise<User> {
     const user = await this.loadUser.loadOne({ email })
     if (!user) throw new UserNotFoundError()
 
@@ -17,7 +18,7 @@ export class ConfirmUserEmail {
       throw new InvalidUserEmailConfirmationCodeError()
     }
 
-    await this.updateUserById.updateById(user.id, {
+    return this.updateUserById.updateById(user.id, {
       emailConfirmationCode: null,
       confirmedEmail: true
     })

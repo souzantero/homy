@@ -17,7 +17,8 @@ import { SignOutWithUser } from '../../domain/usecases/sign-out-with-user'
 import { AuthenticatedUser } from './decorators/authenticated-user.decorator'
 import { AuthorizationTokenGuard, EmailAndPasswordGuard } from './auth.guards'
 import { SignUpInput } from './dtos/sign-up-input'
-import { SignUpOutput } from './dtos/sign-up-output'
+import { SignedUser } from './dtos/signed-user'
+import { OutputtedUser } from '../user/dtos/outputted-user'
 
 @Controller('auth')
 export class AuthController {
@@ -28,16 +29,11 @@ export class AuthController {
   ) {}
 
   @Post('sign-up')
-  async signUp(@Body(ValidationPipe) data: SignUpInput): Promise<SignUpOutput> {
+  async signUp(@Body(ValidationPipe) data: SignUpInput): Promise<SignedUser> {
     try {
       const addedUser = await this.addUser.add(data)
       const signedUser = await this.signInWithUser.sign(addedUser)
-
-      delete signedUser.deletedAt
-      delete signedUser.password
-      delete signedUser.emailConfirmationCode
-
-      return signedUser
+      return new SignedUser(signedUser)
     } catch (error) {
       if (error instanceof EmailInUseError)
         throw new ForbiddenException(error.message)
@@ -48,11 +44,9 @@ export class AuthController {
   @UseGuards(EmailAndPasswordGuard)
   @Post('sign-in')
   @HttpCode(HttpStatus.OK)
-  async signIn(@AuthenticatedUser() user: User) {
+  async signIn(@AuthenticatedUser() user: User): Promise<SignedUser> {
     const signedUser = await this.signInWithUser.sign(user)
-    delete signedUser.deletedAt
-    delete signedUser.password
-    return signedUser
+    return new SignedUser(signedUser)
   }
 
   @UseGuards(AuthorizationTokenGuard)
@@ -64,10 +58,7 @@ export class AuthController {
 
   @UseGuards(AuthorizationTokenGuard)
   @Get('me')
-  async me(@AuthenticatedUser() user: User) {
-    delete user.deletedAt
-    delete user.password
-    delete user.authorizationToken
-    return user
+  async me(@AuthenticatedUser() user: User): Promise<OutputtedUser> {
+    return new OutputtedUser(user)
   }
 }

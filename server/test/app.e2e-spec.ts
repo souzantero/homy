@@ -302,6 +302,7 @@ describe('App (e2e)', () => {
         const user = users[0]
         delete user.deletedAt
         delete user.password
+        delete user.emailConfirmationCode
         expect(body).toEqual(serialize(user))
 
         const decrypted = await decrypter.decrypt(body.authorizationToken)
@@ -483,6 +484,7 @@ describe('App (e2e)', () => {
         delete createdUser.deletedAt
         delete createdUser.password
         delete createdUser.authorizationToken
+        delete createdUser.emailConfirmationCode
 
         expect(status).toBe(200)
         expect(body).toBeDefined()
@@ -495,7 +497,7 @@ describe('App (e2e)', () => {
     describe('/confirm-email', () => {
       it('should confirm user email', async () => {
         const addUser = app.get<AddUser>(AddUser)
-        const { id } = await addUser.add({
+        const { id, createdAt, updatedAt } = await addUser.add({
           name: 'Felipe',
           email: 'souzantero@gmail.com',
           password: '12345678'
@@ -511,8 +513,19 @@ describe('App (e2e)', () => {
             confirmationCode: addedUser.emailConfirmationCode
           })
 
-        expect(status).toBe(204)
-        expect(body).toEqual({})
+        expect(status).toBe(200)
+        expect(body).toHaveProperty('id', id)
+        expect(body).toHaveProperty('createdAt', createdAt.toISOString())
+        expect(body).toHaveProperty('updatedAt')
+        expect(new Date(body.updatedAt) > updatedAt).toBeTruthy()
+        expect(body).toHaveProperty('name', 'Felipe')
+        expect(body).toHaveProperty('email', 'souzantero@gmail.com')
+        expect(body).toHaveProperty('role', 'USER')
+        expect(body).toHaveProperty('confirmedEmail', true)
+        expect(body).not.toHaveProperty('deletedAt')
+        expect(body).not.toHaveProperty('emailConfirmationCode')
+        expect(body).not.toHaveProperty('password')
+        expect(body).not.toHaveProperty('authorizationToken')
 
         const users = await findAllUsers(prisma)
         expect(users).toHaveLength(1)
