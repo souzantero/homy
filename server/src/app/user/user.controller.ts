@@ -19,13 +19,11 @@ export class UserController {
   constructor(private readonly confirmUserEmail: ConfirmUserEmail) {}
 
   @HttpCode(HttpStatus.NO_CONTENT)
-  @Post(':userId/confirm-email')
-  async confirmEmail(
-    @Param('userId') userId: string,
-    @Body(ValidationPipe) data: ConfirmEmailInput
-  ) {
+  @Post('confirm-email')
+  async confirmEmail(@Body(ValidationPipe) data: ConfirmEmailInput) {
     try {
-      return await this.confirmUserEmail.confirm(userId, data.confirmationCode)
+      const { email, confirmationCode } = data
+      return await this.confirmUserEmail.confirm(email, confirmationCode)
     } catch (error) {
       if (error instanceof UserNotFoundError)
         throw new NotFoundException('user not found')

@@ -492,7 +492,7 @@ describe('App (e2e)', () => {
   })
 
   describe('/users', () => {
-    describe('/:userId/confirm-email', () => {
+    describe('/confirm-email', () => {
       it('should confirm user email', async () => {
         const addUser = app.get<AddUser>(AddUser)
         const { id } = await addUser.add({
@@ -504,9 +504,10 @@ describe('App (e2e)', () => {
         const addedUser = await findOneUserById(prisma, id)
 
         const { status, body } = await request(app.getHttpServer())
-          .post(`/users/${addedUser.id}/confirm-email`)
+          .post(`/users/confirm-email`)
           .set('Content-Type', 'application/json')
           .send({
+            email: 'souzantero@gmail.com',
             confirmationCode: addedUser.emailConfirmationCode
           })
 
@@ -521,9 +522,10 @@ describe('App (e2e)', () => {
 
       it('should be not found when user does not exists', async () => {
         const { status, body } = await request(app.getHttpServer())
-          .post(`/users/fakeid/confirm-email`)
+          .post(`/users/confirm-email`)
           .set('Content-Type', 'application/json')
           .send({
+            email: 'faked@gmail.com',
             confirmationCode: '101010'
           })
 
@@ -540,9 +542,10 @@ describe('App (e2e)', () => {
         })
 
         const { status, body } = await request(app.getHttpServer())
-          .post(`/users/${addedUser.id}/confirm-email`)
+          .post(`/users/confirm-email`)
           .set('Content-Type', 'application/json')
           .send({
+            email: 'souzantero@gmail.com',
             confirmationCode: '101010'
           })
 
@@ -553,11 +556,30 @@ describe('App (e2e)', () => {
         )
       })
 
+      it('should be bad request when email is not sent', async () => {
+        const { status, body } = await request(app.getHttpServer())
+          .post(`/users/confirm-email`)
+          .set('Content-Type', 'application/json')
+          .send({
+            confirmationCode: '101010'
+          })
+
+        expect(status).toBe(400)
+        expect(body).toHaveProperty('message')
+        expect(
+          body.message.some(
+            (message) => (message = 'email should not be empty')
+          )
+        ).toBeTruthy()
+      })
+
       it('should be bad request when confirmation code is not sent', async () => {
         const { status, body } = await request(app.getHttpServer())
-          .post(`/users/fakeid/confirm-email`)
+          .post(`/users/confirm-email`)
           .set('Content-Type', 'application/json')
-          .send({})
+          .send({
+            email: 'souzantero@gmail.com'
+          })
 
         expect(status).toBe(400)
         expect(body).toHaveProperty('message')
