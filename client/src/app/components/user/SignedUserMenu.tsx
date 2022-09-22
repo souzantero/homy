@@ -1,6 +1,7 @@
 import {
   Box,
   HStack,
+  Link,
   Menu,
   MenuButton,
   MenuDivider,
@@ -9,11 +10,15 @@ import {
   useColorModeValue
 } from '@chakra-ui/react'
 import { AiOutlineDown } from 'react-icons/ai'
+import { Link as RouterLink } from 'react-router-dom'
+import { useSignedUser } from '../../hooks/useSignedUser'
 import { SignOutMenuItem } from '../auth/sign-out/SignOutMenuItem'
 import { SignedUserAvatar } from './SignedUserAvatar'
 import { SignedUserInfo } from './SignedUserInfo'
 
 export function SignedUserMenu() {
+  const { signedUser } = useSignedUser()
+
   return (
     <Menu closeOnSelect={false}>
       <MenuButton
@@ -35,6 +40,17 @@ export function SignedUserMenu() {
         bg={useColorModeValue('white', 'gray.900')}
         borderColor={useColorModeValue('gray.200', 'gray.700')}
       >
+        {signedUser && !signedUser.confirmedEmail && (
+          <MenuItem>
+            <Link
+              as={RouterLink}
+              to={`/users/confirm-email?email=${signedUser.email}`}
+              color={'red'}
+            >
+              Confirmar e-mail
+            </Link>
+          </MenuItem>
+        )}
         <MenuItem>Perfil</MenuItem>
         <MenuDivider />
         <SignOutMenuItem />

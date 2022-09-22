@@ -1,3 +1,4 @@
+import { User, RawUser } from '../../../domain/models/user'
 import { ConfirmUserEmailRepository } from '../../../domain/repositories/confirm-user-email-repository'
 
 export class UserFetchRepository implements ConfirmUserEmailRepository {
@@ -8,7 +9,7 @@ export class UserFetchRepository implements ConfirmUserEmailRepository {
 
   async confirmUserEmail(
     params: ConfirmUserEmailRepository.Params
-  ): Promise<void> {
+  ): Promise<User> {
     const response = await fetch(`${this.hostAddress}/users/confirm-email`, {
       method: 'POST',
       headers: {
@@ -17,9 +18,12 @@ export class UserFetchRepository implements ConfirmUserEmailRepository {
       body: JSON.stringify(params)
     })
 
+    const body = await response.json()
+
     if (!response.ok) {
-      const body = await response.json()
       throw new Error(body.message)
     }
+
+    return new RawUser(body)
   }
 }
