@@ -3,10 +3,13 @@ import { ChangeEvent, FormEvent, useMemo, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { isEmail } from '../../../../domain/utils'
 import { useConfirmUserEmail } from '../../../hooks/useConfirmUserEmail'
+import { useRefreshUserEmailConfirmationCode } from '../../../hooks/useRefreshUserEmailConfirmationCode'
 import { CentralizedBox } from '../../layout/CentralizedBox'
 
 export function ConfirmUserEmail() {
   const { isConfirming, confirm } = useConfirmUserEmail()
+  const { isRefreshing, refresh } = useRefreshUserEmailConfirmationCode()
+
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const userEmail = useMemo(
@@ -37,13 +40,17 @@ export function ConfirmUserEmail() {
     }
   }
 
+  const handleClickRequestNewConfirmationCode = async () => {
+    await refresh(userEmail)
+  }
+
   return (
     <CentralizedBox title="Confirmar e-mail" subtitle={subtitle}>
       <Stack as={'form'} spacing={4} onSubmit={handleSubmit}>
         <FormControl
           id="email"
           isRequired
-          isDisabled={!isValid || isConfirming}
+          isDisabled={!isValid || isConfirming || isRefreshing}
         >
           <FormLabel>Código de confirmação</FormLabel>
           <Input
@@ -53,14 +60,26 @@ export function ConfirmUserEmail() {
             onChange={handleChangeConfirmationCode}
           />
         </FormControl>
-        <Stack spacing={10}>
+        <Stack spacing={4}>
           <Button
             type="submit"
             bg={'blue'}
             color={'white'}
-            isDisabled={!isValid || isConfirming}
+            isDisabled={!isValid || isConfirming || isRefreshing}
+            isLoading={isConfirming}
           >
             Confirmar
+          </Button>
+
+          <Button
+            color={'blue'}
+            borderColor={'blue'}
+            variant={'outline'}
+            isDisabled={!isValid || isConfirming || isRefreshing}
+            isLoading={isRefreshing}
+            onClick={handleClickRequestNewConfirmationCode}
+          >
+            Solicitar um código novo
           </Button>
         </Stack>
       </Stack>

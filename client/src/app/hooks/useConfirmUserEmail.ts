@@ -1,7 +1,7 @@
 import { useToast } from '@chakra-ui/react'
 import { useState } from 'react'
 import { ConfirmUserEmailService } from '../../domain/services/confirm-user-email-service'
-import { makeConfirmUserEmailService } from '../factories/confirm-user-email-factory'
+import { makeConfirmUserEmailService } from '../factories/confirm-user-email-service-factory'
 
 export type Result = {
   isConfirming: boolean
