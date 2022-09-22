@@ -632,6 +632,10 @@ describe('App (e2e)', () => {
         )
         expect(refreshedUser.updatedAt).not.toBeNull()
       })
+
+      it.skip('should be not found when user does not exist', () => {})
+      it.skip('should be bad request when user email has already been confirmed', () => {})
+      it.skip('should be bad request when user email is not sent', () => {})
     })
   })
 
