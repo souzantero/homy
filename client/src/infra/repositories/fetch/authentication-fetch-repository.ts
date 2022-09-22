@@ -1,6 +1,7 @@
 import { User, RawUser } from '../../../domain/models/user'
 import { AuthenticationRepository } from '../../../domain/repositories/authentication-repository'
 import { SignInRepository } from '../../../domain/repositories/sign-in-repository'
+import { SignMeRepository } from '../../../domain/repositories/sign-me-repository'
 import { SignUpRepository } from '../../../domain/repositories/sign-up-repository'
 
 export class AuthenticationFetchRepository implements AuthenticationRepository {
@@ -8,6 +9,18 @@ export class AuthenticationFetchRepository implements AuthenticationRepository {
     private readonly hostAddress: string,
     private readonly authorizationToken?: string
   ) {}
+
+  async signMe(): Promise<User> {
+    const response = await fetch(`${this.hostAddress}/auth/me`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.authorizationToken}`
+      }
+    })
+
+    return this.handleResponse(response)
+  }
 
   async signOut(): Promise<void> {
     const response = await fetch(`${this.hostAddress}/auth/sign-out`, {

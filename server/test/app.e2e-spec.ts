@@ -483,7 +483,6 @@ describe('App (e2e)', () => {
 
         delete createdUser.deletedAt
         delete createdUser.password
-        delete createdUser.authorizationToken
         delete createdUser.emailConfirmationCode
 
         expect(status).toBe(200)

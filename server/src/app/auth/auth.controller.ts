@@ -18,7 +18,6 @@ import { AuthenticatedUser } from './decorators/authenticated-user.decorator'
 import { AuthorizationTokenGuard, EmailAndPasswordGuard } from './auth.guards'
 import { SignUpInput } from './dtos/sign-up-input'
 import { SignedUser } from './dtos/signed-user'
-import { OutputtedUser } from '../user/dtos/outputted-user'
 
 @Controller('auth')
 export class AuthController {
@@ -58,7 +57,7 @@ export class AuthController {
 
   @UseGuards(AuthorizationTokenGuard)
   @Get('me')
-  async me(@AuthenticatedUser() user: User): Promise<OutputtedUser> {
-    return new OutputtedUser(user)
+  async me(@AuthenticatedUser() user: User): Promise<SignedUser> {
+    return new SignedUser(user)
   }
 }
