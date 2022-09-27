@@ -4,7 +4,7 @@ import {
   User,
   RawUser,
   RemoveSignedUserRepository
-} from '@retaily/client/domain'
+} from '../../../domain'
 
 export class SignedUserLocalStorageRepository
   implements

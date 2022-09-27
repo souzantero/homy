@@ -2,7 +2,7 @@ import {
   User,
   LoadSignedUserRepository,
   RemoveSignedUserRepository
-} from '@retaily/client/domain'
+} from '../../../domain'
 import { SignedUserLocalStorageRepository } from '../local-storage'
 import { SignedUserSessionStorageRepository } from '../session-storage'
 

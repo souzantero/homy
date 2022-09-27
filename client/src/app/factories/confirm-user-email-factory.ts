@@ -1,5 +1,5 @@
-import { ConfirmUserEmail } from '@retaily/client/domain'
-import { UserFetchRepository } from '@retaily/client/infra'
+import { ConfirmUserEmail } from '../../domain'
+import { UserFetchRepository } from '../../infra'
 import env from '../config/env'
 
 export const makeConfirmUserEmail = () => {

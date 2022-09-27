@@ -1,5 +1,5 @@
-import { LoadProductById } from '@retaily/client/domain'
-import { ProductFetchRepository } from '@retaily/client/infra'
+import { LoadProductById } from '../../domain'
+import { ProductFetchRepository } from '../../infra'
 import env from '../config/env'
 
 export const makeLoadProductById = () => {

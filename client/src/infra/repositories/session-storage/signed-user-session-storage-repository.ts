@@ -4,7 +4,7 @@ import {
   LoadSignedUserRepository,
   RemoveSignedUserRepository,
   UpdateSignedUserRepository
-} from '@retaily/client/domain'
+} from '../../../domain'
 
 export class SignedUserSessionStorageRepository
   implements

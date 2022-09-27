@@ -1,10 +1,10 @@
-import { User, SignOut } from '@retaily/client/domain'
+import { User, SignOut } from '../../domain'
 import {
   AuthenticationFetchRepository,
   SignedUserStorageRepository,
   SignedUserSessionStorageRepository,
   SignedUserLocalStorageRepository
-} from '@retaily/client/infra'
+} from '../../infra'
 import env from '../config/env'
 
 export const makeSignOut = (signedUser: User) => {

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useToast } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
-import { Product } from '@retaily/client/domain'
+import { Product } from '../../domain'
 import { makeRemoveProductById } from '../factories/remove-product-by-id-factory'
 import { useSignedUser } from './useSignedUser'
 

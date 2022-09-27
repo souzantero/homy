@@ -1,5 +1,5 @@
-import { ProductFetchRepository } from '@retaily/client/infra'
-import { UpdateProductById, User } from '@retaily/client/domain'
+import { ProductFetchRepository } from '../../infra'
+import { UpdateProductById, User } from '../../domain'
 import env from '../config/env'
 
 export const makeUpdateProductById = (signedUser: User) => {

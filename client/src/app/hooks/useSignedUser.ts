@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useToast } from '@chakra-ui/react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { User } from '@retaily/client/domain'
+import { User } from '../../domain'
 import { makeLoadSignedUser } from '../factories/load-signed-user-factory'
 import { makeSignMe } from '../factories/sign-me-factory'
 
