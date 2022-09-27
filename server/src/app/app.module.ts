@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { AuthModule } from './auth/auth.module'
-import { FoodModule } from './food/food.module'
+import { ProductModule } from './product/product.module'
 import { UserModule } from './user/user.module'
 @Module({
-  imports: [ConfigModule, AuthModule, UserModule, FoodModule]
+  imports: [ConfigModule, AuthModule, UserModule, ProductModule]
 })
-export class AppModule {}
+export class AppModule { }

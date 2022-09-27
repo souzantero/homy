@@ -29,33 +29,10 @@ model User {
   confirmedEmail        Boolean   @default(false)
 }
 
-model Food {
+model Product {
   id        String    @id
   createdAt DateTime
   updatedAt DateTime?
   deletedAt DateTime?
   name      String
-  expiresIn Int
-
-  suppliedFoods SuppliedFood[]
-}
-
-model FoodSupply {
-  id            String         @id
-  createdAt     DateTime
-  updatedAt     DateTime?
-  deletedAt     DateTime?
-  suppliedFoods SuppliedFood[]
-}
-
-model SuppliedFood {
-  foodSupplyId String
-  foodSupply   FoodSupply @relation(fields: [foodSupplyId], references: [id])
-  foodId       String
-  food         Food       @relation(fields: [foodId], references: [id])
-  createdAt    DateTime
-  updatedAt    DateTime?
-  deletedAt    DateTime?
-
-  @@id([foodSupplyId, foodId])
 }
