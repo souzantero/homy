@@ -1,5 +1,5 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
-import { useNavigate, Link as RouterLink } from 'react-router-dom'
+import { ChangeEvent, FormEvent } from 'react'
+import { Link as RouterLink } from 'react-router-dom'
 import {
   FormControl,
   FormLabel,
@@ -9,23 +9,21 @@ import {
   Link,
   Button
 } from '@chakra-ui/react'
-import { useSignedUser } from '../../../hooks/useSignedUser'
 import { useSignIn } from '../../../hooks/useSignIn'
 import { AuthenticationLayout } from '../AuthenticationLayout'
 
 export function SignIn() {
-  const { signedUser, isLoading } = useSignedUser()
-  const { signIn, isSigning } = useSignIn()
-  const navigate = useNavigate()
-  const [email, setEmail] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
-  const [remindMe, setRemindMe] = useState<boolean>(false)
-
-  useEffect(() => {
-    if (signedUser) {
-      navigate('/')
-    }
-  }, [signedUser])
+  const {
+    email,
+    setEmail,
+    password,
+    setPassword,
+    remindMe,
+    setRemindMe,
+    signIn,
+    isSigning,
+    isLoading
+  } = useSignIn()
 
   const handleChangeEmail = (event: ChangeEvent<HTMLInputElement>) =>
     setEmail(event.target.value)
@@ -35,14 +33,7 @@ export function SignIn() {
     setRemindMe(event.target.checked)
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
-    const params = { email, password }
-    const options = { remind: remindMe }
-    const signature = await signIn(params, options)
-    if (signature) {
-      setEmail('')
-      setPassword('')
-      navigate('/')
-    }
+    await signIn()
   }
 
   return (
