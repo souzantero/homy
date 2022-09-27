@@ -1,1 +1,1 @@
-Olá, eu sou o Alpha, um projeto que tem objetivo de ser um Sistema Integrado de Vendas.
+Olá, eu sou o Retailer(Alpha), um projeto que tem objetivo de ser um Sistema Varejista.

@@ -1,5 +1,5 @@
 {
-  "name": "@homy/client",
+  "name": "@retailer/client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
