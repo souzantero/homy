@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { useToast } from '@chakra-ui/react'
-import { SignInService } from '../../domain/services/sign-in-service'
-import { makeSignInService } from '../factories/sign-in-service-factory'
+import { SignIn } from '../../domain/services/sign-in'
+import { makeSignIn } from '../factories/sign-in-factory'
 
 export type Result = {
   isSigning: boolean
   signIn: (
-    params: SignInService.Params,
+    params: SignIn.Params,
     options: SignInOptions
-  ) => Promise<SignInService.Result | undefined>
+  ) => Promise<SignIn.Result | undefined>
 }
 
 export type SignInOptions = {
@@ -19,14 +19,11 @@ export function useSignIn(): Result {
   const notify = useToast()
   const [isSigning, setIsSigning] = useState(false)
 
-  const signIn = async (
-    params: SignInService.Params,
-    { remind }: SignInOptions
-  ) => {
+  const signIn = async (params: SignIn.Params, { remind }: SignInOptions) => {
     try {
       setIsSigning(true)
 
-      const signIn = makeSignInService(remind)
+      const signIn = makeSignIn(remind)
       const signedUser = await signIn.signIn(params)
 
       notify({

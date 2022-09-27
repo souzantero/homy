@@ -1,24 +1,22 @@
 import { useState } from 'react'
 import { useToast } from '@chakra-ui/react'
-import { makeSignUpService } from '../factories/sign-up-service-factory'
-import { SignUpService } from '../../domain/services/sign-up-service'
+import { makeSignUp } from '../factories/sign-up-factory'
+import { SignUp } from '../../domain/services/sign-up'
 
 export type Result = {
   isSigning: boolean
-  signUp: (
-    params: SignUpService.Params
-  ) => Promise<SignUpService.Result | undefined>
+  signUp: (params: SignUp.Params) => Promise<SignUp.Result | undefined>
 }
 
 export function useSignUp(): Result {
   const notify = useToast()
   const [isSigning, setIsSigning] = useState(false)
 
-  const signUp = async (params: SignUpService.Params) => {
+  const signUp = async (params: SignUp.Params) => {
     try {
       setIsSigning(true)
 
-      const signUp = makeSignUpService()
+      const signUp = makeSignUp()
       const signedUser = await signUp.signUp(params)
 
       notify({

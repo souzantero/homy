@@ -1,21 +1,21 @@
 import { useToast } from '@chakra-ui/react'
 import { useState } from 'react'
-import { ConfirmUserEmailService } from '../../domain/services/confirm-user-email-service'
-import { makeConfirmUserEmailService } from '../factories/confirm-user-email-service-factory'
+import { ConfirmUserEmail } from '../../domain/services/confirm-user-email'
+import { makeConfirmUserEmail } from '../factories/confirm-user-email-factory'
 
 export type Result = {
   isConfirming: boolean
-  confirm: (params: ConfirmUserEmailService.Params) => Promise<boolean>
+  confirm: (params: ConfirmUserEmail.Params) => Promise<boolean>
 }
 
 export function useConfirmUserEmail(): Result {
   const notify = useToast()
   const [isConfirming, setIsConfirming] = useState(false)
 
-  const confirm = async (params: ConfirmUserEmailService.Params) => {
+  const confirm = async (params: ConfirmUserEmail.Params) => {
     try {
       setIsConfirming(true)
-      const confirmUserEmail = makeConfirmUserEmailService()
+      const confirmUserEmail = makeConfirmUserEmail()
       await confirmUserEmail.confirm(params)
 
       notify({

@@ -1,19 +1,16 @@
-import { User } from '../models/user'
 import { ConfirmUserEmailRepository } from '../repositories/confirm-user-email-repository'
 
-export class ConfirmUserEmailService {
+export class ConfirmUserEmail {
   constructor(
     private readonly confirmUserEmailRepository: ConfirmUserEmailRepository
   ) {}
 
-  confirm(
-    params: ConfirmUserEmailService.Params
-  ): Promise<ConfirmUserEmailService.Result> {
+  confirm(params: ConfirmUserEmail.Params): Promise<ConfirmUserEmail.Result> {
     return this.confirmUserEmailRepository.confirmUserEmail(params)
   }
 }
 
-export namespace ConfirmUserEmailService {
+export namespace ConfirmUserEmail {
   export type Params = ConfirmUserEmailRepository.Params
   export type Result = ConfirmUserEmailRepository.Result
 }

@@ -2,8 +2,8 @@ import { useToast } from '@chakra-ui/react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { User } from '../../domain/models/user'
-import { makeLoadSignedUserService } from '../factories/load-signed-user-service-factory'
-import { makeSignMeService } from '../factories/sign-me-service-factory'
+import { makeLoadSignedUser } from '../factories/load-signed-user-factory'
+import { makeSignMe } from '../factories/sign-me-factory'
 
 export type Result = {
   signedUser?: User | null
@@ -12,7 +12,7 @@ export type Result = {
 
 export function useSignedUser(): Result {
   const notify = useToast()
-  const loadSignedUser = makeLoadSignedUserService()
+  const loadSignedUser = makeLoadSignedUser()
 
   const queryClient = useQueryClient()
 
@@ -26,7 +26,7 @@ export function useSignedUser(): Result {
 
   useQuery(['signed-me'], () => {
     if (signedUser) {
-      makeSignMeService(signedUser, false)
+      makeSignMe(signedUser, false)
         .signMe()
         .then(() => {
           queryClient.invalidateQueries(['signed-user'])

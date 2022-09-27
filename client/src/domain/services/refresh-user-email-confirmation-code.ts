@@ -1,6 +1,6 @@
 import { RefreshUserEmailConfirmationCodeRepository } from '../repositories/refresh-user-email-confirmation-code-repository'
 
-export class RefreshUserEmailConfirmationCodeService {
+export class RefreshUserEmailConfirmationCode {
   constructor(
     private readonly repository: RefreshUserEmailConfirmationCodeRepository
   ) {}

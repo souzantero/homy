@@ -1,7 +1,7 @@
 import { SignUpRepository } from '../repositories/sign-up-repository'
 import { UpdateSignedUserRepository } from '../repositories/update-signed-user-repository'
 
-export class SignUpService {
+export class SignUp {
   constructor(
     private readonly signUpRepository: SignUpRepository,
     private readonly updateSignedUserRepository: UpdateSignedUserRepository
@@ -12,7 +12,7 @@ export class SignUpService {
     email,
     password,
     confirmedPassword
-  }: SignUpService.Params): Promise<SignUpService.Result> {
+  }: SignUp.Params): Promise<SignUp.Result> {
     if (password !== confirmedPassword) {
       throw new Error('passwords does not match')
     }
@@ -27,7 +27,7 @@ export class SignUpService {
   }
 }
 
-export namespace SignUpService {
+export namespace SignUp {
   export type Params = {
     name: string
     email: string

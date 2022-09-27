@@ -1,9 +1,9 @@
-import { LoadSignedUserService } from '../../domain/services/load-signed-user-service'
+import { LoadSignedUser } from '../../domain/services/load-signed-user'
 import { SignedUserLocalStorageRepository } from '../../infra/repositories/local-storage/signed-user-local-storage-repository'
 import { SignedUserSessionStorageRepository } from '../../infra/repositories/session-storage/signed-user-session-storage-repository'
 import { SignedUserStorageRepository } from '../../infra/repositories/storage/signed-user-storage-repository'
 
-export const makeLoadSignedUserService = () => {
+export const makeLoadSignedUser = () => {
   const signedUserLocalStorageRepository =
     new SignedUserLocalStorageRepository()
   const signedUserSessionStorageRepository =
@@ -12,5 +12,5 @@ export const makeLoadSignedUserService = () => {
     signedUserLocalStorageRepository,
     signedUserSessionStorageRepository
   )
-  return new LoadSignedUserService(signedUserRepository)
+  return new LoadSignedUser(signedUserRepository)
 }

@@ -1,7 +1,7 @@
 import { RemoveSignedUserRepository } from '../repositories/remove-signed-user-repository'
 import { SignOutRepository } from '../repositories/sign-out-repository'
 
-export class SignOutService {
+export class SignOut {
   constructor(
     private readonly signOutRepository: SignOutRepository,
     private readonly removeSignedUserRepository: RemoveSignedUserRepository

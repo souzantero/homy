@@ -1,6 +1,6 @@
 import { useToast } from '@chakra-ui/react'
 import { useState } from 'react'
-import { makeRefreshUserEmailConfirmationCodeService } from '../factories/refresh-user-email-confirmation-code-service-factory'
+import { makeRefreshUserEmailConfirmationCode } from '../factories/refresh-user-email-confirmation-code-factory'
 
 export type Result = {
   isRefreshing: boolean
@@ -16,7 +16,7 @@ export function useRefreshUserEmailConfirmationCode(): Result {
       setIsRefreshing(true)
 
       const refreshUserEmailConfirmationCode =
-        makeRefreshUserEmailConfirmationCodeService()
+        makeRefreshUserEmailConfirmationCode()
       await refreshUserEmailConfirmationCode.refresh(email)
 
       notify({

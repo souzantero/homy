@@ -1,7 +1,7 @@
 import { User } from '../models/user'
 import { LoadSignedUserRepository } from '../repositories/load-signed-user-repository'
 
-export class LoadSignedUserService {
+export class LoadSignedUser {
   constructor(
     private readonly loadSignedUserRepository: LoadSignedUserRepository
   ) {}
