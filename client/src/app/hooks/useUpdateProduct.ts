@@ -8,10 +8,10 @@ import { useNavigate } from 'react-router-dom'
 import { useProduct } from './useProduct'
 
 export type Result = {
-  name: string,
-  setName: (name: string) => void,
-  isUpdating: boolean,
-  isLoading: boolean,
+  name: string
+  setName: (name: string) => void
+  isUpdating: boolean
+  isLoading: boolean
   updateProduct: () => Promise<Product | undefined>
 }
 

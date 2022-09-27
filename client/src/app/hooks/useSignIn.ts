@@ -6,19 +6,15 @@ import { useNavigate } from 'react-router-dom'
 import { useSignedUser } from './useSignedUser'
 
 export type Result = {
-  email: string,
-  setEmail: (value: string) => void,
-  password: string,
-  setPassword: (value: string) => void,
-  remindMe: boolean,
-  setRemindMe: (value: boolean) => void,
+  email: string
+  setEmail: (value: string) => void
+  password: string
+  setPassword: (value: string) => void
+  remindMe: boolean
+  setRemindMe: (value: boolean) => void
   isSigning: boolean
   signIn: () => Promise<SignIn.Result | undefined>
   isLoading: boolean
-}
-
-export type SignInOptions = {
-  remind: boolean
 }
 
 export function useSignIn(): Result {

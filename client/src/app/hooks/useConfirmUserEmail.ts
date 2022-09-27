@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import { makeConfirmUserEmail } from '../factories/confirm-user-email-factory'
 
 export type Result = {
-  confirmationCode: string,
-  setConfirmationCode: (value: string) => void,
+  confirmationCode: string
+  setConfirmationCode: (value: string) => void
   isConfirming: boolean
   confirm: () => Promise<boolean>
 }

@@ -1,32 +1,30 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
-import { useNavigate, Link as RouterLink } from 'react-router-dom'
+import { ChangeEvent, FormEvent } from 'react'
+import { Link as RouterLink } from 'react-router-dom'
 import {
   FormControl,
   FormLabel,
   Input,
-  Checkbox,
   Stack,
   Link,
   Button
 } from '@chakra-ui/react'
-import { useSignedUser } from '../../../hooks/useSignedUser'
 import { AuthenticationLayout } from '../AuthenticationLayout'
 import { useSignUp } from '../../../hooks/useSignUp'
 
 export function SignUp() {
-  const { signedUser, isLoading } = useSignedUser()
-  const { signUp, isSigning } = useSignUp()
-  const navigate = useNavigate()
-  const [name, setName] = useState<string>('')
-  const [email, setEmail] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
-  const [confirmedPassword, setConfirmedPassword] = useState<string>('')
-
-  useEffect(() => {
-    if (signedUser) {
-      navigate('/')
-    }
-  }, [signedUser])
+  const {
+    name,
+    setName,
+    email,
+    setEmail,
+    password,
+    setPassword,
+    confirmedPassword,
+    setConfirmedPassword,
+    signUp,
+    isSigning,
+    isLoading
+  } = useSignUp()
 
   const handleChangeName = (event: ChangeEvent<HTMLInputElement>) =>
     setName(event.target.value)
@@ -43,15 +41,7 @@ export function SignUp() {
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
-    const params = { name, email, password, confirmedPassword }
-    const signature = await signUp(params)
-    if (signature) {
-      setName('')
-      setEmail('')
-      setPassword('')
-      setConfirmedPassword('')
-      navigate('/')
-    }
+    await signUp()
   }
 
   return (

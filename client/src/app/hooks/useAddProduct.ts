@@ -4,12 +4,11 @@ import { useQueryClient } from '@tanstack/react-query'
 import { Product } from '../../domain/models/product'
 import { useToast } from '@chakra-ui/react'
 import { makeAddProduct } from '../factories/add-product-factory'
-import { AddProduct } from '../../domain/services/add-product'
 import { useSignedUser } from './useSignedUser'
 
 export type Result = {
-  name: string,
-  setName: (name: string) => void,
+  name: string
+  setName: (name: string) => void
   isAdding: boolean
   addProduct: () => Promise<Product | undefined>
 }
