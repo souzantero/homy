@@ -1,5 +1,5 @@
-import { ProductFetchRepository } from '@retailer/client/infra'
-import { User, RemoveProductById } from '@retailer/client/domain'
+import { ProductFetchRepository } from '@retaily/client/infra'
+import { User, RemoveProductById } from '@retaily/client/domain'
 import env from '../config/env'
 
 export const makeRemoveProductById = (signedUser: User) => {

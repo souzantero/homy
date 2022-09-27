@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
-import { Product } from '@retailer/client/domain'
+import { Product } from '@retaily/client/domain'
 import { useToast } from '@chakra-ui/react'
 import { makeAddProduct } from '../factories/add-product-factory'
 import { useSignedUser } from './useSignedUser'

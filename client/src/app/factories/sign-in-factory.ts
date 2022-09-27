@@ -4,7 +4,7 @@ import {
   AuthenticationFetchRepository,
   SignedUserSessionStorageRepository,
   SignedUserLocalStorageRepository
-} from '@retailer/client/infra'
+} from '@retaily/client/infra'
 
 export const makeSignIn = (remind: boolean) => {
   const authenticationRepository = new AuthenticationFetchRepository(

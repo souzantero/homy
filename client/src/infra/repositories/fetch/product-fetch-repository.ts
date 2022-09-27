@@ -5,8 +5,8 @@ import {
   Product,
   RemoveProductByIdRepository,
   UpdateProductByIdRepository
-} from '@retailer/client/domain'
-import { parseIntOrZeroIfNaN } from '@retailer/client/domain/utils'
+} from '@retaily/client/domain'
+import { parseIntOrZeroIfNaN } from '@retaily/client/domain/utils'
 
 export class ProductFetchRepository
   implements

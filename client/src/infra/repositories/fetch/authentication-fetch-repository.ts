@@ -4,7 +4,7 @@ import {
   RawUser,
   SignInRepository,
   SignUpRepository
-} from '@retailer/client/domain'
+} from '@retaily/client/domain'
 
 export class AuthenticationFetchRepository implements AuthenticationRepository {
   constructor(

@@ -1,8 +1,8 @@
-import { SignUp } from '@retailer/client/domain'
+import { SignUp } from '@retaily/client/domain'
 import {
   AuthenticationFetchRepository,
   SignedUserSessionStorageRepository
-} from '@retailer/client/infra'
+} from '@retaily/client/infra'
 import env from '../config/env'
 
 export const makeSignUp = () => {

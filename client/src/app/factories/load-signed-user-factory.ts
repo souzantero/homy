@@ -1,9 +1,9 @@
-import { LoadSignedUser } from '@retailer/client/domain'
+import { LoadSignedUser } from '@retaily/client/domain'
 import {
   SignedUserLocalStorageRepository,
   SignedUserSessionStorageRepository,
   SignedUserStorageRepository
-} from '@retailer/client/infra'
+} from '@retaily/client/infra'
 
 export const makeLoadSignedUser = () => {
   const signedUserLocalStorageRepository =

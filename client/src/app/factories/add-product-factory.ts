@@ -1,5 +1,5 @@
-import { AddProduct, User } from '@retailer/client/domain'
-import { ProductFetchRepository } from '@retailer/client/infra'
+import { AddProduct, User } from '@retaily/client/domain'
+import { ProductFetchRepository } from '@retaily/client/infra'
 import env from '../config/env'
 
 export const makeAddProduct = (signedUser: User) => {

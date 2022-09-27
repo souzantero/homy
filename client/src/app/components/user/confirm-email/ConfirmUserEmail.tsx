@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { Button, FormControl, FormLabel, Input, Stack } from '@chakra-ui/react'
-import { isEmail } from '@retailer/client/domain/utils'
+import { isEmail } from '@retaily/client/domain/utils'
 import { useConfirmUserEmail } from '../../../hooks/useConfirmUserEmail'
 import { useRefreshUserEmailConfirmationCode } from '../../../hooks/useRefreshUserEmailConfirmationCode'
 import { CentralizedBox } from '../../layout/CentralizedBox'

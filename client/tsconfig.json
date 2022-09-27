@@ -17,8 +17,8 @@
     "jsx": "react-jsx",
     "baseUrl": "src",
     "paths": {
-      "@retailer/client/cypress/*": ["../cypress/*"],
-      "@retailer/client/*": ["*"]
+      "@retaily/client/cypress/*": ["../cypress/*"],
+      "@retaily/client/*": ["*"]
     }
   },
   "include": ["src"]

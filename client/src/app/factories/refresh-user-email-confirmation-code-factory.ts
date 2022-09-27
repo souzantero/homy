@@ -1,5 +1,5 @@
-import { RefreshUserEmailConfirmationCode } from '@retailer/client/domain'
-import { UserFetchRepository } from '@retailer/client/infra'
+import { RefreshUserEmailConfirmationCode } from '@retaily/client/domain'
+import { UserFetchRepository } from '@retaily/client/infra'
 import env from '../config/env'
 
 export const makeRefreshUserEmailConfirmationCode = () => {

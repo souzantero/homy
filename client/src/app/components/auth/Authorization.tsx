@@ -7,7 +7,7 @@ import {
   useMemo
 } from 'react'
 import { Skeleton } from '@chakra-ui/react'
-import { Role } from '@retailer/client/domain'
+import { Role } from '@retaily/client/domain'
 import { useSignedUser } from '../../hooks/useSignedUser'
 
 export interface AuthorizationProps {

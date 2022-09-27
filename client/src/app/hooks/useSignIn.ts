@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useToast } from '@chakra-ui/react'
-import { SignIn } from '@retailer/client/domain'
+import { SignIn } from '@retaily/client/domain'
 import { makeSignIn } from '../factories/sign-in-factory'
 import { useSignedUser } from './useSignedUser'
 

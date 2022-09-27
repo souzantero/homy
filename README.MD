@@ -1,1 +1,1 @@
-Olá, eu sou o Retailer(Alpha), um projeto que tem objetivo de ser um Sistema Varejista.
+Olá, eu sou o Retaily (Alpha), um projeto que tem objetivo de ser um Sistema Varejista.

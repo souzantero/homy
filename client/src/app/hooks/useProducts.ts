@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useToast } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
-import { Product } from '@retailer/client/domain'
+import { Product } from '@retaily/client/domain'
 import { makeLoadProducts } from '../factories/load-products-factory'
 
 export function useProducts(): {

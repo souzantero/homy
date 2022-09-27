@@ -1,9 +1,9 @@
-import { User, SignMe } from '@retailer/client/domain'
+import { User, SignMe } from '@retaily/client/domain'
 import {
   AuthenticationFetchRepository,
   SignedUserSessionStorageRepository,
   SignedUserLocalStorageRepository
-} from '@retailer/client/infra'
+} from '@retaily/client/infra'
 import env from '../config/env'
 
 export const makeSignMe = (signedUser: User, remind: boolean) => {

@@ -3,7 +3,7 @@ import {
   User,
   RawUser,
   RefreshUserEmailConfirmationCodeRepository
-} from '@retailer/client/domain'
+} from '@retaily/client/domain'
 
 export class UserFetchRepository
   implements
