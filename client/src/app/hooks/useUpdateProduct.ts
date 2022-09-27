@@ -1,21 +1,19 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useToast } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
-import { Product } from '../../domain/models/product'
+import { Product } from '@retailer/client/domain'
 import { makeUpdateProductById } from '../factories/update-product-by-id-factory'
 import { useSignedUser } from './useSignedUser'
-import { useNavigate } from 'react-router-dom'
 import { useProduct } from './useProduct'
 
-export type Result = {
+export function useUpdateProduct(productId: string): {
   name: string
   setName: (name: string) => void
   isUpdating: boolean
   isLoading: boolean
   updateProduct: () => Promise<Product | undefined>
-}
-
-export function useUpdateProduct(productId: string): Result {
+} {
   const navigate = useNavigate()
   const notify = useToast()
   const queryClient = useQueryClient()

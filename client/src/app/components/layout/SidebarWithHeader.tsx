@@ -1,4 +1,7 @@
 import { ReactNode } from 'react'
+import { AiOutlineCoffee, AiOutlineMenu, AiOutlineBell } from 'react-icons/ai'
+import { IconType } from 'react-icons'
+import { Link as RouterLink, Outlet } from 'react-router-dom'
 import {
   IconButton,
   Box,
@@ -15,11 +18,6 @@ import {
   BoxProps,
   FlexProps
 } from '@chakra-ui/react'
-import { AiOutlineCoffee, AiOutlineMenu, AiOutlineBell } from 'react-icons/ai'
-import { IconType } from 'react-icons'
-import { Outlet } from 'react-router-dom'
-
-import { Link as RouterLink } from 'react-router-dom'
 import { Signed } from '../auth/sign-in/Signed'
 import { SignInLink } from '../auth/sign-in/SignInLink'
 import { SignedUserMenu } from '../user/SignedUserMenu'

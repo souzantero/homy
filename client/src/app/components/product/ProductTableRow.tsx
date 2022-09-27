@@ -1,6 +1,5 @@
 import { ButtonGroup, Td, Tr } from '@chakra-ui/react'
-import { Product } from '../../../domain/models/product'
-import { Role } from '../../../domain/models/user'
+import { Product, Role } from '@retailer/client/domain'
 import { useRemoveProduct } from '../../hooks/useRemoveProduct'
 import { Authorization } from '../auth/Authorization'
 import { Signed } from '../auth/sign-in/Signed'

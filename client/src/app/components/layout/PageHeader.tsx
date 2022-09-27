@@ -1,5 +1,5 @@
-import { Divider, Flex, Heading, Spacer } from '@chakra-ui/react'
 import { PropsWithChildren } from 'react'
+import { Divider, Flex, Heading, Spacer } from '@chakra-ui/react'
 
 export interface PageHeaderProps {
   title?: string

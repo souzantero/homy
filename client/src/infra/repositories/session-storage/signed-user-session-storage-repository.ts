@@ -1,7 +1,10 @@
-import { User, RawUser } from '../../../domain/models/user'
-import { LoadSignedUserRepository } from '../../../domain/repositories/load-signed-user-repository'
-import { RemoveSignedUserRepository } from '../../../domain/repositories/remove-signed-user-repository'
-import { UpdateSignedUserRepository } from '../../../domain/repositories/update-signed-user-repository'
+import {
+  User,
+  RawUser,
+  LoadSignedUserRepository,
+  RemoveSignedUserRepository,
+  UpdateSignedUserRepository
+} from '@retailer/client/domain'
 
 export class SignedUserSessionStorageRepository
   implements

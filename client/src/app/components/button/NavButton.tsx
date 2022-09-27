@@ -1,5 +1,5 @@
-import { Button, ButtonProps } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
+import { Button, ButtonProps } from '@chakra-ui/react'
 
 export interface NavButtonProps extends ButtonProps {
   to: string

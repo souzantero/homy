@@ -1,5 +1,5 @@
 import { Skeleton, Text, VStack } from '@chakra-ui/react'
-import { Role } from '../../../domain/models/user'
+import { Role } from '@retailer/client/domain'
 import { useSignedUser } from '../../hooks/useSignedUser'
 
 const RoleText = {

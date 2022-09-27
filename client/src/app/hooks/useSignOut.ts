@@ -1,14 +1,12 @@
-import { useToast } from '@chakra-ui/react'
 import { useState } from 'react'
+import { useToast } from '@chakra-ui/react'
 import { makeSignOut } from '../factories/sign-out-factory'
 import { useSignedUser } from './useSignedUser'
 
-export type Result = {
+export function useSignOut(): {
   isSigningOut: boolean
   signOut: () => Promise<void>
-}
-
-export function useSignOut(): Result {
+} {
   const notify = useToast()
   const [isSigningOut, setIsSigningOut] = useState(false)
   const { signedUser } = useSignedUser()

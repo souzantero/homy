@@ -1,6 +1,6 @@
-import { Box, ButtonGroup, Flex, Skeleton, Text } from '@chakra-ui/react'
 import { useParams } from 'react-router-dom'
-import { Role } from '../../../domain/models/user'
+import { Box, ButtonGroup, Flex, Skeleton, Text } from '@chakra-ui/react'
+import { Role } from '@retailer/client/domain'
 import { useProduct } from '../../hooks/useProduct'
 import { Authorization } from '../auth/Authorization'
 import { Signed } from '../auth/sign-in/Signed'

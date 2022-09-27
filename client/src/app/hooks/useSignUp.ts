@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
-import { useToast } from '@chakra-ui/react'
-import { makeSignUp } from '../factories/sign-up-factory'
-import { SignUp } from '../../domain/services/sign-up'
-import { useSignedUser } from './useSignedUser'
 import { useNavigate } from 'react-router-dom'
+import { useToast } from '@chakra-ui/react'
+import { SignUp } from '@retailer/client/domain'
+import { makeSignUp } from '../factories/sign-up-factory'
+import { useSignedUser } from './useSignedUser'
 
-export type Result = {
+export function useSignUp(): {
   name: string
   setName: (value: string) => void
   email: string
@@ -17,9 +17,7 @@ export type Result = {
   signUp: () => Promise<SignUp.Result | undefined>
   isSigning: boolean
   isLoading: boolean
-}
-
-export function useSignUp(): Result {
+} {
   const notify = useToast()
   const navigate = useNavigate()
 

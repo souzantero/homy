@@ -1,5 +1,5 @@
-import { Link } from '@chakra-ui/react'
 import { PropsWithChildren } from 'react'
+import { Link } from '@chakra-ui/react'
 import { CentralizedBox } from '../layout/CentralizedBox'
 
 export interface AuthenticationLayoutProps {

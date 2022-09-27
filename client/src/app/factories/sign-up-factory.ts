@@ -1,7 +1,9 @@
+import { SignUp } from '@retailer/client/domain'
+import {
+  AuthenticationFetchRepository,
+  SignedUserSessionStorageRepository
+} from '@retailer/client/infra'
 import env from '../config/env'
-import { AuthenticationFetchRepository } from '../../infra/repositories/fetch/authentication-fetch-repository'
-import { SignUp } from '../../domain/services/sign-up'
-import { SignedUserSessionStorageRepository } from '../../infra/repositories/session-storage/signed-user-session-storage-repository'
 
 export const makeSignUp = () => {
   const authenticationRepository = new AuthenticationFetchRepository(

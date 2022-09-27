@@ -1,4 +1,7 @@
 import { ReactNode } from 'react'
+import { Link as RouterLink, Outlet } from 'react-router-dom'
+import { AiOutlineCoffee, AiOutlineMenu } from 'react-icons/ai'
+import { IconType } from 'react-icons'
 import {
   IconButton,
   Box,
@@ -14,13 +17,6 @@ import {
   BoxProps,
   FlexProps
 } from '@chakra-ui/react'
-
-import { Link as RouterLink } from 'react-router-dom'
-
-import { AiOutlineCoffee, AiOutlineMenu } from 'react-icons/ai'
-
-import { IconType } from 'react-icons'
-import { Outlet } from 'react-router-dom'
 
 interface LinkItemProps {
   name: string

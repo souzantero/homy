@@ -1,5 +1,5 @@
 import { ButtonGroup } from '@chakra-ui/react'
-import { Role } from '../../../domain/models/user'
+import { Role } from '@retailer/client/domain'
 import { Authorization } from '../auth/Authorization'
 import { Signed } from '../auth/sign-in/Signed'
 import { NavButton } from '../button/NavButton'

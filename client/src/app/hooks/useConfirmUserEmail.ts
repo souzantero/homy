@@ -1,16 +1,14 @@
-import { useToast } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useToast } from '@chakra-ui/react'
 import { makeConfirmUserEmail } from '../factories/confirm-user-email-factory'
 
-export type Result = {
+export function useConfirmUserEmail(email: string): {
   confirmationCode: string
   setConfirmationCode: (value: string) => void
   isConfirming: boolean
   confirm: () => Promise<boolean>
-}
-
-export function useConfirmUserEmail(email: string): Result {
+} {
   const navigate = useNavigate()
   const notify = useToast()
   const [isConfirming, setIsConfirming] = useState(false)

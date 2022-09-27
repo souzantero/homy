@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import {
   AlertDialog,
   AlertDialogBody,
@@ -9,7 +10,6 @@ import {
   MenuItem,
   useDisclosure
 } from '@chakra-ui/react'
-import { useRef } from 'react'
 import { useSignOut } from '../../../hooks/useSignOut'
 
 export function SignOutMenuItem() {

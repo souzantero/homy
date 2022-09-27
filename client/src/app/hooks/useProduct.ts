@@ -1,15 +1,13 @@
+import { useEffect } from 'react'
 import { useToast } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
-import { useEffect } from 'react'
-import { Product } from '../../domain/models/product'
+import { Product } from '@retailer/client/domain'
 import { makeLoadProductById } from '../factories/load-product-by-id-factory'
 
-export type Result = {
+export function useProduct(productId: string): {
   product?: Product
   isLoading: boolean
-}
-
-export function useProduct(productId: string): Result {
+} {
   const notify = useToast()
   const loadProductById = makeLoadProductById()
   const {

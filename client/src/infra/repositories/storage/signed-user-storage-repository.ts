@@ -1,8 +1,10 @@
-import { User } from '../../../domain/models/user'
-import { LoadSignedUserRepository } from '../../../domain/repositories/load-signed-user-repository'
-import { RemoveSignedUserRepository } from '../../../domain/repositories/remove-signed-user-repository'
-import { SignedUserLocalStorageRepository } from '../local-storage/signed-user-local-storage-repository'
-import { SignedUserSessionStorageRepository } from '../session-storage/signed-user-session-storage-repository'
+import {
+  User,
+  LoadSignedUserRepository,
+  RemoveSignedUserRepository
+} from '@retailer/client/domain'
+import { SignedUserLocalStorageRepository } from '../local-storage'
+import { SignedUserSessionStorageRepository } from '../session-storage'
 
 export class SignedUserStorageRepository
   implements LoadSignedUserRepository, RemoveSignedUserRepository

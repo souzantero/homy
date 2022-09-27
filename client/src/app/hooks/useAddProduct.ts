@@ -1,19 +1,17 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
-import { Product } from '../../domain/models/product'
+import { Product } from '@retailer/client/domain'
 import { useToast } from '@chakra-ui/react'
 import { makeAddProduct } from '../factories/add-product-factory'
 import { useSignedUser } from './useSignedUser'
 
-export type Result = {
+export function useAddProduct(): {
   name: string
   setName: (name: string) => void
   isAdding: boolean
   addProduct: () => Promise<Product | undefined>
-}
-
-export function useAddProduct(): Result {
+} {
   const notify = useToast()
   const navigate = useNavigate()
   const queryClient = useQueryClient()

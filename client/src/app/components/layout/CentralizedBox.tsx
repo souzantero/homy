@@ -1,3 +1,4 @@
+import { PropsWithChildren, ReactNode } from 'react'
 import {
   Box,
   Flex,
@@ -6,7 +7,6 @@ import {
   Text,
   useColorModeValue
 } from '@chakra-ui/react'
-import { PropsWithChildren, ReactNode } from 'react'
 
 export interface CentralizedBoxProps {
   title: string

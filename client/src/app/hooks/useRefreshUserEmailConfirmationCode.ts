@@ -1,13 +1,11 @@
-import { useToast } from '@chakra-ui/react'
 import { useState } from 'react'
+import { useToast } from '@chakra-ui/react'
 import { makeRefreshUserEmailConfirmationCode } from '../factories/refresh-user-email-confirmation-code-factory'
 
-export type Result = {
+export function useRefreshUserEmailConfirmationCode(): {
   isRefreshing: boolean
   refresh: (email: string) => Promise<void>
-}
-
-export function useRefreshUserEmailConfirmationCode(): Result {
+} {
   const notify = useToast()
   const [isRefreshing, setIsRefreshing] = useState(false)
 

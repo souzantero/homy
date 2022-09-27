@@ -2,20 +2,21 @@ import { createContext, useContext } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ChakraProvider } from '@chakra-ui/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-
-import { SidebarWithHeader } from './app/components/layout/SidebarWithHeader'
-import { Products } from './app/components/product/Products'
-import { AddProduct } from './app/components/product/AddProduct'
-import { Product } from './app/components/product/Product'
-import { EditProduct } from './app/components/product/EditProduct'
-import { SignIn } from './app/components/auth/sign-in/SignIn'
-import { Signed } from './app/components/auth/sign-in/Signed'
-import { UnsignedUser } from './app/components/auth/sign-in/UnsignedUser'
-import { SignUp } from './app/components/auth/sign-up/SignUp'
-import { Authorization } from './app/components/auth/Authorization'
-import { Role } from './domain/models/user'
-import { UnauthorizedUser } from './app/components/auth/UnauthorizedUser'
-import { ConfirmUserEmail } from './app/components/user/confirm-email/ConfirmUserEmail'
+import { Role } from './domain'
+import {
+  AddProduct,
+  Authorization,
+  ConfirmUserEmail,
+  EditProduct,
+  Product,
+  Products,
+  SidebarWithHeader,
+  SignIn,
+  Signed,
+  SignUp,
+  UnauthorizedUser,
+  UnsignedUser
+} from './app/components'
 
 export type AppManager = {}
 const app: AppManager = {}

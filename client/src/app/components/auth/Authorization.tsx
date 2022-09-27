@@ -1,4 +1,3 @@
-import { Skeleton } from '@chakra-ui/react'
 import {
   Children,
   cloneElement,
@@ -7,7 +6,8 @@ import {
   ReactNode,
   useMemo
 } from 'react'
-import { Role } from '../../../domain/models/user'
+import { Skeleton } from '@chakra-ui/react'
+import { Role } from '@retailer/client/domain'
 import { useSignedUser } from '../../hooks/useSignedUser'
 
 export interface AuthorizationProps {

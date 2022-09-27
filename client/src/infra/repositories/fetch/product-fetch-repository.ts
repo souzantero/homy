@@ -1,10 +1,12 @@
-import { Product } from '../../../domain/models/product'
-import { AddProductRepository } from '../../../domain/repositories/add-product-repository'
-import { LoadProductByIdRepository } from '../../../domain/repositories/load-product-by-id-repository'
-import { LoadProductsRepository } from '../../../domain/repositories/load-products-repository'
-import { RemoveProductByIdRepository } from '../../../domain/repositories/remove-product-by-id-repository'
-import { UpdateProductByIdRepository } from '../../../domain/repositories/update-product-by-id-repository'
-import { parseIntOrZeroIfNaN } from '../../../domain/utils'
+import {
+  AddProductRepository,
+  LoadProductByIdRepository,
+  LoadProductsRepository,
+  Product,
+  RemoveProductByIdRepository,
+  UpdateProductByIdRepository
+} from '@retailer/client/domain'
+import { parseIntOrZeroIfNaN } from '@retailer/client/domain/utils'
 
 export class ProductFetchRepository
   implements

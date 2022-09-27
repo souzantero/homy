@@ -1,16 +1,14 @@
 import { useState } from 'react'
 import { useToast } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
-import { Product } from '../../domain/models/product'
+import { Product } from '@retailer/client/domain'
 import { makeRemoveProductById } from '../factories/remove-product-by-id-factory'
 import { useSignedUser } from './useSignedUser'
 
-export type Result = {
+export function useRemoveProduct(): {
   isRemoving: boolean
   removeProduct: (product: Product) => Promise<boolean>
-}
-
-export function useRemoveProduct(): Result {
+} {
   const notify = useToast()
   const queryClient = useQueryClient()
   const { signedUser } = useSignedUser()

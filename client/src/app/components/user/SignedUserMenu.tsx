@@ -1,3 +1,4 @@
+import { Link as RouterLink } from 'react-router-dom'
 import {
   Box,
   HStack,
@@ -10,7 +11,6 @@ import {
   useColorModeValue
 } from '@chakra-ui/react'
 import { AiOutlineDown } from 'react-icons/ai'
-import { Link as RouterLink } from 'react-router-dom'
 import { useSignedUser } from '../../hooks/useSignedUser'
 import { SignOutMenuItem } from '../auth/sign-out/SignOutMenuItem'
 import { SignedUserAvatar } from './SignedUserAvatar'

@@ -1,6 +1,9 @@
-import { User, RawUser } from '../../../domain/models/user'
-import { ConfirmUserEmailRepository } from '../../../domain/repositories/confirm-user-email-repository'
-import { RefreshUserEmailConfirmationCodeRepository } from '../../../domain/repositories/refresh-user-email-confirmation-code-repository'
+import {
+  ConfirmUserEmailRepository,
+  User,
+  RawUser,
+  RefreshUserEmailConfirmationCodeRepository
+} from '@retailer/client/domain'
 
 export class UserFetchRepository
   implements

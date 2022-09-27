@@ -1,8 +1,10 @@
-import { User, RawUser } from '../../../domain/models/user'
-import { AuthenticationRepository } from '../../../domain/repositories/authentication-repository'
-import { SignInRepository } from '../../../domain/repositories/sign-in-repository'
-import { SignMeRepository } from '../../../domain/repositories/sign-me-repository'
-import { SignUpRepository } from '../../../domain/repositories/sign-up-repository'
+import {
+  AuthenticationRepository,
+  User,
+  RawUser,
+  SignInRepository,
+  SignUpRepository
+} from '@retailer/client/domain'
 
 export class AuthenticationFetchRepository implements AuthenticationRepository {
   constructor(

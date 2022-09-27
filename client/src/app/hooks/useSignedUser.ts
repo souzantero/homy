@@ -1,16 +1,14 @@
+import { useEffect } from 'react'
 import { useToast } from '@chakra-ui/react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { useEffect } from 'react'
-import { User } from '../../domain/models/user'
+import { User } from '@retailer/client/domain'
 import { makeLoadSignedUser } from '../factories/load-signed-user-factory'
 import { makeSignMe } from '../factories/sign-me-factory'
 
-export type Result = {
+export function useSignedUser(): {
   signedUser?: User | null
   isLoading: boolean
-}
-
-export function useSignedUser(): Result {
+} {
   const notify = useToast()
   const loadSignedUser = makeLoadSignedUser()
 
