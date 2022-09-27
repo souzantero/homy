@@ -5,7 +5,7 @@ import { useRemoveProduct } from '../../hooks/useRemoveProduct'
 import { Authorization } from '../auth/Authorization'
 import { Signed } from '../auth/sign-in/Signed'
 import { NavButton } from '../button/NavButton'
-import { RemoveProdutButton } from './RemoveProductButton'
+import { RemoveProductButton } from './RemoveProductButton'
 
 export interface ProductTableRowProps {
   product: Product
@@ -21,7 +21,7 @@ export function ProductTableRow({ product }: ProductTableRowProps) {
           <NavButton to={`/products/${product.id}`}>Abrir</NavButton>
           <Signed>
             <Authorization roles={[Role.Admin]} disable>
-              <RemoveProdutButton
+              <RemoveProductButton
                 isRemoving={isRemoving}
                 onRemove={() => removeProduct(product)}
               />

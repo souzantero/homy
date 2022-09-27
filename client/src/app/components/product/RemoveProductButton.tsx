@@ -5,7 +5,7 @@ export interface RemoveProductButtonProps extends Partial<CautionButtonProps> {
   onRemove: () => void
 }
 
-export function RemoveProdutButton({
+export function RemoveProductButton({
   isRemoving,
   onRemove,
   ...rest
