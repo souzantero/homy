@@ -1,7 +1,7 @@
 import { UpdateProductById } from './update-product-by-id'
 
 export class RemoveProductById {
-  constructor(private readonly updateProductById: UpdateProductById) { }
+  constructor(private readonly updateProductById: UpdateProductById) {}
 
   async remove(id: string): Promise<void> {
     const data = {

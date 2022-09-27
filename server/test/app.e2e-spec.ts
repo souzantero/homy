@@ -20,10 +20,7 @@ import { Role, User } from '../src/domain/models/user'
 const serialize = (data: any) => JSON.parse(JSON.stringify(data))
 
 const dropDatabase = async (prisma: PrismaClient) =>
-  prisma.$transaction([
-    prisma.user.deleteMany(),
-    prisma.product.deleteMany()
-  ])
+  prisma.$transaction([prisma.user.deleteMany(), prisma.product.deleteMany()])
 
 const findAllProducts = (prisma: PrismaClient) => prisma.product.findMany()
 const findAllUsers = (prisma: PrismaClient) => prisma.user.findMany()
@@ -627,9 +624,9 @@ describe('App (e2e)', () => {
         expect(refreshedUser.updatedAt).not.toBeNull()
       })
 
-      it.skip('should be not found when user does not exist', () => { })
-      it.skip('should be bad request when user email has already been confirmed', () => { })
-      it.skip('should be bad request when user email is not sent', () => { })
+      it.skip('should be not found when user does not exist', () => {})
+      it.skip('should be bad request when user email has already been confirmed', () => {})
+      it.skip('should be bad request when user email is not sent', () => {})
     })
   })
 
@@ -853,7 +850,10 @@ describe('App (e2e)', () => {
         expect(products).toHaveLength(1)
         expect(products[0]).toHaveProperty('id', createdProduct.id)
         expect(products[0]).toHaveProperty('name', 'Garfo')
-        expect(products[0]).toHaveProperty('createdAt', createdProduct.createdAt)
+        expect(products[0]).toHaveProperty(
+          'createdAt',
+          createdProduct.createdAt
+        )
         expect(products[0].updatedAt).toBeDefined()
         expect(products[0].updatedAt.getTime()).toBeGreaterThan(
           createdProduct.createdAt.getTime()
@@ -956,7 +956,9 @@ describe('App (e2e)', () => {
         expect(body).toEqual({})
 
         const products = await findAllProducts(prisma)
-        const deletedProduct = products.find((product) => product.id === createdProducts[0].id)
+        const deletedProduct = products.find(
+          (product) => product.id === createdProducts[0].id
+        )
         expect(deletedProduct).toBeDefined()
         expect(deletedProduct.deletedAt).not.toBeNull()
       })

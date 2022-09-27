@@ -30,7 +30,7 @@ interface LinkItemProps {
   icon: IconType
 }
 const LinkItems: Array<LinkItemProps> = [
-  { name: 'Alimentos', to: '/foods', icon: AiOutlineCoffee }
+  { name: 'Produtos', to: '/products', icon: AiOutlineCoffee }
 ]
 
 export function SidebarWithHeader() {

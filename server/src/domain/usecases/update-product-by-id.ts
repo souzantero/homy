@@ -7,7 +7,7 @@ export class UpdateProductById {
   constructor(
     private readonly loadProductById: LoadProductById,
     private readonly updateProductByIdRepository: UpdateProductByIdRepository
-  ) { }
+  ) {}
 
   async updateById(
     id: string,

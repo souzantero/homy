@@ -31,7 +31,7 @@ export class ProductController {
     private readonly loadProductById: LoadProductById,
     private readonly updateProductById: UpdateProductById,
     private readonly removeProductById: RemoveProductById
-  ) { }
+  ) {}
 
   @Get()
   getProducts() {
@@ -54,7 +54,6 @@ export class ProductController {
   createProduct(@Body(ValidationPipe) data: CreateProductInput) {
     return this.addProduct.add(data)
   }
-
 
   @UseGuards(AuthorizationTokenGuard, RolesGuard)
   @Roles(Role.Admin)

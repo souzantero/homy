@@ -3,11 +3,11 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ChakraProvider } from '@chakra-ui/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-import { Foods } from './app/components/food/Foods'
 import { SidebarWithHeader } from './app/components/layout/SidebarWithHeader'
-import { AddFood } from './app/components/food/AddFood'
-import { Food } from './app/components/food/Food'
-import { EditFood } from './app/components/food/EditFood'
+import { Products } from './app/components/product/Products'
+import { AddProduct } from './app/components/product/AddProduct'
+import { Product } from './app/components/product/Product'
+import { EditProduct } from './app/components/product/EditProduct'
 import { SignIn } from './app/components/auth/sign-in/SignIn'
 import { Signed } from './app/components/auth/sign-in/Signed'
 import { UnsignedUser } from './app/components/auth/sign-in/UnsignedUser'
@@ -40,8 +40,8 @@ function App() {
                 element={<ConfirmUserEmail />}
               />
               <Route path="/" element={<SidebarWithHeader />}>
-                <Route path="foods">
-                  <Route index element={<Foods />} />
+                <Route path="products">
+                  <Route index element={<Products />} />
                   <Route
                     path="new"
                     element={
@@ -50,13 +50,13 @@ function App() {
                           roles={[Role.Admin]}
                           unauthorized={<UnauthorizedUser />}
                         >
-                          <AddFood />
+                          <AddProduct />
                         </Authorization>
                       </Signed>
                     }
                   />
-                  <Route path=":foodId">
-                    <Route index element={<Food />} />
+                  <Route path=":productId">
+                    <Route index element={<Product />} />
                     <Route
                       path="edit"
                       element={
@@ -65,7 +65,7 @@ function App() {
                             roles={[Role.Admin]}
                             unauthorized={<UnauthorizedUser />}
                           >
-                            <EditFood />
+                            <EditProduct />
                           </Authorization>
                         </Signed>
                       }

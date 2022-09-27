@@ -7,11 +7,12 @@ import { LoadProductRepository } from '../../../domain/repositories/load-product
 
 export class ProductPrismaRepository
   implements
-  AddProductRepository,
-  LoadProductRepository,
-  LoadProductsRepository,
-  UpdateProductByIdRepository {
-  constructor(private readonly prisma: PrismaClient) { }
+    AddProductRepository,
+    LoadProductRepository,
+    LoadProductsRepository,
+    UpdateProductByIdRepository
+{
+  constructor(private readonly prisma: PrismaClient) {}
 
   loadOne(where: LoadProductRepository.Where): Promise<Product> {
     return this.prisma.product.findFirst({ where })

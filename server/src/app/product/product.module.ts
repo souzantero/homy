@@ -44,4 +44,4 @@ import { makeUpdateProductById } from '../../infra/factories/update-product-by-i
     }
   ]
 })
-export class ProductModule { }
+export class ProductModule {}

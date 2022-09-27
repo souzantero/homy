@@ -2,7 +2,7 @@ import { Product } from '../models/product'
 import { LoadProductsRepository } from '../repositories/load-products-repository'
 
 export class LoadProducts {
-  constructor(private loadProductsRepository: LoadProductsRepository) { }
+  constructor(private loadProductsRepository: LoadProductsRepository) {}
 
   load(): Promise<LoadProducts.Result> {
     const where: LoadProductsRepository.Where = {

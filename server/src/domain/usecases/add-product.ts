@@ -6,7 +6,7 @@ export class AddProduct {
   constructor(
     private readonly identifier: Identifier,
     private readonly addProductRepository: AddProductRepository
-  ) { }
+  ) {}
 
   async add(data: AddProduct.Params): Promise<AddProduct.Result> {
     const { name } = data

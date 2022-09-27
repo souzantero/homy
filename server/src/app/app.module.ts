@@ -6,4 +6,4 @@ import { UserModule } from './user/user.module'
 @Module({
   imports: [ConfigModule, AuthModule, UserModule, ProductModule]
 })
-export class AppModule { }
+export class AppModule {}
