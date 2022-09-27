@@ -1,31 +1,37 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useToast } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Product } from '../../domain/models/product'
 import { makeUpdateProductById } from '../factories/update-product-by-id-factory'
 import { useSignedUser } from './useSignedUser'
+import { useNavigate } from 'react-router-dom'
+import { useProduct } from './useProduct'
 
 export type Result = {
-  isUpdating: boolean
-  updateProduct: (product: Product) => Promise<Product | undefined>
+  name: string,
+  setName: (name: string) => void,
+  isUpdating: boolean,
+  isLoading: boolean,
+  updateProduct: () => Promise<Product | undefined>
 }
 
-export function useUpdateProduct(): Result {
+export function useUpdateProduct(productId: string): Result {
+  const navigate = useNavigate()
   const notify = useToast()
   const queryClient = useQueryClient()
   const { signedUser } = useSignedUser()
+  const { product, isLoading } = useProduct(productId)
+
+  const [name, setName] = useState<string>('')
   const [isUpdating, setIsUpdating] = useState(false)
 
-  const updateProduct = async (product: Product) => {
+  const updateProduct = async () => {
     try {
       setIsUpdating(true)
-      const { id } = product
-      const data = {
-        name: product.name
-      }
 
       const updateProductById = makeUpdateProductById(signedUser!)
-      const updatedProduct = await updateProductById.update(id, data)
+      const updatedProduct = await updateProductById.update(productId, { name })
+      setName('')
 
       notify({
         status: 'success',
@@ -34,6 +40,7 @@ export function useUpdateProduct(): Result {
       })
 
       queryClient.invalidateQueries(['products'])
+      navigate('/products')
 
       return updatedProduct
     } catch (error) {
@@ -49,5 +56,11 @@ export function useUpdateProduct(): Result {
     }
   }
 
-  return { isUpdating, updateProduct }
+  useEffect(() => {
+    if (product) {
+      setName(product.name)
+    }
+  }, [product])
+
+  return { name, setName, isLoading, isUpdating, updateProduct }
 }

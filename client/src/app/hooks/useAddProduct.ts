@@ -28,6 +28,7 @@ export function useAddProduct(): Result {
       setIsAdding(true)
       const createProduct = makeAddProduct(signedUser!)
       const product = await createProduct.add({ name })
+      setName('')
 
       notify({
         status: 'success',
@@ -36,9 +37,7 @@ export function useAddProduct(): Result {
       })
 
       queryClient.invalidateQueries(['products'])
-
       navigate('/products')
-      setName('')
 
       return product
     } catch (error) {
