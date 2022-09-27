@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
 import { Product } from '../../domain/models/product'
 import { useToast } from '@chakra-ui/react'
@@ -7,21 +8,26 @@ import { AddProduct } from '../../domain/services/add-product'
 import { useSignedUser } from './useSignedUser'
 
 export type Result = {
+  name: string,
+  setName: (name: string) => void,
   isAdding: boolean
-  addProduct: (params: AddProduct.Params) => Promise<Product | undefined>
+  addProduct: () => Promise<Product | undefined>
 }
 
 export function useAddProduct(): Result {
   const notify = useToast()
+  const navigate = useNavigate()
   const queryClient = useQueryClient()
+
   const { signedUser } = useSignedUser()
+  const [name, setName] = useState<string>('')
   const [isAdding, setIsAdding] = useState(false)
 
-  const addProduct = async (params: AddProduct.Params) => {
+  const addProduct = async () => {
     try {
       setIsAdding(true)
       const createProduct = makeAddProduct(signedUser!)
-      const product = await createProduct.add(params)
+      const product = await createProduct.add({ name })
 
       notify({
         status: 'success',
@@ -30,6 +36,9 @@ export function useAddProduct(): Result {
       })
 
       queryClient.invalidateQueries(['products'])
+
+      navigate('/products')
+      setName('')
 
       return product
     } catch (error) {
@@ -45,5 +54,10 @@ export function useAddProduct(): Result {
     }
   }
 
-  return { isAdding, addProduct }
+  return {
+    name,
+    setName,
+    isAdding,
+    addProduct
+  }
 }
