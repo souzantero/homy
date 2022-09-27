@@ -1,23 +1,21 @@
 import { Button, FormControl, FormLabel, Input, Stack } from '@chakra-ui/react'
-import { ChangeEvent, FormEvent, useMemo, useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { ChangeEvent, FormEvent, useMemo } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { isEmail } from '../../../../domain/utils'
 import { useConfirmUserEmail } from '../../../hooks/useConfirmUserEmail'
 import { useRefreshUserEmailConfirmationCode } from '../../../hooks/useRefreshUserEmailConfirmationCode'
 import { CentralizedBox } from '../../layout/CentralizedBox'
 
 export function ConfirmUserEmail() {
-  const { isConfirming, confirm } = useConfirmUserEmail()
-  const { isRefreshing, refresh } = useRefreshUserEmailConfirmationCode()
-
-  const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const userEmail = useMemo(
     () => searchParams.get('email') || '',
     [searchParams]
   )
 
-  const [confirmationCode, setConfirmationCode] = useState<string>('')
+  const { confirmationCode, setConfirmationCode, isConfirming, confirm } =
+    useConfirmUserEmail(userEmail)
+  const { isRefreshing, refresh } = useRefreshUserEmailConfirmationCode()
 
   const isValid = isEmail(userEmail)
   const subtitle = useMemo(() => {
@@ -31,13 +29,7 @@ export function ConfirmUserEmail() {
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
-
-    const params = { email: userEmail, confirmationCode }
-    const confirmed = await confirm(params)
-    if (confirmed) {
-      setConfirmationCode('')
-      navigate('/')
-    }
+    await confirm()
   }
 
   const handleClickRequestNewConfirmationCode = async () => {

@@ -1,28 +1,40 @@
 import { useToast } from '@chakra-ui/react'
 import { useState } from 'react'
-import { ConfirmUserEmail } from '../../domain/services/confirm-user-email'
+import { useNavigate } from 'react-router-dom'
 import { makeConfirmUserEmail } from '../factories/confirm-user-email-factory'
 
 export type Result = {
+  confirmationCode: string,
+  setConfirmationCode: (value: string) => void,
   isConfirming: boolean
-  confirm: (params: ConfirmUserEmail.Params) => Promise<boolean>
+  confirm: () => Promise<boolean>
 }
 
-export function useConfirmUserEmail(): Result {
+export function useConfirmUserEmail(email: string): Result {
+  const navigate = useNavigate()
   const notify = useToast()
   const [isConfirming, setIsConfirming] = useState(false)
 
-  const confirm = async (params: ConfirmUserEmail.Params) => {
+  const [confirmationCode, setConfirmationCode] = useState<string>('')
+
+  const confirm = async () => {
     try {
       setIsConfirming(true)
       const confirmUserEmail = makeConfirmUserEmail()
-      await confirmUserEmail.confirm(params)
+      await confirmUserEmail.confirm({
+        email,
+        confirmationCode
+      })
+
+      setConfirmationCode('')
 
       notify({
         status: 'success',
         title: 'Confirmado.',
         description: 'E-mail da conta confirmado com sucesso.'
       })
+
+      navigate('/')
 
       return true
     } catch (error) {
@@ -41,6 +53,8 @@ export function useConfirmUserEmail(): Result {
   }
 
   return {
+    confirmationCode,
+    setConfirmationCode,
     isConfirming,
     confirm
   }
