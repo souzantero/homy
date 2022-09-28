@@ -40,7 +40,7 @@ export function ConfirmUserEmail() {
     <CentralizedBox title="Confirmar e-mail" subtitle={subtitle}>
       <Stack as={'form'} spacing={4} onSubmit={handleSubmit}>
         <FormControl
-          id="email"
+          id="confirmation-code"
           isRequired
           isDisabled={!isValid || isConfirming || isRefreshing}
         >

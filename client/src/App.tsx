@@ -15,7 +15,8 @@ import {
   Signed,
   SignUp,
   UnauthorizedUser,
-  UnsignedUser
+  UnsignedUser,
+  ForgetUserPassword
 } from './app/components'
 
 export type AppManager = {}
@@ -36,10 +37,10 @@ function App() {
                 <Route path="sign-in" element={<SignIn />} />
                 <Route path="sign-up" element={<SignUp />} />
               </Route>
-              <Route
-                path="users/confirm-email"
-                element={<ConfirmUserEmail />}
-              />
+              <Route path="users">
+                <Route path="confirm-email" element={<ConfirmUserEmail />} />
+                <Route path="forget-password" element={<ForgetUserPassword />} />
+              </Route>
               <Route path="/" element={<SidebarWithHeader />}>
                 <Route path="products">
                   <Route index element={<Products />} />

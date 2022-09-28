@@ -1,5 +1,6 @@
 export * from './useAddProduct'
 export * from './useConfirmUserEmail'
+export * from './useForgetUserPassword'
 export * from './useProduct'
 export * from './useProducts'
 export * from './useRefreshUserEmailConfirmationCode'
