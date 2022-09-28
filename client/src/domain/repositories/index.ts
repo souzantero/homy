@@ -1,6 +1,7 @@
 export * from './add-product-repository'
 export * from './authentication-repository'
 export * from './confirm-user-email-repository'
+export * from './forget-user-password-repository'
 export * from './load-product-by-id-repository'
 export * from './load-products-repository'
 export * from './load-signed-user-repository'

@@ -28,7 +28,7 @@ export function CentralizedBox({
       <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
         <Stack align={'center'}>
           <Heading fontSize={'4xl'}>{title}</Heading>
-          <Text fontSize={'lg'} color={'gray.600'} align='center'>
+          <Text fontSize={'lg'} color={'gray.600'} align="center">
             {subtitle}
           </Text>
         </Stack>

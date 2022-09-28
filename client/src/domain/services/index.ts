@@ -1,5 +1,6 @@
 export * from './add-product'
 export * from './confirm-user-email'
+export * from './forget-user-password'
 export * from './load-product-by-id'
 export * from './load-products'
 export * from './load-signed-user'

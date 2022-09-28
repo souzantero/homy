@@ -39,7 +39,10 @@ function App() {
               </Route>
               <Route path="users">
                 <Route path="confirm-email" element={<ConfirmUserEmail />} />
-                <Route path="forget-password" element={<ForgetUserPassword />} />
+                <Route
+                  path="forget-password"
+                  element={<ForgetUserPassword />}
+                />
               </Route>
               <Route path="/" element={<SidebarWithHeader />}>
                 <Route path="products">

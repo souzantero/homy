@@ -2,13 +2,15 @@ import {
   ConfirmUserEmailRepository,
   User,
   RawUser,
-  RefreshUserEmailConfirmationCodeRepository
+  RefreshUserEmailConfirmationCodeRepository,
+  ForgetUserPasswordRepository
 } from '../../../domain'
 
 export class UserFetchRepository
   implements
     ConfirmUserEmailRepository,
-    RefreshUserEmailConfirmationCodeRepository
+    RefreshUserEmailConfirmationCodeRepository,
+    ForgetUserPasswordRepository
 {
   constructor(
     private readonly hostAddress: string,
@@ -51,5 +53,9 @@ export class UserFetchRepository
       const body = await response.json()
       throw new Error(body.message)
     }
+  }
+
+  forgetUserPassword(email: string): Promise<void> {
+    throw new Error('Method not implemented.')
   }
 }

@@ -75,7 +75,9 @@ export function SignIn() {
             >
               Lembrar
             </Checkbox>
-            <Link as={RouterLink} to={'/users/forget-password'} color={'blue'}>Esqueceu a senha?</Link>
+            <Link as={RouterLink} to={'/users/forget-password'} color={'blue'}>
+              Esqueceu a senha?
+            </Link>
           </Stack>
           <Button
             type="submit"
