@@ -294,6 +294,7 @@ describe('App (e2e)', () => {
         delete user.deletedAt
         delete user.password
         delete user.emailConfirmationCode
+        delete user.passwordResetToken
         expect(body).toEqual(serialize(user))
 
         const decrypted = await decrypter.decrypt(body.authorizationToken)
@@ -475,6 +476,7 @@ describe('App (e2e)', () => {
         delete createdUser.deletedAt
         delete createdUser.password
         delete createdUser.emailConfirmationCode
+        delete createdUser.passwordResetToken
 
         expect(status).toBe(200)
         expect(body).toBeDefined()
@@ -594,7 +596,7 @@ describe('App (e2e)', () => {
       })
     })
 
-    describe('/refresh-email-confirmation-code', () => {
+    describe('/email-confirmation-code', () => {
       it('should refresh user email confirmation code', async () => {
         const addUser = app.get<AddUser>(AddUser)
         const { id } = await addUser.add({
@@ -606,7 +608,7 @@ describe('App (e2e)', () => {
         const addedUser = await findOneUserById(prisma, id)
 
         const { status, body } = await request(app.getHttpServer())
-          .patch(`/users/refresh-email-confirmation-code`)
+          .post(`/users/email-confirmation-code`)
           .set('Content-Type', 'application/json')
           .send({
             email: 'souzantero@gmail.com'
@@ -624,8 +626,125 @@ describe('App (e2e)', () => {
         expect(refreshedUser.updatedAt).not.toBeNull()
       })
 
-      it.skip('should be not found when user does not exist', () => {})
-      it.skip('should be bad request when user email has already been confirmed', () => {})
+      it('should be not found when user does not exist', async () => {
+        const { status, body } = await request(app.getHttpServer())
+          .post(`/users/email-confirmation-code`)
+          .set('Content-Type', 'application/json')
+          .send({
+            email: 'souzantero@gmail.com'
+          })
+
+        expect(status).toBe(404)
+        expect(body).toHaveProperty('message', 'user not found')
+      })
+
+      it('should be bad request when user email has already been confirmed', async () => {
+        const id = identifier.identify()
+        await prisma.user.create({
+          data: {
+            id,
+            name: 'Felipe Antero',
+            email: 'souzantero@gmail.com',
+            password: await hasher.hash('12345678'),
+            confirmedEmail: true,
+            createdAt: new Date()
+          }
+        })
+
+        const { status, body } = await request(app.getHttpServer())
+          .post(`/users/email-confirmation-code`)
+          .set('Content-Type', 'application/json')
+          .send({
+            email: 'souzantero@gmail.com'
+          })
+
+        expect(status).toBe(400)
+        expect(body).toHaveProperty(
+          'message',
+          'user email has already been confirmed'
+        )
+      })
+
+      it.skip('should be bad request when user email is not sent', () => {})
+    })
+
+    describe('/password-reset-token', () => {
+      it('should create an user password reset code', async () => {
+        const id = identifier.identify()
+        await prisma.user.create({
+          data: {
+            id,
+            name: 'Felipe Antero',
+            email: 'souzantero@gmail.com',
+            password: await hasher.hash('12345678'),
+            confirmedEmail: true,
+            createdAt: new Date()
+          }
+        })
+
+        const { status, body } = await request(app.getHttpServer())
+          .post(`/users/password-reset-token`)
+          .set('Content-Type', 'application/json')
+          .send({
+            email: 'souzantero@gmail.com'
+          })
+
+        expect(status).toBe(204)
+        expect(body).toEqual({})
+
+        const user = await findOneUserById(prisma, id)
+        expect(user).not.toBeNull()
+        expect(user.passwordResetToken).not.toBeNull()
+        expect(user.updatedAt).not.toBeNull()
+
+        const decrypted = await decrypter.decrypt(user.passwordResetToken)
+        expect(decrypted).toHaveProperty('sub', user.id)
+        expect(decrypted.iat).not.toBeNull()
+        expect(typeof decrypted.iat === 'number').toBeTruthy()
+        expect(new Date(decrypted.iat).getTime()).toBeLessThan(
+          new Date().getTime()
+        )
+      })
+
+      it('should be bad request when user email has not been confirmed', async () => {
+        const id = identifier.identify()
+        await prisma.user.create({
+          data: {
+            id,
+            name: 'Felipe Antero',
+            email: 'souzantero@gmail.com',
+            password: await hasher.hash('12345678'),
+            confirmedEmail: false,
+            createdAt: new Date()
+          }
+        })
+
+        const { status, body } = await request(app.getHttpServer())
+          .post(`/users/password-reset-token`)
+          .set('Content-Type', 'application/json')
+          .send({
+            email: 'souzantero@gmail.com'
+          })
+
+        expect(status).toBe(400)
+        expect(body).toHaveProperty(
+          'message',
+          "the user's email has not yet been confirmed"
+        )
+      })
+
+      it('should be not found when user does not exist', async () => {
+        const { status, body } = await request(app.getHttpServer())
+          .post(`/users/password-reset-token`)
+          .set('Content-Type', 'application/json')
+          .send({
+            email: 'souzantero@gmail.com'
+          })
+
+        expect(status).toBe(404)
+        expect(body).toHaveProperty('message', 'user not found')
+      })
+
       it.skip('should be bad request when user email is not sent', () => {})
     })
   })

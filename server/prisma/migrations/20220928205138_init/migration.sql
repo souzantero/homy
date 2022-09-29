@@ -12,6 +12,7 @@ CREATE TABLE "User" (
     "password" TEXT NOT NULL,
     "role" "Role" NOT NULL DEFAULT 'USER',
     "authorizationToken" TEXT,
+    "passwordResetToken" TEXT,
     "emailConfirmationCode" TEXT,
     "confirmedEmail" BOOLEAN NOT NULL DEFAULT false,
 

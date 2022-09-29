@@ -12,9 +12,7 @@ export class AuthenticateUserByAuthorizationToken {
     authorizationToken: string
   ): Promise<AuthenticateUserByAuthorizationToken.Result> {
     try {
-      const decrypted = (await this.decrypter.decrypt(
-        authorizationToken
-      )) as any
+      const decrypted = await this.decrypter.decrypt(authorizationToken)
       if (!decrypted) return null
       const user = await this.loadUserById.load(decrypted.sub)
       if (!user) return null

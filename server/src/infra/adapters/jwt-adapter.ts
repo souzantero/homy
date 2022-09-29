@@ -10,7 +10,7 @@ export class JwtAdapter implements Encrypter, Decrypter {
     return jwt.sign({ sub: plaintext, iat: Date.now() }, this.secret)
   }
 
-  async decrypt(ciphertext: string): Promise<string> {
-    return jwt.verify(ciphertext, this.secret) as string
+  async decrypt<T = any>(ciphertext: string): Promise<T> {
+    return jwt.verify(ciphertext, this.secret) as T
   }
 }
