@@ -770,7 +770,6 @@ describe('App (e2e)', () => {
           .set('Content-Type', 'application/json')
           .set('Authorization', `Bearer ${authorizationToken}`)
           .send({
-            email: 'souzantero@gmail.com',
             password: '87654321'
           })
 
@@ -790,7 +789,6 @@ describe('App (e2e)', () => {
           .post(`/users/reset-password`)
           .set('Content-Type', 'application/json')
           .send({
-            email: 'souzantero@gmail.com',
             password: '87654321'
           })
 
@@ -798,35 +796,6 @@ describe('App (e2e)', () => {
         expect(body).toHaveProperty('message', 'Unauthorized')
       })
 
-      it('should be not found when user does not exist', async () => {
-        const id = identifier.identify()
-        const authorizationToken = await encrypter.encrypt(id)
-        await prisma.user.create({
-          data: {
-            id,
-            authorizationToken,
-            name: 'Felipe Antero',
-            email: 'souzantero@gmail.com',
-            password: await hasher.hash('12345678'),
-            confirmedEmail: true,
-            createdAt: new Date()
-          }
-        })
-
-        const { status, body } = await request(app.getHttpServer())
-          .post(`/users/reset-password`)
-          .set('Content-Type', 'application/json')
-          .set('Authorization', `Bearer ${authorizationToken}`)
-          .send({
-            email: 'souzantero.1@gmail.com',
-            password: '87654321'
-          })
-
-        expect(status).toBe(404)
-        expect(body).toHaveProperty('message', 'user not found')
-      })
-
-      it.skip('should be bad request when user email is not sent', () => {})
       it.skip('should be bad request when user password is not sent', () => {})
     })
   })

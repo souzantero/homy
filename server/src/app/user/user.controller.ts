@@ -16,6 +16,7 @@ import { UserEmailHasAlreadyBeenConfirmedError } from '../../domain/errors/user-
 import { ConfirmUserEmail } from '../../domain/usecases/confirm-user-email'
 import { ForgetUserPassword } from '../../domain/usecases/forget-user-password'
 import { ResetUserPassword } from '../../domain/usecases/reset-user-password'
+import { User } from '../../domain/models/user'
 import { UserEmailHasNotYetBeenConfirmedError } from '../../domain/errors/user-email-has-not-yet-been-confirmed-error'
 import { ConfirmEmailInput } from './dtos/confirm-email-input'
 import { OutputtedUser } from './dtos/outputted-user'
@@ -23,6 +24,7 @@ import { RefreshUserEmailConfirmationCodeInput } from './dtos/refresh-user-email
 import { ForgetPasswordInput } from './dtos/forget-password-input'
 import { ResetPasswordInput } from './dtos/reset-password-input'
 import { AuthorizationTokenGuard } from '../auth/auth.guards'
+import { AuthenticatedUser } from '../auth/decorators/authenticated-user.decorator'
 
 @Controller('users')
 export class UserController {
@@ -87,15 +89,10 @@ export class UserController {
   @HttpCode(HttpStatus.OK)
   @Post('reset-password')
   async resetPassword(
+    @AuthenticatedUser() user: User,
     @Body() data: ResetPasswordInput
   ): Promise<OutputtedUser> {
-    try {
-      const user = await this.resetUserPassword.reset(data)
-      return new OutputtedUser(user)
-    } catch (error) {
-      if (error instanceof UserNotFoundError)
-        throw new NotFoundException(error.message)
-      else throw error
-    }
+    const resetedUser = await this.resetUserPassword.reset(user, data.password)
+    return new OutputtedUser(resetedUser)
   }
 }
