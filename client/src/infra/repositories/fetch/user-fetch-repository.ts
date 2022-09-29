@@ -8,14 +8,13 @@ import {
 
 export class UserFetchRepository
   implements
-    ConfirmUserEmailRepository,
-    RefreshUserEmailConfirmationCodeRepository,
-    ForgetUserPasswordRepository
-{
+  ConfirmUserEmailRepository,
+  RefreshUserEmailConfirmationCodeRepository,
+  ForgetUserPasswordRepository {
   constructor(
     private readonly hostAddress: string,
     private readonly authorizationToken?: string
-  ) {}
+  ) { }
 
   async confirmUserEmail(
     params: ConfirmUserEmailRepository.Params
@@ -39,9 +38,9 @@ export class UserFetchRepository
 
   async refreshUserEmailConfirmationCode(email: string): Promise<void> {
     const response = await fetch(
-      `${this.hostAddress}/users/refresh-email-confirmation-code`,
+      `${this.hostAddress}/users/email-confirmation-code`,
       {
-        method: 'PATCH',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
@@ -55,7 +54,21 @@ export class UserFetchRepository
     }
   }
 
-  forgetUserPassword(email: string): Promise<void> {
-    throw new Error('Method not implemented.')
+  async forgetUserPassword(email: string): Promise<void> {
+    const response = await fetch(
+      `${this.hostAddress}/users/password-reset-token`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email })
+      }
+    )
+
+    if (!response.ok) {
+      const body = await response.json()
+      throw new Error(body.message)
+    }
   }
 }

@@ -1,7 +1,16 @@
 import { FormEvent } from 'react'
-import { Button, FormControl, FormLabel, Input, Stack } from '@chakra-ui/react'
+import { Link as RouterLink } from 'react-router-dom'
+import {
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Link,
+  Stack
+} from '@chakra-ui/react'
 import { CentralizedBox } from '../../layout/CentralizedBox'
 import { useForgetUserPassword } from '../../../hooks'
+import { isEmail } from '../../../../domain/utils'
 
 export function ForgetUserPassword() {
   const { email, setEmail, isForgetting, forget } = useForgetUserPassword()
@@ -36,6 +45,18 @@ export function ForgetUserPassword() {
           >
             Esquecer
           </Button>
+          <Stack align={'center'}>
+            <Link
+              as={RouterLink}
+              to={isEmail(email) ? `/users/confirm-email?email=${email}` : '#'}
+              color={'blue'}
+            >
+              Ainda não confirmou seu e-mail? Confirmar
+            </Link>
+            <Link as={RouterLink} to={'/auth/sign-in'} color={'blue'}>
+              Lembrou a sua senha? Entrar
+            </Link>
+          </Stack>
         </Stack>
       </Stack>
     </CentralizedBox>
