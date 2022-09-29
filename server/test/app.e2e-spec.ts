@@ -9,6 +9,7 @@ import { UuidAdapter } from '../src/infra/adapters/uuid-adapter'
 import { Identifier } from '../src/domain/protocols/identifier'
 import { BcryptAdapter } from '../src/infra/adapters/bcrypt-adapter'
 import { JwtAdapter } from '../src/infra/adapters/jwt-adapter'
+import { makeLoadUserById } from '../src/infra/factories/load-user-by-id-factory'
 import { HashComparer } from '../src/domain/protocols/hash-comparer'
 import { Hasher } from '../src/domain/protocols/hasher'
 import { Decrypter } from '../src/domain/protocols/decrypter'
@@ -16,6 +17,7 @@ import { Encrypter } from '../src/domain/protocols/encrypter'
 import { AddUser } from '../src/domain/usecases/add-user'
 import { SignInWithUser } from '../src/domain/usecases/sign-in-with-user'
 import { Role, User } from '../src/domain/models/user'
+import { OutputtedUser } from '../src/app/user/dtos/outputted-user'
 
 const serialize = (data: any) => JSON.parse(JSON.stringify(data))
 
@@ -294,7 +296,7 @@ describe('App (e2e)', () => {
         delete user.deletedAt
         delete user.password
         delete user.emailConfirmationCode
-        delete user.passwordResetToken
+
         expect(body).toEqual(serialize(user))
 
         const decrypted = await decrypter.decrypt(body.authorizationToken)
@@ -476,7 +478,6 @@ describe('App (e2e)', () => {
         delete createdUser.deletedAt
         delete createdUser.password
         delete createdUser.emailConfirmationCode
-        delete createdUser.passwordResetToken
 
         expect(status).toBe(200)
         expect(body).toBeDefined()
@@ -668,7 +669,7 @@ describe('App (e2e)', () => {
       it.skip('should be bad request when user email is not sent', () => {})
     })
 
-    describe('/password-reset-token', () => {
+    describe('/forget-password', () => {
       it('should create an user password reset code', async () => {
         const id = identifier.identify()
         await prisma.user.create({
@@ -683,7 +684,7 @@ describe('App (e2e)', () => {
         })
 
         const { status, body } = await request(app.getHttpServer())
-          .post(`/users/password-reset-token`)
+          .post(`/users/forget-password`)
           .set('Content-Type', 'application/json')
           .send({
             email: 'souzantero@gmail.com'
@@ -694,10 +695,10 @@ describe('App (e2e)', () => {
 
         const user = await findOneUserById(prisma, id)
         expect(user).not.toBeNull()
-        expect(user.passwordResetToken).not.toBeNull()
+        expect(user.authorizationToken).not.toBeNull()
         expect(user.updatedAt).not.toBeNull()
 
-        const decrypted = await decrypter.decrypt(user.passwordResetToken)
+        const decrypted = await decrypter.decrypt(user.authorizationToken)
         expect(decrypted).toHaveProperty('sub', user.id)
         expect(decrypted.iat).not.toBeNull()
         expect(typeof decrypted.iat === 'number').toBeTruthy()
@@ -720,7 +721,7 @@ describe('App (e2e)', () => {
         })
 
         const { status, body } = await request(app.getHttpServer())
-          .post(`/users/password-reset-token`)
+          .post(`/users/forget-password`)
           .set('Content-Type', 'application/json')
           .send({
             email: 'souzantero@gmail.com'
@@ -735,7 +736,7 @@ describe('App (e2e)', () => {
 
       it('should be not found when user does not exist', async () => {
         const { status, body } = await request(app.getHttpServer())
-          .post(`/users/password-reset-token`)
+          .post(`/users/forget-password`)
           .set('Content-Type', 'application/json')
           .send({
             email: 'souzantero@gmail.com'
@@ -746,6 +747,87 @@ describe('App (e2e)', () => {
       })
 
       it.skip('should be bad request when user email is not sent', () => {})
+    })
+
+    describe('/reset-password', () => {
+      it('should reset the user password', async () => {
+        const id = identifier.identify()
+        const authorizationToken = await encrypter.encrypt(id)
+        await prisma.user.create({
+          data: {
+            id,
+            authorizationToken,
+            name: 'Felipe Antero',
+            email: 'souzantero@gmail.com',
+            password: await hasher.hash('12345678'),
+            confirmedEmail: true,
+            createdAt: new Date()
+          }
+        })
+
+        const { status, body } = await request(app.getHttpServer())
+          .post(`/users/reset-password`)
+          .set('Content-Type', 'application/json')
+          .set('Authorization', `Bearer ${authorizationToken}`)
+          .send({
+            email: 'souzantero@gmail.com',
+            password: '87654321'
+          })
+
+        expect(status).toBe(200)
+
+        const user = await makeLoadUserById(prisma).load(id)
+        const outputtedUser = new OutputtedUser(user)
+
+        expect(body).toEqual(serialize(outputtedUser))
+        expect(
+          await hashComparer.compare('87654321', user.password)
+        ).toBeTruthy()
+      })
+
+      it('should be unauthorized when authorization token is not sent', async () => {
+        const { status, body } = await request(app.getHttpServer())
+          .post(`/users/reset-password`)
+          .set('Content-Type', 'application/json')
+          .send({
+            email: 'souzantero@gmail.com',
+            password: '87654321'
+          })
+
+        expect(status).toBe(401)
+        expect(body).toHaveProperty('message', 'Unauthorized')
+      })
+
+      it('should be not found when user does not exist', async () => {
+        const id = identifier.identify()
+        const authorizationToken = await encrypter.encrypt(id)
+        await prisma.user.create({
+          data: {
+            id,
+            authorizationToken,
+            name: 'Felipe Antero',
+            email: 'souzantero@gmail.com',
+            password: await hasher.hash('12345678'),
+            confirmedEmail: true,
+            createdAt: new Date()
+          }
+        })
+
+        const { status, body } = await request(app.getHttpServer())
+          .post(`/users/reset-password`)
+          .set('Content-Type', 'application/json')
+          .set('Authorization', `Bearer ${authorizationToken}`)
+          .send({
+            email: 'souzantero.1@gmail.com',
+            password: '87654321'
+          })
+
+        expect(status).toBe(404)
+        expect(body).toHaveProperty('message', 'user not found')
+      })
+
+      it.skip('should be bad request when user email is not sent', () => {})
+      it.skip('should be bad request when user password is not sent', () => {})
     })
   })
 

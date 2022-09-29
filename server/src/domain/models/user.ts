@@ -13,7 +13,6 @@ export type User = {
   password: string
   role: Role
   authorizationToken?: string
-  passwordResetToken?: string
   emailConfirmationCode?: string
   confirmedEmail: boolean
 }

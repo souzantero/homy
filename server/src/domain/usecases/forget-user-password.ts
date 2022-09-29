@@ -5,18 +5,18 @@ import { Encrypter } from '../protocols/encrypter'
 import { LoadUser } from './load-user'
 import { UpdateUserById } from './update-user-by-id'
 
-export class CreateUserPasswordResetToken {
+export class ForgetUserPassword {
   constructor(
     private readonly encrypter: Encrypter,
     private readonly loadUser: LoadUser,
     private readonly updateUserById: UpdateUserById
   ) {}
 
-  async create(email: string): Promise<User> {
+  async forget(email: string): Promise<User> {
     const user = await this.loadUser.loadOne({ email })
     if (!user) throw new UserNotFoundError()
     if (!user.confirmedEmail) throw new UserEmailHasNotYetBeenConfirmedError()
-    const passwordResetToken = await this.encrypter.encrypt(user.id)
-    return this.updateUserById.updateById(user.id, { passwordResetToken })
+    const authorizationToken = await this.encrypter.encrypt(user.id)
+    return this.updateUserById.updateById(user.id, { authorizationToken })
   }
 }

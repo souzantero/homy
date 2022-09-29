@@ -2,10 +2,12 @@ import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { RefreshUserEmailConfirmationCode } from '../../domain/usecases/refresh-user-email-confirmation-code'
 import { ConfirmUserEmail } from '../../domain/usecases/confirm-user-email'
-import { CreateUserPasswordResetToken } from '../../domain/usecases/create-user-password-reset-token'
+import { ForgetUserPassword } from '../../domain/usecases/forget-user-password'
+import { ResetUserPassword } from '../../domain/usecases/reset-user-password'
 import { makeConfirmUserEmail } from '../../infra/factories/confirm-user-email-factory'
 import { makeRefreshUserEmailConfirmationCode } from '../../infra/factories/refresh-user-email-confirmation-code-factory'
-import { makeCreateUserPasswordResetToken } from '../../infra/factories/create-user-password-reset-token-factory'
+import { makeForgetUserPassword } from '../../infra/factories/create-user-password-reset-token-factory'
+import { makeResetUserPassword } from '../../infra/factories/reset-user-password-factory'
 import { PrismaModule } from '../shared/prisma/prisma.module'
 import { PrismaService } from '../shared/prisma/prisma.service'
 import { UserController } from './user.controller'
@@ -20,18 +22,21 @@ import { UserController } from './user.controller'
       useFactory: makeConfirmUserEmail
     },
     {
+      provide: ResetUserPassword,
+      inject: [PrismaService, ConfigService],
+      useFactory: (prisma: PrismaService, config: ConfigService) =>
+        makeResetUserPassword(prisma, +config.get<number>('BCRYPT_SALT'))
+    },
+    {
       provide: RefreshUserEmailConfirmationCode,
       inject: [PrismaService],
       useFactory: makeRefreshUserEmailConfirmationCode
     },
     {
-      provide: CreateUserPasswordResetToken,
+      provide: ForgetUserPassword,
       inject: [PrismaService, ConfigService],
       useFactory: (prisma: PrismaService, config: ConfigService) =>
-        makeCreateUserPasswordResetToken(
-          prisma,
-          config.get<string>('JWT_SECRET')
-        )
+        makeForgetUserPassword(prisma, config.get<string>('JWT_SECRET'))
     }
   ]
 })
