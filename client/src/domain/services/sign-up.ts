@@ -1,3 +1,4 @@
+import { PasswordsDoesNotMatchError } from '../errors/passwords-does-not-match-error'
 import { SignUpRepository } from '../repositories/sign-up-repository'
 import { UpdateSignedUserRepository } from '../repositories/update-signed-user-repository'
 
@@ -14,7 +15,7 @@ export class SignUp {
     confirmedPassword
   }: SignUp.Params): Promise<SignUp.Result> {
     if (password !== confirmedPassword) {
-      throw new Error('passwords does not match')
+      throw new PasswordsDoesNotMatchError()
     }
 
     const signedUser = await this.signUpRepository.signUp({

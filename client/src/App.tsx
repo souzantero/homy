@@ -16,7 +16,8 @@ import {
   SignUp,
   UnauthorizedUser,
   UnsignedUser,
-  ForgetUserPassword
+  ForgetUserPassword,
+  ResetUserPassword
 } from './app/components'
 
 export type AppManager = {}
@@ -43,6 +44,7 @@ function App() {
                   path="forget-password"
                   element={<ForgetUserPassword />}
                 />
+                <Route path="reset-password" element={<ResetUserPassword />} />
               </Route>
               <Route path="/" element={<SidebarWithHeader />}>
                 <Route path="products">
