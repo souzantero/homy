@@ -18,7 +18,7 @@ import {
   UnsignedUser,
   ForgetUserPassword,
   ResetUserPassword
-} from './app/components'
+} from './web'
 
 export type AppManager = {}
 const app: AppManager = {}
