@@ -10,6 +10,9 @@ export class ResetUserPassword {
 
   async reset(user: User, password: string): Promise<User> {
     const hashedPassword = await this.hasher.hash(password)
-    return this.updateUserById.updateById(user.id, { password: hashedPassword })
+    return this.updateUserById.updateById(user.id, {
+      password: hashedPassword,
+      authorizationToken: null
+    })
   }
 }

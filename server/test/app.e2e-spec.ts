@@ -782,6 +782,8 @@ describe('App (e2e)', () => {
         expect(
           await hashComparer.compare('87654321', user.password)
         ).toBeTruthy()
+
+        expect(user.authorizationToken).toBeNull()
       })
 
       it('should be unauthorized when authorization token is not sent', async () => {
