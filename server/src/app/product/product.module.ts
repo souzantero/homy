@@ -20,27 +20,29 @@ import { makeUpdateProductById } from '../../infra/factories/update-product-by-i
     {
       provide: LoadProducts,
       inject: [PrismaService],
-      useFactory: makeLoadProducts
+      useFactory: (prisma: PrismaService) => makeLoadProducts(prisma.client)
     },
     {
       provide: AddProduct,
       inject: [PrismaService],
-      useFactory: makeAddProduct
+      useFactory: (prisma: PrismaService) => makeAddProduct(prisma.client)
     },
     {
       provide: RemoveProductById,
       inject: [PrismaService],
-      useFactory: makeRemoveProductById
+      useFactory: (prisma: PrismaService) =>
+        makeRemoveProductById(prisma.client)
     },
     {
       provide: LoadProductById,
       inject: [PrismaService],
-      useFactory: makeLoadProductById
+      useFactory: (prisma: PrismaService) => makeLoadProductById(prisma.client)
     },
     {
       provide: UpdateProductById,
       inject: [PrismaService],
-      useFactory: makeUpdateProductById
+      useFactory: (prisma: PrismaService) =>
+        makeUpdateProductById(prisma.client)
     }
   ]
 })

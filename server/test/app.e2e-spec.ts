@@ -4,7 +4,6 @@ import { ConfigService } from '@nestjs/config'
 import { PrismaClient } from '@prisma/client'
 import * as request from 'supertest'
 import { AppModule } from '../src/app/app.module'
-import { PrismaService } from '../src/app/shared/prisma/prisma.service'
 import { UuidAdapter } from '../src/infra/adapters/uuid-adapter'
 import { Identifier } from '../src/domain/protocols/identifier'
 import { BcryptAdapter } from '../src/infra/adapters/bcrypt-adapter'
@@ -30,8 +29,9 @@ const findOneUserById = (prisma: PrismaClient, id: string) =>
   prisma.user.findUnique({ where: { id } })
 
 describe('App (e2e)', () => {
+  const prisma: PrismaClient = new PrismaClient()
+
   let app: INestApplication
-  let prisma: PrismaClient
   let identifier: Identifier
   let hasher: Hasher
   let hashComparer: HashComparer
@@ -40,7 +40,7 @@ describe('App (e2e)', () => {
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule]
+      imports: [AppModule.register({ prisma })]
     }).compile()
 
     app = moduleFixture.createNestApplication()
@@ -50,7 +50,7 @@ describe('App (e2e)', () => {
     hashComparer = new BcryptAdapter(+config.get<number>('BCRYPT_SALT'))
     decrypter = new JwtAdapter(config.get<string>('JWT_SECRET'))
     encrypter = new JwtAdapter(config.get<string>('JWT_SECRET'))
-    prisma = prisma ? prisma : app.get<PrismaService>(PrismaService)
+
     await dropDatabase(prisma)
     await app.init()
   })

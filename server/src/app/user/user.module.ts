@@ -19,24 +19,25 @@ import { UserController } from './user.controller'
     {
       provide: ConfirmUserEmail,
       inject: [PrismaService],
-      useFactory: makeConfirmUserEmail
+      useFactory: (prisma: PrismaService) => makeConfirmUserEmail(prisma.client)
     },
     {
       provide: ResetUserPassword,
       inject: [PrismaService, ConfigService],
       useFactory: (prisma: PrismaService, config: ConfigService) =>
-        makeResetUserPassword(prisma, +config.get<number>('BCRYPT_SALT'))
+        makeResetUserPassword(prisma.client, +config.get<number>('BCRYPT_SALT'))
     },
     {
       provide: RefreshUserEmailConfirmationCode,
       inject: [PrismaService],
-      useFactory: makeRefreshUserEmailConfirmationCode
+      useFactory: (prisma: PrismaService) =>
+        makeRefreshUserEmailConfirmationCode(prisma.client)
     },
     {
       provide: ForgetUserPassword,
       inject: [PrismaService, ConfigService],
       useFactory: (prisma: PrismaService, config: ConfigService) =>
-        makeForgetUserPassword(prisma, config.get<string>('JWT_SECRET'))
+        makeForgetUserPassword(prisma.client, config.get<string>('JWT_SECRET'))
     }
   ]
 })

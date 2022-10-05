@@ -27,14 +27,14 @@ import { AuthorizationTokenStrategy } from './strategies/authorization-token.str
       provide: AddUser,
       inject: [PrismaService, ConfigService],
       useFactory: (prisma: PrismaService, config: ConfigService) =>
-        makeAddUser(prisma, +config.get<number>('BCRYPT_SALT'))
+        makeAddUser(prisma.client, +config.get<number>('BCRYPT_SALT'))
     },
     {
       provide: AuthenticateUserByEmailAndPassword,
       inject: [PrismaService, ConfigService],
       useFactory: (prisma: PrismaService, config: ConfigService) =>
         makeAuthenticateUserByEmailAndPassword(
-          prisma,
+          prisma.client,
           +config.get<number>('BCRYPT_SALT')
         )
     },
@@ -43,7 +43,7 @@ import { AuthorizationTokenStrategy } from './strategies/authorization-token.str
       inject: [PrismaService, ConfigService],
       useFactory: (prisma: PrismaService, config: ConfigService) =>
         makeAuthenticateUserByAuthorizationToken(
-          prisma,
+          prisma.client,
           config.get<string>('JWT_SECRET')
         )
     },
@@ -51,12 +51,12 @@ import { AuthorizationTokenStrategy } from './strategies/authorization-token.str
       provide: SignInWithUser,
       inject: [PrismaService, ConfigService],
       useFactory: (prisma: PrismaService, config: ConfigService) =>
-        makeSignInWithUser(prisma, config.get<string>('JWT_SECRET'))
+        makeSignInWithUser(prisma.client, config.get<string>('JWT_SECRET'))
     },
     {
       provide: SignOutWithUser,
       inject: [PrismaService],
-      useFactory: makeSignOutWithUser
+      useFactory: (prisma: PrismaService) => makeSignOutWithUser(prisma.client)
     }
   ]
 })
