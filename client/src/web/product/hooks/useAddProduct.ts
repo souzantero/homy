@@ -34,7 +34,7 @@ export function useAddProduct(): {
       })
 
       queryClient.invalidateQueries(['products'])
-      navigate('/products')
+      navigate('/manager/products')
 
       return product
     } catch (error) {

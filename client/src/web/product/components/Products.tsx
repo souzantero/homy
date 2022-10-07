@@ -11,7 +11,7 @@ export function Products() {
         <ButtonGroup>
           <Signed>
             <Authorization roles={[Role.Admin]} disable>
-              <NavButton to={'/products/new'}>Adicionar</NavButton>
+              <NavButton to={'/manager/products/new'}>Adicionar</NavButton>
             </Authorization>
           </Signed>
         </ButtonGroup>

@@ -26,7 +26,7 @@ export function Product() {
           <Signed>
             <Authorization roles={[Role.Admin]} disable>
               <NavButton
-                to={`/products/${productId}/edit`}
+                to={`/manager/products/${productId}/edit`}
                 isLoading={isLoading}
                 isDisabled={isLoading || !product}
               >

@@ -24,7 +24,7 @@ interface LinkItemProps {
   icon: IconType
 }
 const LinkItems: Array<LinkItemProps> = [
-  { name: 'Produtos', to: '/products', icon: AiOutlineCoffee }
+  { name: 'Produtos', to: '/manager/products', icon: AiOutlineCoffee }
 ]
 
 export function Sidebar() {

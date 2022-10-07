@@ -16,7 +16,7 @@ export function ProductTableRow({ product }: ProductTableRowProps) {
       <Td>{product.name}</Td>
       <Td isNumeric>
         <ButtonGroup>
-          <NavButton to={`/products/${product.id}`}>Abrir</NavButton>
+          <NavButton to={`/manager/products/${product.id}`}>Abrir</NavButton>
           <Signed>
             <Authorization roles={[Role.Admin]} disable>
               <RemoveProductButton

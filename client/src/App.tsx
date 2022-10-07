@@ -46,7 +46,7 @@ function App() {
                 />
                 <Route path="reset-password" element={<ResetUserPassword />} />
               </Route>
-              <Route path="/" element={<SidebarWithHeader />}>
+              <Route path="manager" element={<SidebarWithHeader />}>
                 <Route path="products">
                   <Route index element={<Products />} />
                   <Route

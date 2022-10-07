@@ -38,7 +38,7 @@ export function useUpdateProduct(productId: string): {
       })
 
       queryClient.invalidateQueries(['products'])
-      navigate('/products')
+      navigate('/manager/products')
 
       return updatedProduct
     } catch (error) {
