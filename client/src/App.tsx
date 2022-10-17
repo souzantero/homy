@@ -8,7 +8,6 @@ import {
   ConfirmUserEmail,
   EditProduct,
   Product,
-  Products,
   SidebarWithHeader,
   SignIn,
   Signed,
@@ -18,7 +17,8 @@ import {
   ForgetUserPassword,
   ResetUserPassword
 } from './web'
-import { AddProductPage } from './app/pages'
+import { AddProductPage, ProductPage, ProductsPage } from './app/pages'
+import { EditProductPage } from './app/pages/manager/products/EditProductPage'
 
 export type AppManager = {}
 const app: AppManager = {}
@@ -48,7 +48,7 @@ function App() {
               </Route>
               <Route path="manager" element={<SidebarWithHeader />}>
                 <Route path="products">
-                  <Route index element={<Products />} />
+                  <Route index element={<ProductsPage />} />
                   <Route
                     path="new"
                     element={
@@ -63,7 +63,7 @@ function App() {
                     }
                   />
                   <Route path=":productId">
-                    <Route index element={<Product />} />
+                    <Route index element={<ProductPage />} />
                     <Route
                       path="edit"
                       element={
@@ -72,7 +72,7 @@ function App() {
                             roles={[Role.Admin]}
                             unauthorized={<UnauthorizedUser />}
                           >
-                            <EditProduct />
+                            <EditProductPage />
                           </Authorization>
                         </Signed>
                       }

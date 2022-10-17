@@ -1,20 +1,30 @@
-import { useParams } from 'react-router-dom'
+import { Product } from '../../../domain'
 import { Page, PageHeader, PageBody } from '../../layout'
-import { useUpdateProduct } from '../hooks'
 import { ProductForm } from './ProductForm'
 
-export function EditProduct() {
-  const { productId } = useParams()
-  const { name, setName, isLoading, updateProduct, isUpdating } =
-    useUpdateProduct(productId || '')
+export interface EditProductProps {
+  name: string
+  isLoading: boolean
+  isUpdating: boolean
+  onChangeName: (value: string) => void
+  onUpdate: () => Promise<Product | undefined>
+}
+
+export function EditProduct({
+  name,
+  isLoading,
+  isUpdating,
+  onChangeName,
+  onUpdate
+}: EditProductProps) {
   return (
     <Page>
       <PageHeader title="Editar produto" />
       <PageBody>
         <ProductForm
           value={{ name }}
-          onChange={(data) => setName(data.name)}
-          onSubmit={updateProduct}
+          onChange={(data) => onChangeName(data.name)}
+          onSubmit={onUpdate}
           isDisabled={isLoading || isUpdating}
           isLoading={isLoading || isUpdating}
           buttonText="Salvar"

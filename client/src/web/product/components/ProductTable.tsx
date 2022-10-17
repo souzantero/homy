@@ -7,11 +7,23 @@ import {
   Th,
   Skeleton
 } from '@chakra-ui/react'
-import { useProducts } from '../hooks'
+import { Product } from '../../../domain'
 import { ProductTableRow } from './ProductTableRow'
 
-export function ProductTable() {
-  const { products, isLoading } = useProducts()
+export interface ProductTableProps {
+  products: Product[]
+  isLoading: boolean
+  isRemoving: boolean
+  onShowProduct: (product: Product) => void
+  onRemoveProduct: (product: Product) => Promise<boolean>
+}
+export function ProductTable({
+  products,
+  isLoading,
+  isRemoving,
+  onShowProduct,
+  onRemoveProduct
+}: ProductTableProps) {
   if (isLoading) return <Skeleton height="20px" />
   return (
     <TableContainer>
@@ -24,7 +36,13 @@ export function ProductTable() {
         </Thead>
         <Tbody>
           {products.map((product, index) => (
-            <ProductTableRow key={index} product={product} />
+            <ProductTableRow
+              key={index}
+              product={product}
+              isRemoving={isRemoving}
+              onShow={() => onShowProduct(product)}
+              onRemove={() => onRemoveProduct(product)}
+            />
           ))}
         </Tbody>
       </Table>

@@ -3,14 +3,16 @@ import { AddProduct, Product } from '../../../domain'
 import { Notify } from '../../../presentation'
 
 export interface UseAddProductOptions {
+  action: AddProduct
   onAdded: (product: Product) => void
   onNotify: Notify
 }
 
-export function useAddProduct(
-  action: AddProduct,
-  { onAdded, onNotify }: UseAddProductOptions
-): {
+export function useAddProduct({
+  action,
+  onAdded,
+  onNotify
+}: UseAddProductOptions): {
   name: string
   setName: (name: string) => void
   isAdding: boolean

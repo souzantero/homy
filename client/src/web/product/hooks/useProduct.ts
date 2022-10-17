@@ -1,32 +1,23 @@
 import { useEffect } from 'react'
-import { useToast } from '@chakra-ui/react'
-import { useQuery } from '@tanstack/react-query'
 import { Product } from '../../../domain'
-import { makeLoadProductById } from '../factories'
+import { Notify } from '../../../presentation'
 
-export function useProduct(productId: string): {
+export interface UseProductOptions {
+  useData: () => { product?: Product; isLoading: boolean; error: unknown }
+  onNotify: Notify
+}
+
+export function useProduct({ useData, onNotify }: UseProductOptions): {
   product?: Product
   isLoading: boolean
 } {
-  const notify = useToast()
-  const loadProductById = makeLoadProductById()
-  const {
-    data: product,
-    isLoading,
-    error
-  } = useQuery(
-    [`products/${productId}`],
-    () => loadProductById.load(productId),
-    {
-      refetchOnWindowFocus: true
-    }
-  )
+  const { product, isLoading, error } = useData()
 
   useEffect(() => {
     if (error) {
       const description = error instanceof Error ? error.message : ''
 
-      notify({
+      onNotify({
         status: 'error',
         title: 'Falha ao buscar o produto.',
         description

@@ -1,24 +1,30 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useToast } from '@chakra-ui/react'
-import { useQueryClient } from '@tanstack/react-query'
-import { Product } from '../../../domain'
-import { useSignedUser } from '../../auth'
-import { makeUpdateProductById } from '../factories'
-import { useProduct } from './useProduct'
+import { Product, UpdateProductById } from '../../../domain'
+import { Notify } from '../../../presentation'
 
-export function useUpdateProduct(productId: string): {
+export interface UseUpdateProductOptions {
+  updateProductById: UpdateProductById
+  useProduct: () => { product?: Product; isLoading: boolean }
+  onNotify: Notify
+  onUpdated: (product: Product) => void
+}
+
+export function useUpdateProduct(
+  productId: string,
+  {
+    updateProductById,
+    useProduct,
+    onUpdated,
+    onNotify
+  }: UseUpdateProductOptions
+): {
   name: string
   setName: (name: string) => void
   isUpdating: boolean
   isLoading: boolean
   updateProduct: () => Promise<Product | undefined>
 } {
-  const navigate = useNavigate()
-  const notify = useToast()
-  const queryClient = useQueryClient()
-  const { signedUser } = useSignedUser()
-  const { product, isLoading } = useProduct(productId)
+  const { product, isLoading } = useProduct()
 
   const [name, setName] = useState<string>('')
   const [isUpdating, setIsUpdating] = useState(false)
@@ -26,20 +32,16 @@ export function useUpdateProduct(productId: string): {
   const updateProduct = async () => {
     try {
       setIsUpdating(true)
-
-      const updateProductById = makeUpdateProductById(signedUser!)
       const updatedProduct = await updateProductById.update(productId, { name })
       setName('')
 
-      notify({
+      onNotify({
         status: 'success',
         title: 'Produto atualizado.',
         description: 'Produto atualizado com sucesso.'
       })
 
-      queryClient.invalidateQueries(['products'])
-      navigate('/manager/products')
-
+      onUpdated(updatedProduct)
       return updatedProduct
     } catch (error) {
       const status = 'error'
@@ -48,7 +50,7 @@ export function useUpdateProduct(productId: string): {
         error instanceof Error
           ? error.message
           : 'Não foi possível atualizar o produto no momento, tente novamente mais tarde.'
-      notify({ status, title, description })
+      onNotify({ status, title, description })
     } finally {
       setIsUpdating(false)
     }

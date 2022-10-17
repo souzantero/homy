@@ -12,7 +12,8 @@ export function AddProductPage() {
   const { signedUser } = useSignedUser()
 
   const add = makeAddProduct(signedUser!)
-  const { name, isAdding, setName, addProduct } = useAddProduct(add, {
+  const { name, isAdding, setName, addProduct } = useAddProduct({
+    action: add,
     onAdded: (product: Product) => {
       queryClient.invalidateQueries(['products'])
       navigate('/manager/products')
