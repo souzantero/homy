@@ -1,40 +1,37 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useQueryClient } from '@tanstack/react-query'
-import { useToast } from '@chakra-ui/react'
-import { Product } from '../../../domain'
-import { useSignedUser } from '../../auth'
-import { makeAddProduct } from '../factories'
+import { AddProduct, Product } from '../../../domain'
+import { Notify } from '../../../presentation'
 
-export function useAddProduct(): {
+export interface UseAddProductOptions {
+  onAdded: (product: Product) => void
+  onNotify: Notify
+}
+
+export function useAddProduct(
+  action: AddProduct,
+  { onAdded, onNotify }: UseAddProductOptions
+): {
   name: string
   setName: (name: string) => void
   isAdding: boolean
   addProduct: () => Promise<Product | undefined>
 } {
-  const notify = useToast()
-  const navigate = useNavigate()
-  const queryClient = useQueryClient()
-
-  const { signedUser } = useSignedUser()
   const [name, setName] = useState<string>('')
   const [isAdding, setIsAdding] = useState(false)
 
   const addProduct = async () => {
     try {
       setIsAdding(true)
-      const createProduct = makeAddProduct(signedUser!)
-      const product = await createProduct.add({ name })
+      const product = await action.add({ name })
       setName('')
 
-      notify({
+      onNotify({
         status: 'success',
         title: 'Produto adicionado.',
         description: 'Produto adicionado com sucesso.'
       })
 
-      queryClient.invalidateQueries(['products'])
-      navigate('/manager/products')
+      onAdded(product)
 
       return product
     } catch (error) {
@@ -44,7 +41,7 @@ export function useAddProduct(): {
         error instanceof Error
           ? error.message
           : 'Não foi possível adicionar o produto no momento, tente novamente mais tarde.'
-      notify({ status, title, description })
+      onNotify({ status, title, description })
     } finally {
       setIsAdding(false)
     }

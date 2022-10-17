@@ -1,4 +1,4 @@
-import env from '../../config/env'
+import env from '../../../app/config/env'
 import { SignIn } from '../../../domain/services/sign-in'
 import {
   AuthenticationFetchRepository,

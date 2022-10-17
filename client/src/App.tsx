@@ -4,7 +4,6 @@ import { ChakraProvider } from '@chakra-ui/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Role } from './domain'
 import {
-  AddProduct,
   Authorization,
   ConfirmUserEmail,
   EditProduct,
@@ -19,6 +18,7 @@ import {
   ForgetUserPassword,
   ResetUserPassword
 } from './web'
+import { AddProductPage } from './app/pages'
 
 export type AppManager = {}
 const app: AppManager = {}
@@ -57,7 +57,7 @@ function App() {
                           roles={[Role.Admin]}
                           unauthorized={<UnauthorizedUser />}
                         >
-                          <AddProduct />
+                          <AddProductPage />
                         </Authorization>
                       </Signed>
                     }

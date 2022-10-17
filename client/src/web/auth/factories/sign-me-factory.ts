@@ -4,7 +4,7 @@ import {
   SignedUserSessionStorageRepository,
   SignedUserLocalStorageRepository
 } from '../../../infra'
-import env from '../../config/env'
+import env from '../../../app/config/env'
 
 export const makeSignMe = (signedUser: User, remind: boolean) => {
   const authenticationRepository = new AuthenticationFetchRepository(

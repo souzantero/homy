@@ -3,7 +3,7 @@ import {
   AuthenticationFetchRepository,
   SignedUserSessionStorageRepository
 } from '../../../infra'
-import env from '../../config/env'
+import env from '../../../app/config/env'
 
 export const makeSignUp = () => {
   const authenticationRepository = new AuthenticationFetchRepository(

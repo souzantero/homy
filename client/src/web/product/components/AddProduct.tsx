@@ -1,17 +1,28 @@
+import { Product } from '../../../domain'
 import { Page, PageHeader, PageBody } from '../../layout'
-import { useAddProduct } from '../hooks'
 import { ProductForm } from './ProductForm'
 
-export function AddProduct() {
-  const { name, setName, addProduct, isAdding } = useAddProduct()
+export interface AddProductProps {
+  name: string
+  isAdding: boolean
+  onChangeName: (value: string) => void
+  onAdd: () => Promise<Product | undefined>
+}
+
+export function AddProduct({
+  name,
+  isAdding,
+  onChangeName,
+  onAdd
+}: AddProductProps) {
   return (
     <Page>
       <PageHeader title="Adicionar produto" />
       <PageBody>
         <ProductForm
           value={{ name }}
-          onChange={(data) => setName(data.name)}
-          onSubmit={addProduct}
+          onChange={(data) => onChangeName(data.name)}
+          onSubmit={onAdd}
           isDisabled={isAdding}
           isLoading={isAdding}
         />

@@ -1,6 +1,6 @@
 import { LoadProducts } from '../../../domain'
 import { ProductFetchRepository } from '../../../infra'
-import env from '../../config/env'
+import env from '../../../app/config/env'
 
 export const makeLoadProducts = () => {
   const productRepository = new ProductFetchRepository(env.serverHostAddress)

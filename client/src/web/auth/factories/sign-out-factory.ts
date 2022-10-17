@@ -5,7 +5,7 @@ import {
   SignedUserSessionStorageRepository,
   SignedUserLocalStorageRepository
 } from '../../../infra'
-import env from '../../config/env'
+import env from '../../../app/config/env'
 
 export const makeSignOut = (signedUser: User) => {
   const authenticationRepository = new AuthenticationFetchRepository(
