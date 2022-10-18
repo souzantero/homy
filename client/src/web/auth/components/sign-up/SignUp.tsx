@@ -1,5 +1,4 @@
 import { ChangeEvent, FormEvent } from 'react'
-import { Link as RouterLink } from 'react-router-dom'
 import {
   FormControl,
   FormLabel,
@@ -9,39 +8,53 @@ import {
   Button
 } from '@chakra-ui/react'
 import { AuthenticationLayout } from '../AuthenticationLayout'
-import { useSignUp } from '../../hooks'
+import { User } from '../../../../domain'
 
-export function SignUp() {
-  const {
-    name,
-    setName,
-    email,
-    setEmail,
-    password,
-    setPassword,
-    confirmedPassword,
-    setConfirmedPassword,
-    signUp,
-    isSigning,
-    isLoading
-  } = useSignUp()
+export interface SingUpProps {
+  name: string
+  onChangeName: (value: string) => void
+  email: string
+  onChangeEmail: (value: string) => void
+  password: string
+  onChangePassword: (value: string) => void
+  confirmedPassword: string
+  onChangeConfirmedPassword: (value: string) => void
+  onSignUp: () => Promise<User | undefined>
+  onSignIn: () => void
+  isSigning: boolean
+  isLoading: boolean
+}
 
+export function SignUp({
+  name,
+  onChangeName,
+  email,
+  onChangeEmail,
+  password,
+  onChangePassword,
+  confirmedPassword,
+  onChangeConfirmedPassword,
+  onSignUp,
+  onSignIn,
+  isSigning,
+  isLoading
+}: SingUpProps) {
   const handleChangeName = (event: ChangeEvent<HTMLInputElement>) =>
-    setName(event.target.value)
+    onChangeName(event.target.value)
 
   const handleChangeEmail = (event: ChangeEvent<HTMLInputElement>) =>
-    setEmail(event.target.value)
+    onChangeEmail(event.target.value)
 
   const handleChangePassword = (event: ChangeEvent<HTMLInputElement>) =>
-    setPassword(event.target.value)
+    onChangePassword(event.target.value)
 
   const handleChangeConfirmedPassword = (
     event: ChangeEvent<HTMLInputElement>
-  ) => setConfirmedPassword(event.target.value)
+  ) => onChangeConfirmedPassword(event.target.value)
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
-    await signUp()
+    await onSignUp()
   }
 
   return (
@@ -106,7 +119,7 @@ export function SignUp() {
             Cadastrar
           </Button>
           <Stack align={'center'}>
-            <Link as={RouterLink} to="/auth/sign-in" color={'blue'}>
+            <Link color={'blue'} onClick={onSignIn}>
               Já possui uma conta? Entrar
             </Link>
           </Stack>

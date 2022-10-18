@@ -1,11 +1,19 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useToast } from '@chakra-ui/react'
-import { SignUp } from '../../../domain'
-import { makeSignUp } from '../factories'
+import { SignUp, User } from '../../../domain'
 import { useSignedUser } from './useSignedUser'
+import { Notify } from '../../../presentation'
 
-export function useSignUp(): {
+export interface UseSignUpOptions {
+  signUpUser: SignUp
+  onSigned: (signedUser: User) => void
+  onNotify: Notify
+}
+
+export function useSignUp({
+  signUpUser,
+  onSigned,
+  onNotify
+}: UseSignUpOptions): {
   name: string
   setName: (value: string) => void
   email: string
@@ -18,9 +26,6 @@ export function useSignUp(): {
   isSigning: boolean
   isLoading: boolean
 } {
-  const notify = useToast()
-  const navigate = useNavigate()
-
   const { signedUser, isLoading } = useSignedUser()
   const [isSigning, setIsSigning] = useState(false)
 
@@ -32,9 +37,7 @@ export function useSignUp(): {
   const signUp = async () => {
     try {
       setIsSigning(true)
-
-      const signUp = makeSignUp()
-      const signedUser = await signUp.signUp({
+      const signedUser = await signUpUser.signUp({
         name,
         email,
         password,
@@ -45,13 +48,14 @@ export function useSignUp(): {
       setEmail('')
       setPassword('')
       setConfirmedPassword('')
-      navigate('/')
 
-      notify({
+      onNotify({
         status: 'success',
         title: 'Cadastrado.',
         description: 'Cadastro realizado com sucesso.'
       })
+
+      onSigned(signedUser)
 
       return signedUser
     } catch (error) {
@@ -61,7 +65,7 @@ export function useSignUp(): {
         error instanceof Error
           ? error.message
           : 'Não foi possível cadastrar a sua conta no momento, tente novamente mais tarde.'
-      notify({ status, title, description })
+      onNotify({ status, title, description })
     } finally {
       setIsSigning(false)
     }
@@ -69,7 +73,7 @@ export function useSignUp(): {
 
   useEffect(() => {
     if (signedUser) {
-      navigate('/')
+      onSigned(signedUser)
     }
   }, [signedUser])
 

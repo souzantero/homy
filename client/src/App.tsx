@@ -8,13 +8,13 @@ import {
   ConfirmUserEmail,
   SidebarWithHeader,
   Signed,
-  SignUp,
   UnauthorizedUser,
   UnsignedUser,
   ForgetUserPassword,
   ResetUserPassword
 } from './web'
 
+import { SignUpPage } from './app/pages/auth/sign-up'
 import { SignInPage } from './app/pages/auth/sign-in'
 import { AddProductPage } from './app/pages/manager/products/add'
 import { EditProductPage } from './app/pages/manager/products/edit'
@@ -37,7 +37,7 @@ function App() {
             <Routes>
               <Route path="auth">
                 <Route path="sign-in" element={<SignInPage />} />
-                <Route path="sign-up" element={<SignUp />} />
+                <Route path="sign-up" element={<SignUpPage />} />
               </Route>
               <Route path="users">
                 <Route path="confirm-email" element={<ConfirmUserEmail />} />

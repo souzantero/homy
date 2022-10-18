@@ -1,9 +1,9 @@
-import { SignUp } from '../../../domain'
+import { SignUp } from '../../domain'
 import {
   AuthenticationFetchRepository,
   SignedUserSessionStorageRepository
-} from '../../../infra'
-import env from '../../../app/config/env'
+} from '../../infra'
+import env from '../config/env'
 
 export const makeSignUp = () => {
   const authenticationRepository = new AuthenticationFetchRepository(
