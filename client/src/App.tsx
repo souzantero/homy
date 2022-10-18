@@ -14,13 +14,12 @@ import {
   ForgetUserPassword,
   ResetUserPassword
 } from './web'
-import {
-  AddProductPage,
-  EditProductPage,
-  ProductPage,
-  ProductsPage,
-  SignInPage
-} from './app/pages'
+
+import { SignInPage } from './app/pages/auth/sign-in'
+import { AddProductPage } from './app/pages/manager/products/add'
+import { EditProductPage } from './app/pages/manager/products/edit'
+import { ProductsPage } from './app/pages/manager/products/index'
+import { ProductPage } from './app/pages/manager/products/show'
 
 export type AppManager = {}
 const app: AppManager = {}
