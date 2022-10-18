@@ -6,10 +6,7 @@ import { Role } from './domain'
 import {
   Authorization,
   ConfirmUserEmail,
-  EditProduct,
-  Product,
   SidebarWithHeader,
-  SignIn,
   Signed,
   SignUp,
   UnauthorizedUser,
@@ -17,8 +14,13 @@ import {
   ForgetUserPassword,
   ResetUserPassword
 } from './web'
-import { AddProductPage, ProductPage, ProductsPage } from './app/pages'
-import { EditProductPage } from './app/pages/manager/products/EditProductPage'
+import {
+  AddProductPage,
+  EditProductPage,
+  ProductPage,
+  ProductsPage,
+  SignInPage
+} from './app/pages'
 
 export type AppManager = {}
 const app: AppManager = {}
@@ -35,7 +37,7 @@ function App() {
           <BrowserRouter>
             <Routes>
               <Route path="auth">
-                <Route path="sign-in" element={<SignIn />} />
+                <Route path="sign-in" element={<SignInPage />} />
                 <Route path="sign-up" element={<SignUp />} />
               </Route>
               <Route path="users">

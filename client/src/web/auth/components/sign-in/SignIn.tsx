@@ -1,5 +1,4 @@
 import { ChangeEvent, FormEvent } from 'react'
-import { Link as RouterLink } from 'react-router-dom'
 import {
   FormControl,
   FormLabel,
@@ -9,31 +8,45 @@ import {
   Link,
   Button
 } from '@chakra-ui/react'
-import { useSignIn } from '../../hooks'
 import { AuthenticationLayout } from '../AuthenticationLayout'
+import { User } from '../../../../domain'
 
-export function SignIn() {
-  const {
-    email,
-    setEmail,
-    password,
-    setPassword,
-    remindMe,
-    setRemindMe,
-    signIn,
-    isSigning,
-    isLoading
-  } = useSignIn()
+export interface SignInProps {
+  email: string
+  onChangeEmail: (value: string) => void
+  password: string
+  onChangePassword: (value: string) => void
+  remindMe: boolean
+  onChangeRemindMe: (value: boolean) => void
+  onSignIn: () => Promise<User | undefined>
+  isSigning: boolean
+  isLoading: boolean
+  onSingUp: () => void
+  onForgetPassword: () => void
+}
 
+export function SignIn({
+  email,
+  onChangeEmail,
+  password,
+  onChangePassword,
+  remindMe,
+  onChangeRemindMe,
+  onSignIn,
+  isSigning,
+  isLoading,
+  onSingUp,
+  onForgetPassword
+}: SignInProps) {
   const handleChangeEmail = (event: ChangeEvent<HTMLInputElement>) =>
-    setEmail(event.target.value)
+    onChangeEmail(event.target.value)
   const handleChangePassword = (event: ChangeEvent<HTMLInputElement>) =>
-    setPassword(event.target.value)
+    onChangePassword(event.target.value)
   const handleChangeRemindMe = (event: ChangeEvent<HTMLInputElement>) =>
-    setRemindMe(event.target.checked)
+    onChangeRemindMe(event.target.checked)
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
-    await signIn()
+    await onSignIn()
   }
 
   return (
@@ -75,7 +88,7 @@ export function SignIn() {
             >
               Lembrar
             </Checkbox>
-            <Link as={RouterLink} to={'/users/forget-password'} color={'blue'}>
+            <Link color={'blue'} onClick={onForgetPassword}>
               Esqueceu a senha?
             </Link>
           </Stack>
@@ -89,7 +102,7 @@ export function SignIn() {
             Entrar
           </Button>
           <Stack align={'center'}>
-            <Link as={RouterLink} to={'/auth/sign-up'} color={'blue'}>
+            <Link color={'blue'} onClick={onSingUp}>
               Cadastre-se
             </Link>
           </Stack>

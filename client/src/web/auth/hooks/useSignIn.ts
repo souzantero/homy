@@ -1,11 +1,19 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useToast } from '@chakra-ui/react'
-import { SignIn } from '../../../domain'
-import { makeSignIn } from '../factories'
+import { SignIn, User } from '../../../domain'
 import { useSignedUser } from './useSignedUser'
+import { Notify } from '../../../presentation'
 
-export function useSignIn(): {
+export interface UseSignInOptions {
+  signInWithUser: SignIn
+  onSigned: (signedUser: User) => void
+  onNotify: Notify
+}
+
+export function useSignIn({
+  signInWithUser,
+  onSigned,
+  onNotify
+}: UseSignInOptions): {
   email: string
   setEmail: (value: string) => void
   password: string
@@ -16,9 +24,6 @@ export function useSignIn(): {
   signIn: () => Promise<SignIn.Result | undefined>
   isLoading: boolean
 } {
-  const navigate = useNavigate()
-  const notify = useToast()
-
   const { signedUser, isLoading } = useSignedUser()
 
   const [email, setEmail] = useState<string>('')
@@ -30,8 +35,7 @@ export function useSignIn(): {
     try {
       setIsSigning(true)
 
-      const signIn = makeSignIn(remindMe)
-      const signedUser = await signIn.signIn({
+      const signedUser = await signInWithUser.signIn({
         email,
         password
       })
@@ -39,13 +43,13 @@ export function useSignIn(): {
       setEmail('')
       setPassword('')
 
-      notify({
+      onNotify({
         status: 'success',
         title: 'Conectado.',
         description: 'Conexão realizada com sucesso.'
       })
 
-      navigate('/')
+      onSigned(signedUser)
 
       return signedUser
     } catch (error) {
@@ -55,7 +59,7 @@ export function useSignIn(): {
         error instanceof Error
           ? error.message
           : 'Não foi possível conectar-se a sua conta no momento, tente novamente mais tarde.'
-      notify({ status, title, description })
+      onNotify({ status, title, description })
     } finally {
       setIsSigning(false)
     }
@@ -63,7 +67,7 @@ export function useSignIn(): {
 
   useEffect(() => {
     if (signedUser) {
-      navigate('/')
+      onSigned(signedUser)
     }
   }, [signedUser])
 

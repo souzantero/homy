@@ -1,10 +1,10 @@
-import env from '../../../app/config/env'
-import { SignIn } from '../../../domain/services/sign-in'
+import env from '../config/env'
+import { SignIn } from '../../domain'
 import {
   AuthenticationFetchRepository,
   SignedUserSessionStorageRepository,
   SignedUserLocalStorageRepository
-} from '../../../infra'
+} from '../../infra'
 
 export const makeSignIn = (remind: boolean) => {
   const authenticationRepository = new AuthenticationFetchRepository(
