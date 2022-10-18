@@ -1,24 +1,30 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useToast } from '@chakra-ui/react'
-import { makeConfirmUserEmail } from '../factories'
+import { Notify } from '../../../presentation'
+import { ConfirmUserEmail } from '../../../domain'
 
-export function useConfirmUserEmail(email: string): {
+export interface UseConfirmUserEmailOptions {
+  confirmUserEmail: ConfirmUserEmail
+  onConfirmed: () => void
+  onNotify: Notify
+}
+
+export function useConfirmUserEmail({
+  confirmUserEmail,
+  onConfirmed,
+  onNotify
+}: UseConfirmUserEmailOptions): {
   confirmationCode: string
   setConfirmationCode: (value: string) => void
   isConfirming: boolean
-  confirm: () => Promise<boolean>
+  confirm: (email: string) => Promise<boolean>
 } {
-  const navigate = useNavigate()
-  const notify = useToast()
   const [isConfirming, setIsConfirming] = useState(false)
 
   const [confirmationCode, setConfirmationCode] = useState<string>('')
 
-  const confirm = async () => {
+  const confirm = async (email: string) => {
     try {
       setIsConfirming(true)
-      const confirmUserEmail = makeConfirmUserEmail()
       await confirmUserEmail.confirm({
         email,
         confirmationCode
@@ -26,13 +32,13 @@ export function useConfirmUserEmail(email: string): {
 
       setConfirmationCode('')
 
-      notify({
+      onNotify({
         status: 'success',
         title: 'Confirmado.',
         description: 'E-mail da conta confirmado com sucesso.'
       })
 
-      navigate('/')
+      onConfirmed()
 
       return true
     } catch (error) {
@@ -42,7 +48,7 @@ export function useConfirmUserEmail(email: string): {
         error instanceof Error
           ? error.message
           : 'Não foi possível confirmar o e-mail a sua conta no momento, tente novamente mais tarde.'
-      notify({ status, title, description })
+      onNotify({ status, title, description })
     } finally {
       setIsConfirming(false)
     }

@@ -1,23 +1,28 @@
 import { useState } from 'react'
-import { useToast } from '@chakra-ui/react'
-import { makeRefreshUserEmailConfirmationCode } from '../factories'
+import { Notify } from '../../../presentation'
+import { RefreshUserEmailConfirmationCode } from '../../../domain'
 
-export function useRefreshUserEmailConfirmationCode(): {
+export interface UseRefreshUserEmailConfirmationCodeOptions {
+  refreshUserEmailConfirmationCode: RefreshUserEmailConfirmationCode
+  onNotify: Notify
+}
+
+export function useRefreshUserEmailConfirmationCode({
+  refreshUserEmailConfirmationCode,
+  onNotify
+}: UseRefreshUserEmailConfirmationCodeOptions): {
   isRefreshing: boolean
   refresh: (email: string) => Promise<void>
 } {
-  const notify = useToast()
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   const refresh = async (email: string) => {
     try {
       setIsRefreshing(true)
 
-      const refreshUserEmailConfirmationCode =
-        makeRefreshUserEmailConfirmationCode()
       await refreshUserEmailConfirmationCode.refresh(email)
 
-      notify({
+      onNotify({
         status: 'success',
         title: 'Código de confirmação atualizado com sucesso.',
         description:
@@ -30,7 +35,7 @@ export function useRefreshUserEmailConfirmationCode(): {
         error instanceof Error
           ? error.message
           : 'Não foi possível atualizar o código de confirmação de e-mail no momento, tente novamente mais tarde.'
-      notify({ status, title, description })
+      onNotify({ status, title, description })
     } finally {
       setIsRefreshing(false)
     }

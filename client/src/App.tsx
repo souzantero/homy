@@ -5,7 +5,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Role } from './domain'
 import {
   Authorization,
-  ConfirmUserEmail,
   SidebarWithHeader,
   Signed,
   UnauthorizedUser,
@@ -20,6 +19,7 @@ import { AddProductPage } from './app/pages/manager/products/add'
 import { EditProductPage } from './app/pages/manager/products/edit'
 import { ProductsPage } from './app/pages/manager/products/index'
 import { ProductPage } from './app/pages/manager/products/show'
+import { ConfirmUserEmailPage } from './app/pages/users/confirm-email'
 
 export type AppManager = {}
 const app: AppManager = {}
@@ -40,7 +40,10 @@ function App() {
                 <Route path="sign-up" element={<SignUpPage />} />
               </Route>
               <Route path="users">
-                <Route path="confirm-email" element={<ConfirmUserEmail />} />
+                <Route
+                  path="confirm-email"
+                  element={<ConfirmUserEmailPage />}
+                />
                 <Route
                   path="forget-password"
                   element={<ForgetUserPassword />}

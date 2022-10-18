@@ -1,41 +1,44 @@
 import { ChangeEvent, FormEvent, useMemo } from 'react'
-import { useSearchParams } from 'react-router-dom'
 import { Button, FormControl, FormLabel, Input, Stack } from '@chakra-ui/react'
 import { isEmail } from '../../../../domain/utils'
 import { CentralizedBox } from '../../../layout'
-import {
-  useConfirmUserEmail,
-  useRefreshUserEmailConfirmationCode
-} from '../../hooks'
 
-export function ConfirmUserEmail() {
-  const [searchParams] = useSearchParams()
-  const userEmail = useMemo(
-    () => searchParams.get('email') || '',
-    [searchParams]
-  )
+export interface ConfirmUserEmailProps {
+  email: string
+  confirmationCode: string
+  onChangeConfirmationCode: (value: string) => void
+  onConfirm: (email: string) => Promise<boolean>
+  onRefresh: (email: string) => Promise<void>
+  isConfirming: boolean
+  isRefreshing: boolean
+}
 
-  const { confirmationCode, setConfirmationCode, isConfirming, confirm } =
-    useConfirmUserEmail(userEmail)
-  const { isRefreshing, refresh } = useRefreshUserEmailConfirmationCode()
-
-  const isValid = isEmail(userEmail)
+export function ConfirmUserEmail({
+  email,
+  confirmationCode,
+  onChangeConfirmationCode,
+  onConfirm,
+  onRefresh,
+  isConfirming,
+  isRefreshing
+}: ConfirmUserEmailProps) {
+  const isValid = isEmail(email)
   const subtitle = useMemo(() => {
-    if (userEmail && isValid) return userEmail
-    else if (userEmail && !isValid) return 'E-mail inválido'
+    if (email && isValid) return email
+    else if (email && !isValid) return 'E-mail inválido'
     else return 'E-mail não informado'
-  }, [userEmail, isValid])
+  }, [email, isValid])
 
   const handleChangeConfirmationCode = (event: ChangeEvent<HTMLInputElement>) =>
-    setConfirmationCode(event.target.value)
+    onChangeConfirmationCode(event.target.value)
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
-    await confirm()
+    await onConfirm(email)
   }
 
   const handleClickRequestNewConfirmationCode = async () => {
-    await refresh(userEmail)
+    await onRefresh(email)
   }
 
   return (
