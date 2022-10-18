@@ -3,13 +3,13 @@ import { Product, RemoveProductById } from '../../../domain'
 import { Notify } from '../../../presentation'
 
 export interface UseRemoveProductOptions {
-  removeProductById: RemoveProductById
+  makeRemoveProductById: () => RemoveProductById
   onRemoved: () => void
   onNotify: Notify
 }
 
 export function useRemoveProduct({
-  removeProductById,
+  makeRemoveProductById,
   onRemoved,
   onNotify
 }: UseRemoveProductOptions): {
@@ -21,6 +21,7 @@ export function useRemoveProduct({
   const removeProduct = async (product: Product) => {
     try {
       setIsRemoving(true)
+      const removeProductById = makeRemoveProductById()
       await removeProductById.remove(product.id)
 
       onNotify({

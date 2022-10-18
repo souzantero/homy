@@ -21,9 +21,8 @@ export function ProductsPage() {
   })
 
   const { signedUser } = useSignedUser()
-  const removeProductById = makeRemoveProductById(signedUser!)
   const { isRemoving, removeProduct } = useRemoveProduct({
-    removeProductById,
+    makeRemoveProductById: () => makeRemoveProductById(signedUser!),
     onNotify: notify,
     onRemoved: () => {
       queryClient.invalidateQueries(['products'])
