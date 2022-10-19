@@ -9,7 +9,6 @@ import {
   Signed,
   UnauthorizedUser,
   UnsignedUser,
-  ForgetUserPassword,
   ResetUserPassword
 } from './web'
 
@@ -20,6 +19,7 @@ import { EditProductPage } from './app/pages/manager/products/edit'
 import { ProductsPage } from './app/pages/manager/products/index'
 import { ProductPage } from './app/pages/manager/products/show'
 import { ConfirmUserEmailPage } from './app/pages/users/confirm-email'
+import { ForgetUserPasswordPage } from './app/pages/users/forget-password'
 
 export type AppManager = {}
 const app: AppManager = {}
@@ -46,7 +46,7 @@ function App() {
                 />
                 <Route
                   path="forget-password"
-                  element={<ForgetUserPassword />}
+                  element={<ForgetUserPasswordPage />}
                 />
                 <Route path="reset-password" element={<ResetUserPassword />} />
               </Route>

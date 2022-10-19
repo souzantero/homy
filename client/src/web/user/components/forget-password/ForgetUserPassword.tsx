@@ -1,5 +1,4 @@
 import { FormEvent } from 'react'
-import { Link as RouterLink } from 'react-router-dom'
 import {
   Button,
   FormControl,
@@ -10,17 +9,36 @@ import {
 } from '@chakra-ui/react'
 import { isEmail } from '../../../../domain/utils'
 import { CentralizedBox } from '../../../layout'
-import { useForgetUserPassword } from '../../hooks'
 
-export function ForgetUserPassword() {
-  const { email, setEmail, isForgetting, forget } = useForgetUserPassword()
+export interface ForgetUserPasswordProps {
+  email: string
+  onChangeEmail: (value: string) => void
+  isForgetting: boolean
+  onForget: () => Promise<void>
+  onConfirmEmail: () => void
+  onSignIn: () => void
+}
 
+export function ForgetUserPassword({
+  email,
+  onChangeEmail,
+  isForgetting,
+  onForget,
+  onConfirmEmail,
+  onSignIn
+}: ForgetUserPasswordProps) {
   const subtitle =
     'Informe seu e-mail e clique em "Esquecer" para receber as instruções necessárias para criar uma nova senha'
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
-    await forget()
+    await onForget()
+  }
+
+  const handleConfirmEmail = () => {
+    if (isEmail(email)) {
+      onConfirmEmail()
+    }
   }
 
   return (
@@ -32,7 +50,7 @@ export function ForgetUserPassword() {
             type="email"
             autoComplete="email"
             value={email}
-            onChange={(event) => setEmail(event.target.value)}
+            onChange={(event) => onChangeEmail(event.target.value)}
           />
         </FormControl>
         <Stack spacing={4}>
@@ -46,14 +64,10 @@ export function ForgetUserPassword() {
             Esquecer
           </Button>
           <Stack align={'center'}>
-            <Link
-              as={RouterLink}
-              to={isEmail(email) ? `/users/confirm-email?email=${email}` : '#'}
-              color={'blue'}
-            >
+            <Link color={'blue'} onClick={handleConfirmEmail}>
               Ainda não confirmou seu e-mail? Confirmar
             </Link>
-            <Link as={RouterLink} to={'/auth/sign-in'} color={'blue'}>
+            <Link color={'blue'} onClick={onSignIn}>
               Lembrou a sua senha? Entrar
             </Link>
           </Stack>

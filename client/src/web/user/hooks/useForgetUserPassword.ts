@@ -1,15 +1,21 @@
 import { useState } from 'react'
-import { useToast } from '@chakra-ui/react'
-import { makeForgetUserPassword } from '../factories'
+import { Notify } from '../../../presentation'
+import { ForgetUserPassword } from '../../../domain'
 
-export function useForgetUserPassword(): {
+export interface UseForgetUserPasswordOptions {
+  forgetUserPassword: ForgetUserPassword
+  onNotify: Notify
+}
+
+export function useForgetUserPassword({
+  forgetUserPassword,
+  onNotify
+}: UseForgetUserPasswordOptions): {
   email: string
   setEmail: (value: string) => void
   isForgetting: boolean
   forget: () => Promise<void>
 } {
-  const notify = useToast()
-
   const [email, setEmail] = useState('')
   const [isForgetting, setIsForgetting] = useState(false)
 
@@ -17,12 +23,11 @@ export function useForgetUserPassword(): {
     try {
       setIsForgetting(true)
 
-      const forgetUserPassword = makeForgetUserPassword()
       await forgetUserPassword.forget({ email })
 
       setEmail('')
 
-      notify({
+      onNotify({
         status: 'success',
         title: 'Senha esquecida.',
         description: 'Verifique sua caixa de entrada para ver as instruções.'
@@ -34,7 +39,7 @@ export function useForgetUserPassword(): {
         error instanceof Error
           ? error.message
           : 'Não foi possível esquecer a senha no momento, tente novamente mais tarde.'
-      notify({ status, title, description })
+      onNotify({ status, title, description })
     } finally {
       setIsForgetting(false)
     }
