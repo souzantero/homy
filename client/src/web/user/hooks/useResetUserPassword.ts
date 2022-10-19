@@ -1,28 +1,33 @@
-import { useToast } from '@chakra-ui/react'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { makeResetUserPassword } from '../factories'
+import { ResetUserPassword } from '../../../domain'
+import { Notify } from '../../../presentation'
+export interface UseResetUserPasswordOptions {
+  resetUserPasswordFactory: () => ResetUserPassword
+  onReseted: () => void
+  onNotify: Notify
+}
 
-export function useResetUserPassword(): {
+export function useResetUserPassword({
+  resetUserPasswordFactory,
+  onReseted,
+  onNotify
+}: UseResetUserPasswordOptions): {
   newPassword: string
   setNewPassword: (value: string) => void
   confirmedPassword: string
   setConfirmedPassword: (value: string) => void
-  reset: (authorizationToken: string) => Promise<void>
+  reset: () => Promise<void>
   isResetting: boolean
 } {
-  const notify = useToast()
-  const navigate = useNavigate()
-
   const [newPassword, setNewPassword] = useState('')
   const [confirmedPassword, setConfirmedPassword] = useState('')
   const [isResetting, setIsResetting] = useState(false)
 
-  const reset = async (authorizationToken: string) => {
+  const reset = async () => {
     try {
       setIsResetting(true)
 
-      const resetUserPassword = makeResetUserPassword(authorizationToken)
+      const resetUserPassword = resetUserPasswordFactory()
       await resetUserPassword.reset({
         newPassword,
         confirmedPassword
@@ -31,13 +36,13 @@ export function useResetUserPassword(): {
       setNewPassword('')
       setConfirmedPassword('')
 
-      notify({
+      onNotify({
         status: 'success',
         title: 'Senha esquecida.',
         description: 'Verifique sua caixa de entrada para ver as instruções.'
       })
 
-      navigate('/auth/sign-in')
+      onReseted()
     } catch (error) {
       const status = 'error'
       const title = 'Falha ao esquecer senha.'
@@ -45,7 +50,7 @@ export function useResetUserPassword(): {
         error instanceof Error
           ? error.message
           : 'Não foi possível esquecer a senha no momento, tente novamente mais tarde.'
-      notify({ status, title, description })
+      onNotify({ status, title, description })
     } finally {
       setIsResetting(false)
     }

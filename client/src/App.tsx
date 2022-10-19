@@ -8,8 +8,7 @@ import {
   SidebarWithHeader,
   Signed,
   UnauthorizedUser,
-  UnsignedUser,
-  ResetUserPassword
+  UnsignedUser
 } from './web'
 
 import { SignUpPage } from './app/pages/auth/sign-up'
@@ -20,6 +19,7 @@ import { ProductsPage } from './app/pages/manager/products/index'
 import { ProductPage } from './app/pages/manager/products/show'
 import { ConfirmUserEmailPage } from './app/pages/users/confirm-email'
 import { ForgetUserPasswordPage } from './app/pages/users/forget-password'
+import { ResetUserPasswordPage } from './app/pages/users/reset-password'
 
 export type AppManager = {}
 const app: AppManager = {}
@@ -48,7 +48,10 @@ function App() {
                   path="forget-password"
                   element={<ForgetUserPasswordPage />}
                 />
-                <Route path="reset-password" element={<ResetUserPassword />} />
+                <Route
+                  path="reset-password"
+                  element={<ResetUserPasswordPage />}
+                />
               </Route>
               <Route path="manager" element={<SidebarWithHeader />}>
                 <Route path="products">
