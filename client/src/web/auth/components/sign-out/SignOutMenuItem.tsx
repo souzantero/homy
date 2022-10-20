@@ -10,15 +10,21 @@ import {
   MenuItem,
   useDisclosure
 } from '@chakra-ui/react'
-import { useSignOut } from '../../hooks'
 
-export function SignOutMenuItem() {
+export interface SignOutMenuItemProps {
+  onSignOut: () => Promise<void>
+  isSigningOut: boolean
+}
+
+export function SignOutMenuItem({
+  onSignOut,
+  isSigningOut
+}: SignOutMenuItemProps) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const cancelRef = useRef(null)
-  const { signOut, isSigningOut } = useSignOut()
 
   const handleSignOut = async () => {
-    await signOut()
+    await onSignOut()
     onClose()
   }
 

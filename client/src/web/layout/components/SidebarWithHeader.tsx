@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 import { AiOutlineCoffee, AiOutlineMenu, AiOutlineBell } from 'react-icons/ai'
 import { IconType } from 'react-icons'
-import { Link as RouterLink, Outlet } from 'react-router-dom'
+import { Link as RouterLink, Outlet, useNavigate } from 'react-router-dom'
 import {
   IconButton,
   Box,
@@ -18,8 +18,8 @@ import {
   BoxProps,
   FlexProps
 } from '@chakra-ui/react'
-import { Signed, SignInLink } from '../../auth'
-import { SignedUserMenu } from '../../user'
+import { Signed, SignInLink, useSignedUser, useSignOut } from '../../auth'
+import { UserMenu } from '../../user'
 
 interface LinkItemProps {
   name: string
@@ -137,6 +137,10 @@ interface MobileProps extends FlexProps {
   onOpen: () => void
 }
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
+  const navigate = useNavigate()
+  const { signedUser } = useSignedUser()
+  const { signOut, isSigningOut } = useSignOut()
+
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -178,7 +182,16 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
             icon={<AiOutlineBell />}
           />
           <Flex alignItems={'center'}>
-            <SignedUserMenu />
+            {signedUser && (
+              <UserMenu
+                user={signedUser}
+                onConfirmEmail={() =>
+                  navigate(`/users/confirm-email?email=${signedUser.email}`)
+                }
+                onSignOut={signOut}
+                isSigningOut={isSigningOut}
+              />
+            )}
           </Flex>
         </HStack>
       </Signed>

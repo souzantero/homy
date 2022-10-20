@@ -1,6 +1,6 @@
 import { Avatar } from '@chakra-ui/react'
 
-export function SignedUserAvatar() {
+export function UserAvatar() {
   return (
     <Avatar
       size={'sm'}

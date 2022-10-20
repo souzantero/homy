@@ -1,4 +1,3 @@
-import { Link as RouterLink } from 'react-router-dom'
 import {
   Box,
   HStack,
@@ -11,13 +10,24 @@ import {
   useColorModeValue
 } from '@chakra-ui/react'
 import { AiOutlineDown } from 'react-icons/ai'
-import { SignOutMenuItem, useSignedUser } from '../../auth'
-import { SignedUserAvatar } from './SignedUserAvatar'
-import { SignedUserInfo } from './SignedUserInfo'
+import { User } from '../../../domain'
+import { SignOutMenuItem } from '../../auth'
+import { UserAvatar } from './UserAvatar'
+import { UserInfo } from './UserInfo'
 
-export function SignedUserMenu() {
-  const { signedUser } = useSignedUser()
+export interface UserMenuProps {
+  user: User
+  onConfirmEmail: () => void
+  onSignOut: () => Promise<void>
+  isSigningOut: boolean
+}
 
+export function UserMenu({
+  user,
+  onConfirmEmail,
+  onSignOut,
+  isSigningOut
+}: UserMenuProps) {
   return (
     <Menu closeOnSelect={false}>
       <MenuButton
@@ -27,8 +37,8 @@ export function SignedUserMenu() {
         _focus={{ boxShadow: 'none' }}
       >
         <HStack>
-          <SignedUserAvatar />
-          <SignedUserInfo />
+          <UserAvatar />
+          <UserInfo user={user} />
           <Box display={{ base: 'none', md: 'flex' }}>
             <AiOutlineDown />
           </Box>
@@ -39,20 +49,16 @@ export function SignedUserMenu() {
         bg={useColorModeValue('white', 'gray.900')}
         borderColor={useColorModeValue('gray.200', 'gray.700')}
       >
-        {signedUser && !signedUser.confirmedEmail && (
+        {!user.confirmedEmail && (
           <MenuItem>
-            <Link
-              as={RouterLink}
-              to={`/users/confirm-email?email=${signedUser.email}`}
-              color={'red'}
-            >
+            <Link color={'red'} onClick={onConfirmEmail}>
               Confirmar e-mail
             </Link>
           </MenuItem>
         )}
         <MenuItem>Perfil</MenuItem>
         <MenuDivider />
-        <SignOutMenuItem />
+        <SignOutMenuItem onSignOut={onSignOut} isSigningOut={isSigningOut} />
       </MenuList>
     </Menu>
   )
