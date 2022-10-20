@@ -19,7 +19,7 @@ import {
   FlexProps
 } from '@chakra-ui/react'
 import { Signed, SignInLink, useSignedUser, useSignOut } from '../../auth'
-import { UserMenu } from '../../user'
+import { UserMenu } from '../../components'
 
 interface LinkItemProps {
   name: string

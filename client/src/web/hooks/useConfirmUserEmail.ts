@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { Notify } from '../../../presentation'
-import { ConfirmUserEmail } from '../../../domain'
+import { Notify } from '../../presentation'
+import { ConfirmUserEmail } from '../../domain'
 
 export interface UseConfirmUserEmailOptions {
   confirmUserEmail: ConfirmUserEmail

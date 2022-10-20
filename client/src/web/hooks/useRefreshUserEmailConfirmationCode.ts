@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { Notify } from '../../../presentation'
-import { RefreshUserEmailConfirmationCode } from '../../../domain'
+import { Notify } from '../../presentation'
+import { RefreshUserEmailConfirmationCode } from '../../domain'
 
 export interface UseRefreshUserEmailConfirmationCodeOptions {
   refreshUserEmailConfirmationCode: RefreshUserEmailConfirmationCode

@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { ResetUserPassword } from '../../../domain'
-import { Notify } from '../../../presentation'
+import { ResetUserPassword } from '../../domain'
+import { Notify } from '../../presentation'
 export interface UseResetUserPasswordOptions {
   resetUserPasswordFactory: () => ResetUserPassword
   onReseted: () => void

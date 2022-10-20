@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { Notify } from '../../../presentation'
-import { ForgetUserPassword } from '../../../domain'
+import { Notify } from '../../presentation'
+import { ForgetUserPassword } from '../../domain'
 
 export interface UseForgetUserPasswordOptions {
   forgetUserPassword: ForgetUserPassword
