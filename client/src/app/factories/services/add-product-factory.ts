@@ -1,6 +1,6 @@
-import { AddProduct, User } from '../../domain'
-import { ProductFetchRepository } from '../../infra'
-import env from '../config/env'
+import { AddProduct, User } from '../../../domain'
+import { ProductFetchRepository } from '../../../infra'
+import env from '../../config/env'
 
 export const makeAddProduct = (signedUser: User) => {
   const productRepository = new ProductFetchRepository(

@@ -6,8 +6,7 @@ import {
   useConfirmUserEmail,
   useRefreshUserEmailConfirmationCode
 } from '../../../web'
-import { makeConfirmUserEmail } from '../../factories'
-import { makeRefreshUserEmailConfirmationCode } from '../../factories/refresh-user-email-confirmation-code-factory'
+import { makeConfirmUserEmail, makeRefreshUserEmailConfirmationCode } from '../../factories'
 
 export function ConfirmUserEmailPage() {
   const [searchParams] = useSearchParams()

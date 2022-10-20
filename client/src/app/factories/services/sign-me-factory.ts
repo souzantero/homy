@@ -1,17 +1,20 @@
-import env from '../config/env'
-import { SignIn } from '../../domain'
+import { User, SignMe } from '../../../domain'
 import {
   AuthenticationFetchRepository,
   SignedUserSessionStorageRepository,
   SignedUserLocalStorageRepository
-} from '../../infra'
+} from '../../../infra'
+import env from '../../config/env'
 
-export const makeSignIn = (remind: boolean) => {
+export const makeSignMe = (signedUser: User, remind: boolean) => {
   const authenticationRepository = new AuthenticationFetchRepository(
-    env.serverHostAddress
+    env.serverHostAddress,
+    signedUser.authorizationToken
   )
+
   const signedUserRepository = remind
     ? new SignedUserLocalStorageRepository()
     : new SignedUserSessionStorageRepository()
-  return new SignIn(authenticationRepository, signedUserRepository)
+
+  return new SignMe(authenticationRepository, signedUserRepository)
 }
