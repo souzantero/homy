@@ -1,9 +1,9 @@
 import { useToast } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useNavigate, useParams } from 'react-router-dom'
-import { EditProduct, useProduct, useUpdateProduct } from '../../../../web'
+import { EditProduct, useUpdateProduct } from '../../../../web'
 import { makeUpdateProductById } from '../../../factories'
-import { useQueryProduct, useSignedUser } from '../../../hooks'
+import { useProductById, useSignedUser } from '../../../hooks'
 
 export function EditProductPage() {
   const notify = useToast()
@@ -15,11 +15,7 @@ export function EditProductPage() {
   const { name, setName, isLoading, updateProduct, isUpdating } =
     useUpdateProduct(productId || '', {
       updateProductById,
-      useProduct: () =>
-        useProduct({
-          useData: () => useQueryProduct(productId!),
-          onNotify: notify
-        }),
+      useProduct: () => useProductById(productId!),
       onUpdated: (product) => {
         queryClient.invalidateQueries(['products'])
         navigate('/manager/products')

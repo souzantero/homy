@@ -14,18 +14,14 @@ import {
   useRemoveProduct
 } from '../../../../web'
 import { makeRemoveProductById } from '../../../factories'
-import {
-  useAuthorization,
-  useQueryProducts,
-  useSignedUser
-} from '../../../hooks'
+import { useAuthorization, useAllProducts, useSignedUser } from '../../../hooks'
 
 export function ProductsPage() {
   const notify = useToast()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const { products, isLoading } = useProducts({
-    useData: () => useQueryProducts(),
+    useData: () => useAllProducts(),
     onNotify: notify
   })
 

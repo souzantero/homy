@@ -1,4 +1,4 @@
-import { ButtonGroup, Skeleton, useToast } from '@chakra-ui/react'
+import { ButtonGroup, Skeleton } from '@chakra-ui/react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Role } from '../../../../domain'
 import {
@@ -7,26 +7,16 @@ import {
   Page,
   PageBody,
   PageHeader,
-  Product,
-  useProduct
+  Product
 } from '../../../../web'
-import {
-  useAuthorization,
-  useQueryProduct,
-  useSignedUser
-} from '../../../hooks'
+import { useProductById, useAuthorization, useSignedUser } from '../../../hooks'
 
 export function ProductPage() {
-  const notify = useToast()
   const navigate = useNavigate()
-  const { productId } = useParams()
-  const { isLoading, product } = useProduct({
-    useData: () => useQueryProduct(productId!),
-    onNotify: notify
-  })
-
   const { isSigned } = useSignedUser()
   const { isAuthorized } = useAuthorization(Role.Admin)
+  const { productId } = useParams()
+  const { isLoading, product } = useProductById(productId!)
 
   return (
     <Page>

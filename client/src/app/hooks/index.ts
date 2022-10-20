@@ -1,4 +1,4 @@
 export * from './useAuthorization'
-export * from './useQueryProduct'
-export * from './useQueryProducts'
+export * from './useProductById'
+export * from './useAllProducts'
 export * from './useSignedUser'

@@ -3,13 +3,13 @@ import { Product } from '../../domain'
 import { Notify } from '../../presentation'
 
 export interface UseProductsOptions {
-  useData: () => { products: Product[]; isLoading: boolean; error: unknown }
+  useData: () => { products: Product[]; isLoading: boolean; error?: unknown }
   onNotify: Notify
 }
 
 export function useProducts({ useData, onNotify }: UseProductsOptions): {
   isLoading: boolean
-  error?: any
+  error?: unknown
   products: Product[]
 } {
   const { products, isLoading, error } = useData()
