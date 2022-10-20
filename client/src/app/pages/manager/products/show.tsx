@@ -2,6 +2,7 @@ import { ButtonGroup, Skeleton, useToast } from '@chakra-ui/react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Role } from '../../../../domain'
 import {
+  If,
   NavButton,
   Page,
   PageBody,
@@ -9,8 +10,11 @@ import {
   Product,
   useProduct
 } from '../../../../web'
-import { Authorization, Signed } from '../../../components'
-import { useQueryProduct } from '../../../hooks'
+import {
+  useAuthorization,
+  useQueryProduct,
+  useSignedUser
+} from '../../../hooks'
 
 export function ProductPage() {
   const notify = useToast()
@@ -21,23 +25,22 @@ export function ProductPage() {
     onNotify: notify
   })
 
+  const { isSigned } = useSignedUser()
+  const { isAuthorized } = useAuthorization(Role.Admin)
+
   return (
     <Page>
       <PageHeader title={'Produto'}>
         <ButtonGroup>
-          <Signed>
-            <Authorization roles={[Role.Admin]} disable>
-              <NavButton
-                onNavigate={() =>
-                  navigate(`/manager/products/${productId}/edit`)
-                }
-                isLoading={isLoading}
-                isDisabled={isLoading || !product}
-              >
-                Editar
-              </NavButton>
-            </Authorization>
-          </Signed>
+          <If condition={isSigned}>
+            <NavButton
+              onNavigate={() => navigate(`/manager/products/${productId}/edit`)}
+              isLoading={isLoading}
+              isDisabled={!isAuthorized || isLoading || !product}
+            >
+              Editar
+            </NavButton>
+          </If>
         </ButtonGroup>
       </PageHeader>
       <PageBody>

@@ -7,6 +7,7 @@ import { makeLoadSignedUser, makeSignMe } from '../factories'
 export function useSignedUser(): {
   signedUser?: User | null
   isLoading: boolean
+  isSigned: boolean
 } {
   const notify = useToast()
   const loadSignedUser = makeLoadSignedUser()
@@ -43,5 +44,5 @@ export function useSignedUser(): {
     }
   }, [error])
 
-  return { signedUser, isLoading }
+  return { signedUser, isLoading, isSigned: Boolean(!isLoading && signedUser) }
 }

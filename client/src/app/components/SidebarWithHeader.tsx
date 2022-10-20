@@ -19,8 +19,7 @@ import {
   FlexProps,
   useToast
 } from '@chakra-ui/react'
-import { UserMenu, useSignOut } from '../../web'
-import { Signed } from './Signed'
+import { If, UserMenu, useSignOut } from '../../web'
 import { makeSignOut } from '../factories'
 import { useSignedUser } from '../hooks'
 
@@ -144,7 +143,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const navigate = useNavigate()
   const notify = useToast()
 
-  const { signedUser } = useSignedUser()
+  const { signedUser, isSigned } = useSignedUser()
   const { signOut, isSigningOut } = useSignOut({
     signOutFactory: () => makeSignOut(signedUser!),
     onSignedOut() {
@@ -185,8 +184,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         Retaily
       </Text>
 
-      <Signed
-        unsigned={
+      <If
+        condition={isSigned}
+        or={
           <Link as={RouterLink} to={'/auth/sign-in'} color={'blue'}>
             Entrar
           </Link>
@@ -212,7 +212,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
             )}
           </Flex>
         </HStack>
-      </Signed>
+      </If>
     </Flex>
   )
 }

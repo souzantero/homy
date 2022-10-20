@@ -3,6 +3,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { Product, Role } from '../../../../domain'
 import {
+  If,
   NavButton,
   Page,
   PageBody,
@@ -12,9 +13,12 @@ import {
   useProducts,
   useRemoveProduct
 } from '../../../../web'
-import { Authorization, Signed } from '../../../components'
 import { makeRemoveProductById } from '../../../factories'
-import { useQueryProducts, useSignedUser } from '../../../hooks'
+import {
+  useAuthorization,
+  useQueryProducts,
+  useSignedUser
+} from '../../../hooks'
 
 export function ProductsPage() {
   const notify = useToast()
@@ -34,17 +38,21 @@ export function ProductsPage() {
     }
   })
 
+  const { isSigned } = useSignedUser()
+  const { isAuthorized } = useAuthorization(Role.Admin)
+
   return (
     <Page>
       <PageHeader title="Produtos">
         <ButtonGroup>
-          <Signed>
-            <Authorization roles={[Role.Admin]} disable>
-              <NavButton onNavigate={() => navigate('/manager/products/new')}>
-                Adicionar
-              </NavButton>
-            </Authorization>
-          </Signed>
+          <If condition={isSigned}>
+            <NavButton
+              onNavigate={() => navigate('/manager/products/new')}
+              isDisabled={!isAuthorized}
+            >
+              Adicionar
+            </NavButton>
+          </If>
         </ButtonGroup>
       </PageHeader>
       <PageBody>
@@ -63,14 +71,13 @@ export function ProductsPage() {
                   >
                     Abrir
                   </NavButton>
-                  <Signed>
-                    <Authorization roles={[Role.Admin]} disable>
-                      <RemoveProductButton
-                        isRemoving={isRemoving}
-                        onRemove={() => removeProduct(product)}
-                      />
-                    </Authorization>
-                  </Signed>
+                  <If condition={isSigned}>
+                    <RemoveProductButton
+                      isRemoving={isRemoving}
+                      onRemove={() => removeProduct(product)}
+                      isDisabled={!isAuthorized}
+                    />
+                  </If>
                 </ButtonGroup>
               </Td>
             </Tr>
