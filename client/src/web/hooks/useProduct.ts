@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
-import { Product } from '../../../domain'
-import { Notify } from '../../../presentation'
+import { Product } from '../../domain'
+import { Notify } from '../../presentation'
 
 export interface UseProductOptions {
   useData: () => { product?: Product; isLoading: boolean; error: unknown }

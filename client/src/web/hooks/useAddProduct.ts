@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { AddProduct, Product } from '../../../domain'
-import { Notify } from '../../../presentation'
+import { AddProduct, Product } from '../../domain'
+import { Notify } from '../../presentation'
 
 export interface UseAddProductOptions {
   action: AddProduct
