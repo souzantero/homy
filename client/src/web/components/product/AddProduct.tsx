@@ -1,5 +1,5 @@
 import { Product } from '../../../domain'
-import { Page, PageHeader, PageBody } from '../../layout'
+import { Page, PageHeader, PageBody } from '../layout'
 import { ProductForm } from './ProductForm'
 
 export interface AddProductProps {

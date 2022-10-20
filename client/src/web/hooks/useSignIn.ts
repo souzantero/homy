@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react'
-import { SignIn, User } from '../../../domain'
-import { useSignedUser } from './useSignedUser'
-import { Notify } from '../../../presentation'
+import { useState } from 'react'
+import { SignIn, User } from '../../domain'
+import { Notify } from '../../presentation'
 
 export interface UseSignInOptions {
   signInWithUser: SignIn
@@ -22,10 +21,7 @@ export function useSignIn({
   setRemindMe: (value: boolean) => void
   isSigning: boolean
   signIn: () => Promise<SignIn.Result | undefined>
-  isLoading: boolean
 } {
-  const { signedUser, isLoading } = useSignedUser()
-
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [remindMe, setRemindMe] = useState<boolean>(false)
@@ -65,12 +61,6 @@ export function useSignIn({
     }
   }
 
-  useEffect(() => {
-    if (signedUser) {
-      onSigned(signedUser)
-    }
-  }, [signedUser])
-
   return {
     email,
     setEmail,
@@ -79,7 +69,6 @@ export function useSignIn({
     remindMe,
     setRemindMe,
     signIn,
-    isSigning,
-    isLoading
+    isSigning
   }
 }

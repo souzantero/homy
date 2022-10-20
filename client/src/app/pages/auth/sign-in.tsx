@@ -3,12 +3,14 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { User } from '../../../domain'
 import { SignIn, useSignIn } from '../../../web'
+import { useSignedUser } from '../../hooks'
 import { makeSignIn } from '../../factories'
 
 export function SignInPage() {
   const notify = useToast()
   const navigate = useNavigate()
   const [signInWithUser, setSignInWithUser] = useState(makeSignIn(false))
+  const { signedUser, isLoading } = useSignedUser()
 
   const {
     email,
@@ -18,8 +20,7 @@ export function SignInPage() {
     remindMe,
     setRemindMe,
     signIn,
-    isSigning,
-    isLoading
+    isSigning
   } = useSignIn({
     signInWithUser,
     onSigned: (signedUser: User) => {
@@ -31,6 +32,12 @@ export function SignInPage() {
   useEffect(() => {
     setSignInWithUser(makeSignIn(remindMe))
   }, [remindMe])
+
+  useEffect(() => {
+    if (signedUser) {
+      navigate('/')
+    }
+  }, [signedUser])
 
   return (
     <SignIn

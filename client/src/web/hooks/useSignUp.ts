@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
-import { SignUp, User } from '../../../domain'
-import { useSignedUser } from './useSignedUser'
-import { Notify } from '../../../presentation'
+import { SignUp, User } from '../../domain'
+import { Notify } from '../../presentation'
 
 export interface UseSignUpOptions {
   signUpUser: SignUp
@@ -24,9 +23,7 @@ export function useSignUp({
   setConfirmedPassword: (value: string) => void
   signUp: () => Promise<SignUp.Result | undefined>
   isSigning: boolean
-  isLoading: boolean
 } {
-  const { signedUser, isLoading } = useSignedUser()
   const [isSigning, setIsSigning] = useState(false)
 
   const [name, setName] = useState<string>('')
@@ -71,12 +68,6 @@ export function useSignUp({
     }
   }
 
-  useEffect(() => {
-    if (signedUser) {
-      onSigned(signedUser)
-    }
-  }, [signedUser])
-
   return {
     name,
     setName,
@@ -87,7 +78,6 @@ export function useSignUp({
     confirmedPassword,
     setConfirmedPassword,
     signUp,
-    isSigning,
-    isLoading
+    isSigning
   }
 }

@@ -1,6 +1,6 @@
 import { FormEvent, useMemo } from 'react'
 import { Button, FormControl, FormLabel, Input, Stack } from '@chakra-ui/react'
-import { CentralizedBox } from '../../../layout'
+import { CentralizedBox } from '../layout'
 
 export interface ResetUserPasswordProps {
   authorizationToken: string

@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, useMemo } from 'react'
 import { Button, FormControl, FormLabel, Input, Stack } from '@chakra-ui/react'
-import { isEmail } from '../../../../domain/utils'
-import { CentralizedBox } from '../../../layout'
+import { isEmail } from '../../../domain/utils'
+import { CentralizedBox } from '../layout'
 
 export interface ConfirmUserEmailProps {
   email: string

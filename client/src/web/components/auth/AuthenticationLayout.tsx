@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react'
 import { Link } from '@chakra-ui/react'
-import { CentralizedBox } from '../../layout'
+import { CentralizedBox } from '../layout'
 
 export interface AuthenticationLayoutProps {
   title: string

@@ -1,11 +1,11 @@
-import { User, SignOut } from '../../../domain'
+import { User, SignOut } from '../../domain'
 import {
   AuthenticationFetchRepository,
   SignedUserStorageRepository,
   SignedUserSessionStorageRepository,
   SignedUserLocalStorageRepository
-} from '../../../infra'
-import env from '../../../app/config/env'
+} from '../../infra'
+import env from '../config/env'
 
 export const makeSignOut = (signedUser: User) => {
   const authenticationRepository = new AuthenticationFetchRepository(

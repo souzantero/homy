@@ -1,12 +1,13 @@
 import { ReactNode } from 'react'
-import { Link as RouterLink, Outlet } from 'react-router-dom'
-import { AiOutlineCoffee, AiOutlineMenu } from 'react-icons/ai'
+import { AiOutlineCoffee, AiOutlineMenu, AiOutlineBell } from 'react-icons/ai'
 import { IconType } from 'react-icons'
+import { Link as RouterLink, Outlet, useNavigate } from 'react-router-dom'
 import {
   IconButton,
   Box,
   CloseButton,
   Flex,
+  HStack,
   Icon,
   useColorModeValue,
   Link,
@@ -15,8 +16,13 @@ import {
   Text,
   useDisclosure,
   BoxProps,
-  FlexProps
+  FlexProps,
+  useToast
 } from '@chakra-ui/react'
+import { UserMenu, useSignOut } from '../../web'
+import { Signed } from './Signed'
+import { makeSignOut } from '../factories'
+import { useSignedUser } from '../hooks'
 
 interface LinkItemProps {
   name: string
@@ -27,7 +33,7 @@ const LinkItems: Array<LinkItemProps> = [
   { name: 'Produtos', to: '/manager/products', icon: AiOutlineCoffee }
 ]
 
-export function Sidebar() {
+export function SidebarWithHeader() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   return (
     <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
@@ -49,7 +55,7 @@ export function Sidebar() {
         </DrawerContent>
       </Drawer>
       {/* mobilenav */}
-      <MobileNav display={{ base: 'flex', md: 'none' }} onOpen={onOpen} />
+      <MobileNav onOpen={onOpen} />
       <Box ml={{ base: 0, md: 60 }} p="4" as="main">
         <Outlet />
       </Box>
@@ -64,6 +70,7 @@ interface SidebarProps extends BoxProps {
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   return (
     <Box
+      transition="3s ease"
       bg={useColorModeValue('white', 'gray.900')}
       borderRight="1px"
       borderRightColor={useColorModeValue('gray.200', 'gray.700')}
@@ -132,29 +139,80 @@ const NavItem = ({ icon, to, children, ...rest }: NavItemProps) => {
 interface MobileProps extends FlexProps {
   onOpen: () => void
 }
+
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
+  const navigate = useNavigate()
+  const notify = useToast()
+
+  const { signedUser } = useSignedUser()
+  const { signOut, isSigningOut } = useSignOut({
+    signOutFactory: () => makeSignOut(signedUser!),
+    onSignedOut() {
+      window.location.reload()
+    },
+    onNotify: notify
+  })
+
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
-      px={{ base: 4, md: 24 }}
+      px={{ base: 4, md: 4 }}
       height="20"
       alignItems="center"
       bg={useColorModeValue('white', 'gray.900')}
       borderBottomWidth="1px"
       borderBottomColor={useColorModeValue('gray.200', 'gray.700')}
-      justifyContent="flex-start"
+      justifyContent={{
+        base: 'space-between',
+        md: 'flex-end'
+      }}
       {...rest}
     >
       <IconButton
-        variant="outline"
+        display={{ base: 'flex', md: 'none' }}
         onClick={onOpen}
+        variant="outline"
         aria-label="open menu"
         icon={<AiOutlineMenu />}
       />
 
-      <Text fontSize="2xl" ml="8" fontFamily="monospace" fontWeight="bold">
+      <Text
+        display={{ base: 'flex', md: 'none' }}
+        fontSize="2xl"
+        fontFamily="monospace"
+        fontWeight="bold"
+      >
         Retaily
       </Text>
+
+      <Signed
+        unsigned={
+          <Link as={RouterLink} to={'/auth/sign-in'} color={'blue'}>
+            Entrar
+          </Link>
+        }
+      >
+        <HStack spacing={{ base: '0', md: '6' }}>
+          <IconButton
+            size="lg"
+            variant="ghost"
+            aria-label="open menu"
+            icon={<AiOutlineBell />}
+          />
+          <Flex alignItems={'center'}>
+            {signedUser && (
+              <UserMenu
+                user={signedUser}
+                onConfirmEmail={() =>
+                  navigate(`/users/confirm-email?email=${signedUser.email}`)
+                }
+                onSignOut={signOut}
+                isSigningOut={isSigningOut}
+              />
+            )}
+          </Flex>
+        </HStack>
+      </Signed>
     </Flex>
   )
 }

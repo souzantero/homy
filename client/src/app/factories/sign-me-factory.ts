@@ -1,10 +1,10 @@
-import { User, SignMe } from '../../../domain'
+import { User, SignMe } from '../../domain'
 import {
   AuthenticationFetchRepository,
   SignedUserSessionStorageRepository,
   SignedUserLocalStorageRepository
-} from '../../../infra'
-import env from '../../../app/config/env'
+} from '../../infra'
+import env from '../config/env'
 
 export const makeSignMe = (signedUser: User, remind: boolean) => {
   const authenticationRepository = new AuthenticationFetchRepository(

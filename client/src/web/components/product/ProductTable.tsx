@@ -7,22 +7,19 @@ import {
   Th,
   Skeleton
 } from '@chakra-ui/react'
+import { ReactNode } from 'react'
 import { Product } from '../../../domain'
-import { ProductTableRow } from './ProductTableRow'
 
 export interface ProductTableProps {
   products: Product[]
   isLoading: boolean
-  isRemoving: boolean
-  onShowProduct: (product: Product) => void
-  onRemoveProduct: (product: Product) => Promise<boolean>
+  renderRow: (product: Product, index: number) => ReactNode
 }
+
 export function ProductTable({
   products,
   isLoading,
-  isRemoving,
-  onShowProduct,
-  onRemoveProduct
+  renderRow
 }: ProductTableProps) {
   if (isLoading) return <Skeleton height="20px" />
   return (
@@ -35,15 +32,7 @@ export function ProductTable({
           </Tr>
         </Thead>
         <Tbody>
-          {products.map((product, index) => (
-            <ProductTableRow
-              key={index}
-              product={product}
-              isRemoving={isRemoving}
-              onShow={() => onShowProduct(product)}
-              onRemove={() => onRemoveProduct(product)}
-            />
-          ))}
+          {products.map((product, index) => renderRow(product, index))}
         </Tbody>
       </Table>
     </TableContainer>

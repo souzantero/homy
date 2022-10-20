@@ -1,15 +1,20 @@
-import { useToast } from '@chakra-ui/react'
+import { ButtonGroup, Td, Tr, useToast } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
-import { Product } from '../../../../domain'
+import { Product, Role } from '../../../../domain'
 import {
-  Products,
+  NavButton,
+  Page,
+  PageBody,
+  PageHeader,
+  ProductTable,
+  RemoveProductButton,
   useProducts,
-  useRemoveProduct,
-  useSignedUser
+  useRemoveProduct
 } from '../../../../web'
+import { Authorization, Signed } from '../../../components'
 import { makeRemoveProductById } from '../../../factories'
-import { useQueryProducts } from '../../../hooks'
+import { useQueryProducts, useSignedUser } from '../../../hooks'
 
 export function ProductsPage() {
   const notify = useToast()
@@ -30,15 +35,48 @@ export function ProductsPage() {
   })
 
   return (
-    <Products
-      products={products}
-      isLoading={isLoading}
-      isRemoving={isRemoving}
-      onAddNew={() => navigate('/manager/products/new')}
-      onShowProduct={(product: Product) =>
-        navigate(`/manager/products/${product.id}`)
-      }
-      onRemoveProduct={removeProduct}
-    />
+    <Page>
+      <PageHeader title="Produtos">
+        <ButtonGroup>
+          <Signed>
+            <Authorization roles={[Role.Admin]} disable>
+              <NavButton onNavigate={() => navigate('/manager/products/new')}>
+                Adicionar
+              </NavButton>
+            </Authorization>
+          </Signed>
+        </ButtonGroup>
+      </PageHeader>
+      <PageBody>
+        <ProductTable
+          products={products}
+          isLoading={isLoading}
+          renderRow={(product: Product, index: number) => (
+            <Tr key={index}>
+              <Td>{product.name}</Td>
+              <Td isNumeric>
+                <ButtonGroup>
+                  <NavButton
+                    onNavigate={() =>
+                      navigate(`/manager/products/${product.id}`)
+                    }
+                  >
+                    Abrir
+                  </NavButton>
+                  <Signed>
+                    <Authorization roles={[Role.Admin]} disable>
+                      <RemoveProductButton
+                        isRemoving={isRemoving}
+                        onRemove={() => removeProduct(product)}
+                      />
+                    </Authorization>
+                  </Signed>
+                </ButtonGroup>
+              </Td>
+            </Tr>
+          )}
+        />
+      </PageBody>
+    </Page>
   )
 }

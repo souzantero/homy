@@ -1,11 +1,15 @@
 import { useToast } from '@chakra-ui/react'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { SignUp, useSignUp } from '../../../web'
+import { useSignedUser } from '../../hooks'
 import { makeSignUp } from '../../factories'
 
 export function SignUpPage() {
   const navigate = useNavigate()
   const notify = useToast()
+
+  const { signedUser, isLoading } = useSignedUser()
 
   const signUpUser = makeSignUp()
   const {
@@ -18,15 +22,20 @@ export function SignUpPage() {
     confirmedPassword,
     setConfirmedPassword,
     signUp,
-    isSigning,
-    isLoading
+    isSigning
   } = useSignUp({
     signUpUser,
     onNotify: notify,
-    onSigned(signedUser) {
+    onSigned() {
       navigate('/')
     }
   })
+
+  useEffect(() => {
+    if (signedUser) {
+      navigate('/')
+    }
+  }, [signedUser])
 
   return (
     <SignUp

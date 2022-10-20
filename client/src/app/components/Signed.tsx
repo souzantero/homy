@@ -1,7 +1,7 @@
 import { PropsWithChildren, ReactNode, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Skeleton } from '@chakra-ui/react'
-import { useSignedUser } from '../../hooks'
+import { useSignedUser } from '../hooks'
 
 export interface SignedProps {
   redirect?: boolean

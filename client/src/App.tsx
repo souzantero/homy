@@ -3,13 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ChakraProvider } from '@chakra-ui/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Role } from './domain'
-import {
-  Authorization,
-  SidebarWithHeader,
-  Signed,
-  UnauthorizedUser,
-  UnsignedUser
-} from './web'
+import { UnauthorizedUser, UnsignedUser } from './web'
 
 import { SignUpPage } from './app/pages/auth/sign-up'
 import { SignInPage } from './app/pages/auth/sign-in'
@@ -20,6 +14,8 @@ import { ProductPage } from './app/pages/manager/products/show'
 import { ConfirmUserEmailPage } from './app/pages/users/confirm-email'
 import { ForgetUserPasswordPage } from './app/pages/users/forget-password'
 import { ResetUserPasswordPage } from './app/pages/users/reset-password'
+import { Authorization, Signed } from './app/components'
+import { SidebarWithHeader } from './app/components/SidebarWithHeader'
 
 export type AppManager = {}
 const app: AppManager = {}
@@ -59,7 +55,15 @@ function App() {
                   <Route
                     path="new"
                     element={
-                      <Signed unsigned={<UnsignedUser />}>
+                      <Signed
+                        unsigned={
+                          <UnsignedUser
+                            onSignIn={() => {
+                              //navigate('/auth/sign-in')
+                            }}
+                          />
+                        }
+                      >
                         <Authorization
                           roles={[Role.Admin]}
                           unauthorized={<UnauthorizedUser />}
@@ -74,7 +78,15 @@ function App() {
                     <Route
                       path="edit"
                       element={
-                        <Signed unsigned={<UnsignedUser />}>
+                        <Signed
+                          unsigned={
+                            <UnsignedUser
+                              onSignIn={() => {
+                                //navigate('/auth/sign-in')
+                              }}
+                            />
+                          }
+                        >
                           <Authorization
                             roles={[Role.Admin]}
                             unauthorized={<UnauthorizedUser />}

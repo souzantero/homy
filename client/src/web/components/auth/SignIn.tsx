@@ -8,8 +8,8 @@ import {
   Link,
   Button
 } from '@chakra-ui/react'
-import { AuthenticationLayout } from '../AuthenticationLayout'
-import { User } from '../../../../domain'
+import { AuthenticationLayout } from './AuthenticationLayout'
+import { User } from '../../../domain'
 
 export interface SignInProps {
   email: string

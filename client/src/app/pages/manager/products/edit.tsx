@@ -1,14 +1,9 @@
 import { useToast } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useNavigate, useParams } from 'react-router-dom'
-import {
-  EditProduct,
-  useProduct,
-  useSignedUser,
-  useUpdateProduct
-} from '../../../../web'
+import { EditProduct, useProduct, useUpdateProduct } from '../../../../web'
 import { makeUpdateProductById } from '../../../factories'
-import { useQueryProduct } from '../../../hooks'
+import { useQueryProduct, useSignedUser } from '../../../hooks'
 
 export function EditProductPage() {
   const notify = useToast()

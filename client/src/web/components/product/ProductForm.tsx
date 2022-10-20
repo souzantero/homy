@@ -7,7 +7,7 @@ import {
   Spacer,
   Stack
 } from '@chakra-ui/react'
-import { ActionButton } from '../../layout'
+import { ActionButton } from '../layout'
 
 export interface ProductFormData {
   name: string

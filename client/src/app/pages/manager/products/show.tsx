@@ -1,6 +1,15 @@
-import { useToast } from '@chakra-ui/react'
+import { ButtonGroup, Skeleton, useToast } from '@chakra-ui/react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Product, useProduct } from '../../../../web'
+import { Role } from '../../../../domain'
+import {
+  NavButton,
+  Page,
+  PageBody,
+  PageHeader,
+  Product,
+  useProduct
+} from '../../../../web'
+import { Authorization, Signed } from '../../../components'
 import { useQueryProduct } from '../../../hooks'
 
 export function ProductPage() {
@@ -13,10 +22,27 @@ export function ProductPage() {
   })
 
   return (
-    <Product
-      product={product!}
-      isLoading={isLoading}
-      onEdit={() => navigate(`/manager/products/${productId}/edit`)}
-    />
+    <Page>
+      <PageHeader title={'Produto'}>
+        <ButtonGroup>
+          <Signed>
+            <Authorization roles={[Role.Admin]} disable>
+              <NavButton
+                onNavigate={() =>
+                  navigate(`/manager/products/${productId}/edit`)
+                }
+                isLoading={isLoading}
+                isDisabled={isLoading || !product}
+              >
+                Editar
+              </NavButton>
+            </Authorization>
+          </Signed>
+        </ButtonGroup>
+      </PageHeader>
+      <PageBody>
+        {isLoading ? <Skeleton /> : <Product product={product!} />}
+      </PageBody>
+    </Page>
   )
 }

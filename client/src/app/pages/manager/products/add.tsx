@@ -2,8 +2,9 @@ import { useToast } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { Product } from '../../../../domain'
-import { AddProduct, useAddProduct, useSignedUser } from '../../../../web'
+import { AddProduct, useAddProduct } from '../../../../web'
 import { makeAddProduct } from '../../../factories'
+import { useSignedUser } from '../../../hooks'
 
 export function AddProductPage() {
   const notify = useToast()

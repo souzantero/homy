@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react'
 import { AiOutlineDown } from 'react-icons/ai'
 import { User } from '../../../domain'
-import { SignOutMenuItem } from '../../auth'
+import { SignOutMenuItem } from '../auth'
 import { UserAvatar } from './UserAvatar'
 import { UserInfo } from './UserInfo'
 

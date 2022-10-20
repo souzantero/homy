@@ -1,4 +1,4 @@
-import { CautionButton, CautionButtonProps } from '../../layout'
+import { CautionButton, CautionButtonProps } from '../layout'
 
 export interface RemoveProductButtonProps extends Partial<CautionButtonProps> {
   isRemoving: boolean
