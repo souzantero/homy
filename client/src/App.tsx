@@ -11,7 +11,7 @@ import { ProductPage } from './app/pages/manager/products/show'
 import { ConfirmUserEmailPage } from './app/pages/users/confirm-email'
 import { ForgetUserPasswordPage } from './app/pages/users/forget-password'
 import { ResetUserPasswordPage } from './app/pages/users/reset-password'
-import { Manager } from './app/components'
+import { Manager, Store } from './app/components'
 import { useAuthorization, useSignedUser } from './app/hooks'
 
 function App() {
@@ -66,6 +66,7 @@ function App() {
           </Route>
         </Route>
       </Route>
+      <Route path="/" element={<Store />} />
     </Routes>
   )
 }

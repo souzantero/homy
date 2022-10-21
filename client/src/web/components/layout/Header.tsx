@@ -17,7 +17,6 @@ export interface HeaderProps extends FlexProps {
 export const Header = ({ userMenu, onOpen, ...rest }: HeaderProps) => {
   return (
     <Flex
-      ml={{ base: 0, md: 60 }}
       px={{ base: 4, md: 4 }}
       height="20"
       alignItems="center"
