@@ -11,7 +11,7 @@ import { ProductPage } from './app/pages/manager/products/show'
 import { ConfirmUserEmailPage } from './app/pages/users/confirm-email'
 import { ForgetUserPasswordPage } from './app/pages/users/forget-password'
 import { ResetUserPasswordPage } from './app/pages/users/reset-password'
-import { SidebarWithHeader } from './app/components/SidebarWithHeader'
+import { Manager } from './app/components'
 import { useAuthorization, useSignedUser } from './app/hooks'
 
 function App() {
@@ -30,7 +30,7 @@ function App() {
         <Route path="forget-password" element={<ForgetUserPasswordPage />} />
         <Route path="reset-password" element={<ResetUserPasswordPage />} />
       </Route>
-      <Route path="manager" element={<SidebarWithHeader />}>
+      <Route path="manager" element={<Manager />}>
         <Route path="products">
           <Route index element={<ProductsPage />} />
           <Route
