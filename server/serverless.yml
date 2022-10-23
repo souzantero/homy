@@ -1,0 +1,22 @@
+service: retaily-server
+
+frameworkVersion: '3'
+
+plugins:
+  - serverless-ignore
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+
+functions:
+  api:
+    handler: dist/lambda.handler
+    name: retaily-monolith-server-${sls:stage}
+    events:
+      - httpApi: '*'
+    memorySize: 1024
+    timeout: 10
+    environment:
+      NODE_ENV: ${sls:stage}
