@@ -35,7 +35,7 @@
     "eject": "react-scripts eject",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.tsx\"",
     "cypress:open": "cypress open",
-    "sls:deploy": "sls deploy"
+    "sls:deploy": "npm run build && sls deploy"
   },
   "eslintConfig": {
     "extends": [
