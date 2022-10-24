@@ -14,4 +14,4 @@ resources:
     clientBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: retaily-client-${opt:stage, 'dev'}-clientbucket
+        BucketName: ${self:service}-${opt:stage, 'dev'}-clientbucket
