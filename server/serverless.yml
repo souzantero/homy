@@ -19,15 +19,15 @@ plugins:
 
 provider:
   name: aws
+  region: us-west-2
   runtime: nodejs16.x
 
 functions:
-  api:
+  monolith:
     handler: dist/lambda.handler
-    name: retaily-monolith-server-${sls:stage}
     events:
       - httpApi: '*'
     memorySize: 1024
-    timeout: 10
+    timeout: 30
     environment:
       NODE_ENV: ${sls:stage}
