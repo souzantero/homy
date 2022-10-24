@@ -1,0 +1,17 @@
+service: retaily-client
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  region: us-west-2
+  runtime: nodejs16.x
+  tags:
+    project: retaily
+
+resources:
+  Resources:
+    clientBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: retaily-client-${opt:stage, 'dev'}-clientbucket

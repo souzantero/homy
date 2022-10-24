@@ -21,6 +21,8 @@ provider:
   name: aws
   region: us-west-2
   runtime: nodejs16.x
+  tags:
+    project: retaily
 
 functions:
   monolith:
