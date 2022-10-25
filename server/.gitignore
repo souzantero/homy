@@ -42,6 +42,3 @@ lerna-debug.log*
 
 *.db
 *.db-journal
-
-# Serverless
-.serverless

@@ -20,10 +20,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "prisma:reset": "prisma migrate reset",
-    "prisma:studio": "prisma studio",
-    "sls:package": "sls package",
-    "sls:offline": "npm run build && sls offline",
-    "sls:deploy": "npm run build && sls deploy"
+    "prisma:studio": "prisma studio"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
@@ -65,7 +62,6 @@
     "jest": "28.1.2",
     "prettier": "^2.3.2",
     "prisma": "^4.1.0",
-    "serverless-offline": "^10.0.0",
     "source-map-support": "^0.5.20",
     "supertest": "^6.1.3",
     "ts-jest": "28.0.5",
