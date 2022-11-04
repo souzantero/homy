@@ -1,0 +1,48 @@
+service: retaily-client
+
+frameworkVersion: "3"
+
+plugins:
+  - serverless-s3-sync
+
+provider:
+  name: aws
+  region: us-west-2
+  runtime: nodejs16.x
+  tags:
+    PROJECT: retaily
+
+custom:
+  project: retaily
+  dnsClient: ${sls:stage}.retaily.com.br
+  s3Sync:
+    - bucketName: ${self:custom.dnsClient}
+      localDir: build
+
+resources:
+  Resources:
+    clientBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        AccessControl: PublicRead
+        BucketName: ${self:custom.dnsClient}
+        WebsiteConfiguration:
+          IndexDocument: index.html
+        Tags:
+          - Key: project
+            Value: ${self:custom.project}
+    clientBucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket:
+          Ref: clientBucket
+        PolicyDocument:
+          Statement:
+            - Sid: PublicReadGetObject
+              Effect: Allow
+              Principal: "*"
+              Action:
+                - s3:GetObject
+              Resource:
+                Fn::Join:
+                  ["", ["arn:aws:s3:::", { "Ref": "clientBucket" }, "/*"]]
