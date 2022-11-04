@@ -1,4 +1,4 @@
-name: Deployments (Dev)
+name: Deployment (Dev)
 
 on:
   push:
@@ -6,16 +6,10 @@ on:
   pull_request:
     branches: [develop]
 
-env:
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  POSTGRES_URL: postgresql://retaily:retailydev@retaily-dev.cosk748dgy0v.us-west-2.rds.amazonaws.com:5432/retaily_db
-  JWT_SECRET: 98eef4c0b4c242c8887da70a82c3815b
-  BCRYPT_SALT: 12
-
 jobs:
   deploy-server:
     runs-on: ubuntu-latest
+    environment: development
     defaults:
       run:
         working-directory: ./server
