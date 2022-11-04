@@ -9,9 +9,9 @@ on:
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
-  JWT_SECRET: ${{ secrets.JWT_SECRET }}
-  BCRYPT_SALT: ${{ secrets.BCRYPT_SALT }}
+  POSTGRES_URL: postgresql://retaily:retailydev@retaily-dev.cosk748dgy0v.us-west-2.rds.amazonaws.com:5432/retaily_db
+  JWT_SECRET: 98eef4c0b4c242c8887da70a82c3815b
+  BCRYPT_SALT: 12
 
 jobs:
   deploy-server:
@@ -30,11 +30,4 @@ jobs:
       - run: npm ci
       - run: npm run prisma:generate
       - run: npm run build --if-present
-      - name: Deploy with Serverless
-        run: npm run sls:deploy
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          BCRYPT_SALT: ${{ secrets.BCRYPT_SALT }}
+      - run: npm run sls:deploy
