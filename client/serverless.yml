@@ -29,7 +29,7 @@ resources:
         WebsiteConfiguration:
           IndexDocument: index.html
         Tags:
-          - Key: project
+          - Key: PROJECT
             Value: ${self:custom.project}
     clientBucketPolicy:
       Type: AWS::S3::BucketPolicy
