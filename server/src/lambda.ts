@@ -8,7 +8,9 @@ const prisma: PrismaClient = new PrismaClient()
 
 export async function handler(event: any, context) {
   if (!server) {
-    const app = await NestFactory.create(AppModule.register({ prisma }))
+    const app = await NestFactory.create(AppModule.register({ prisma }), {
+      cors: true
+    })
     await app.init()
     server = serverless(app.getHttpAdapter().getInstance())
   }
