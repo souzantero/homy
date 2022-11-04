@@ -1,0 +1,32 @@
+service: retaily-server
+
+package:
+  patterns:
+    - "!**"
+    - "node_modules/**"
+    - "dist/**"
+
+frameworkVersion: "3"
+
+plugins:
+  - serverless-offline
+
+provider:
+  name: aws
+  region: us-west-2
+  runtime: nodejs16.x
+  tags:
+    PROJECT: retaily
+
+functions:
+  monolith:
+    handler: dist/lambda.handler
+    events:
+      - httpApi: "*"
+    memorySize: 1024
+    timeout: 10
+    environment:
+      NODE_ENV: ${sls:stage}
+      POSTGRES_URL: ${env:POSTGRES_URL}
+      JWT_SECRET: ${env:JWT_SECRET}
+      BCRYPT_SALT: ${env:BCRYPT_SALT}
