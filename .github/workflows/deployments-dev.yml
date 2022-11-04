@@ -1,16 +1,17 @@
-name: Deployments
+name: Deployments (Dev)
 
-on: [push]
+on:
+  push:
+    branches: [develop]
+  pull_request:
+    branches: [develop]
 
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-# on:
-#   push:
-#     branches: [develop]
-#   pull_request:
-#     branches: [develop]
+  POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
+  BCRYPT_SALT: ${{ secrets.BCRYPT_SALT }}
 
 jobs:
   deploy-server:
