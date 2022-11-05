@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: "16.16"
       - run: npm install -g serverless
-      - run: npm install
+      - run: npm ci
       - run: npm run prisma:generate
       - run: npm run build --if-present
       - run: npm run sls:deploy
