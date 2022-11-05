@@ -28,6 +28,7 @@ resources:
         BucketName: ${self:custom.dnsClient}
         WebsiteConfiguration:
           IndexDocument: index.html
+          ErrorDocument: index.html
         Tags:
           - Key: PROJECT
             Value: ${self:custom.project}
