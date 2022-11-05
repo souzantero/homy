@@ -2,11 +2,12 @@ service: retaily-server
 
 package:
   patterns:
-    - "!**"
-    - "node_modules/**"
-    - "dist/**"
+    - '!node_modules/.prisma/client/libquery_engine-*'
+    - 'node_modules/.prisma/client/libquery_engine-rhel-*'
+    - '!node_modules/prisma/libquery_engine-*'
+    - '!node_modules/@prisma/engines/**'
 
-frameworkVersion: "3"
+frameworkVersion: '3'
 
 plugins:
   - serverless-offline
@@ -22,7 +23,7 @@ functions:
   monolith:
     handler: dist/lambda.handler
     events:
-      - httpApi: "*"
+      - httpApi: '*'
     memorySize: 1024
     timeout: 10
     environment:
