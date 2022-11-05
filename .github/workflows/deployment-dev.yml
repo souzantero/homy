@@ -15,7 +15,7 @@ env:
 
 jobs:
   deploy-server:
-    runs-on: debian-latest
+    runs-on: ubuntu-latest
     environment: development
     defaults:
       run:
@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: "16.16"
       - run: npm install -g serverless
-      - run: npm ci
+      - run: npm install
       - run: npm run prisma:generate
       - run: npm run build --if-present
       - run: npm run sls:deploy
