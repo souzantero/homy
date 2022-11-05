@@ -15,7 +15,7 @@ env:
 
 jobs:
   deploy-server:
-    runs-on: ubuntu-latest
+    runs-on: debian-latest
     environment: development
     defaults:
       run:
