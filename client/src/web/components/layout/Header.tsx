@@ -43,7 +43,7 @@ export const Header = ({ userMenu, onOpen, ...rest }: HeaderProps) => {
         fontFamily="monospace"
         fontWeight="bold"
       >
-        Retaily
+        Homylife
       </Text>
 
       {userMenu}

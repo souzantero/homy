@@ -1,4 +1,4 @@
-Olá, eu sou o Retaily (Alpha), um projeto que tem objetivo de ser um Sistema Varejista.
+Olá, eu sou o Homylife (Alpha), um projeto que tem objetivo de ser um Sistema Home Welness.
 
 # Como implantar o sistema?
 
@@ -26,7 +26,7 @@ cd ../../server
 No diretório do servidor, vamos exportar a variavel de ambiente que o `prisma` irá utilizar para fazer a conexão com o banco de dados:
 
 ```
-export POSTGRES_URL=postgresql://retaily:<password>@<hostname>:5432/retaily_db
+export POSTGRES_URL=postgresql://homylife:<password>@<hostname>:5432/homylife_db
 ```
 
 Substitua os valores entre `<>`.

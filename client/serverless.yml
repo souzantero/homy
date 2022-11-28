@@ -1,4 +1,4 @@
-service: retaily-client
+service: homylife-client
 
 frameworkVersion: "3"
 
@@ -10,11 +10,11 @@ provider:
   region: us-west-2
   runtime: nodejs16.x
   tags:
-    PROJECT: retaily
+    PROJECT: homylife
 
 custom:
-  project: retaily
-  dnsClient: ${sls:stage}.retaily.com.br
+  project: homylife
+  dnsClient: ${sls:stage}.homylife.com.br
   s3Sync:
     - bucketName: ${self:custom.dnsClient}
       localDir: build

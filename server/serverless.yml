@@ -1,4 +1,4 @@
-service: retaily-server
+service: homylife-server
 
 package:
   patterns:
@@ -17,7 +17,7 @@ provider:
   region: us-west-2
   runtime: nodejs16.x
   tags:
-    PROJECT: retaily
+    PROJECT: homylife
 
 functions:
   monolith:

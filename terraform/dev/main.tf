@@ -19,7 +19,7 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "2.77.0"
 
-  name                 = "retaily-dev"
+  name                 = "homylife-dev"
   cidr                 = "10.0.0.0/16"
   azs                  = data.aws_availability_zones.available.names
   public_subnets       = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
@@ -27,23 +27,23 @@ module "vpc" {
   enable_dns_support   = true
 
   tags = {
-    PROJECT = "retaily"
+    PROJECT = "homylife"
     STAGE   = "dev"
   }
 }
 
-resource "aws_db_subnet_group" "retaily_dev" {
-  name       = "retaily-dev"
+resource "aws_db_subnet_group" "homylife_dev" {
+  name       = "homylife-dev"
   subnet_ids = module.vpc.public_subnets
 
   tags = {
-    PROJECT = "retaily"
+    PROJECT = "homylife"
     STAGE   = "dev"
   }
 }
 
 resource "aws_security_group" "rds" {
-  name   = "retaily-dev-rds"
+  name   = "homylife-dev-rds"
   vpc_id = module.vpc.vpc_id
 
   ingress {
@@ -61,13 +61,13 @@ resource "aws_security_group" "rds" {
   }
 
   tags = {
-    PROJECT = "retaily"
+    PROJECT = "homylife"
     STAGE   = "dev"
   }
 }
 
-resource "aws_db_parameter_group" "retaily_dev" {
-  name   = "retaily-dev"
+resource "aws_db_parameter_group" "homylife_dev" {
+  name   = "homylife-dev"
   family = "postgres13"
 
   parameter {
@@ -76,22 +76,22 @@ resource "aws_db_parameter_group" "retaily_dev" {
   }
 }
 
-resource "aws_db_instance" "retaily_dev" {
-  identifier             = "retaily-dev"
+resource "aws_db_instance" "homylife_dev" {
+  identifier             = "homylife-dev"
   instance_class         = "db.t3.micro"
   allocated_storage      = 5
   engine                 = "postgres"
   engine_version         = "13.7"
-  username               = "retaily"
+  username               = "homylife"
   password               = var.db_password
-  db_subnet_group_name   = aws_db_subnet_group.retaily_dev.name
+  db_subnet_group_name   = aws_db_subnet_group.homylife_dev.name
   vpc_security_group_ids = [aws_security_group.rds.id]
-  parameter_group_name   = aws_db_parameter_group.retaily_dev.name
+  parameter_group_name   = aws_db_parameter_group.homylife_dev.name
   publicly_accessible    = true
   skip_final_snapshot    = true
 
   tags = {
-    PROJECT = "retaily"
+    PROJECT = "homylife"
     STAGE   = "dev"
   }
 }

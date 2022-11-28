@@ -12,7 +12,7 @@ export function Sidebar({ onClose, ...rest }: SidebarProps) {
   const navigate = useNavigate()
 
   return (
-    <SidebarComponent title="Retaily" onClose={onClose} {...rest}>
+    <SidebarComponent title="Homylife" onClose={onClose} {...rest}>
       <NavItem
         icon={AiOutlineCoffee}
         onClick={() => navigate('/manager/products')}
