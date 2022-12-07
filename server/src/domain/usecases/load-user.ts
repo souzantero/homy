@@ -1,4 +1,3 @@
-import { UserNotFoundError } from '../errors/user-not-found-error'
 import { User } from '../models/user'
 import { LoadUserRepository } from '../repositories/load-user-repository'
 

@@ -1,4 +1,4 @@
-import { User } from 'src/domain/models/user'
+import { User } from '../../../domain/models/user'
 import { OutputtedUser } from '../../user/dtos/outputted-user'
 
 export class SignedUser extends OutputtedUser {

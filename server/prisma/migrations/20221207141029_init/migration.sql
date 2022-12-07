@@ -19,14 +19,14 @@ CREATE TABLE "User" (
 );
 
 -- CreateTable
-CREATE TABLE "Product" (
+CREATE TABLE "Supply" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL,
     "updatedAt" TIMESTAMP(3),
     "deletedAt" TIMESTAMP(3),
     "name" TEXT NOT NULL,
 
-    CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Supply_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex

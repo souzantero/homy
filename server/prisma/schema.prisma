@@ -30,7 +30,7 @@ model User {
   confirmedEmail        Boolean   @default(false)
 }
 
-model Product {
+model Supply {
   id        String    @id
   createdAt DateTime
   updatedAt DateTime?

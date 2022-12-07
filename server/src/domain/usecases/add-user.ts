@@ -1,5 +1,4 @@
 import { EmailInUseError } from '../errors/email-in-use-error'
-import { UserNotFoundError } from '../errors/user-not-found-error'
 import { Role, User } from '../models/user'
 import { Hasher } from '../protocols/hasher'
 import { Identifier } from '../protocols/identifier'

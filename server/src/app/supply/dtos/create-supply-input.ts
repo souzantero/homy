@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString } from 'class-validator'
 
-export class CreateProductInput {
+export class CreateSupplyInput {
   @IsString()
   @IsNotEmpty()
   name: string

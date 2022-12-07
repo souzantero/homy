@@ -21,9 +21,9 @@ import { OutputtedUser } from '../src/app/user/dtos/outputted-user'
 const serialize = (data: any) => JSON.parse(JSON.stringify(data))
 
 const dropDatabase = async (prisma: PrismaClient) =>
-  prisma.$transaction([prisma.user.deleteMany(), prisma.product.deleteMany()])
+  prisma.$transaction([prisma.user.deleteMany(), prisma.supply.deleteMany()])
 
-const findAllProducts = (prisma: PrismaClient) => prisma.product.findMany()
+const findAllSupplies = (prisma: PrismaClient) => prisma.supply.findMany()
 const findAllUsers = (prisma: PrismaClient) => prisma.user.findMany()
 const findOneUserById = (prisma: PrismaClient, id: string) =>
   prisma.user.findUnique({ where: { id } })
@@ -541,7 +541,7 @@ describe('App (e2e)', () => {
 
       it('should be bad request when is invalid confirmation code', async () => {
         const addUser = app.get<AddUser>(AddUser)
-        const addedUser = await addUser.add({
+        await addUser.add({
           name: 'Felipe',
           email: 'souzantero@gmail.com',
           password: '12345678'
@@ -802,15 +802,15 @@ describe('App (e2e)', () => {
     })
   })
 
-  describe('/products', () => {
+  describe('/supplies', () => {
     describe('(GET)', () => {
       it('should be success', () => {
-        return request(app.getHttpServer()).get('/products').expect(200)
+        return request(app.getHttpServer()).get('/supplies').expect(200)
       })
 
-      it('should not get deleted products', async () => {
-        const createdProducts = await prisma.$transaction([
-          prisma.product.create({
+      it('should not get deleted supplies', async () => {
+        const createdSupplies = await prisma.$transaction([
+          prisma.supply.create({
             data: {
               id: identifier.identify(),
               name: 'Copo',
@@ -818,14 +818,14 @@ describe('App (e2e)', () => {
               deletedAt: new Date()
             }
           }),
-          prisma.product.create({
+          prisma.supply.create({
             data: {
               id: identifier.identify(),
               name: 'Prato',
               createdAt: new Date()
             }
           }),
-          prisma.product.create({
+          prisma.supply.create({
             data: {
               id: identifier.identify(),
               name: 'Garfo',
@@ -835,13 +835,13 @@ describe('App (e2e)', () => {
         ])
 
         const { status, body } = await request(app.getHttpServer()).get(
-          '/products'
+          '/supplies'
         )
 
         expect(status).toBe(200)
         expect(body).toHaveLength(2)
         expect(
-          body.find((item) => item.id === createdProducts[0].id)
+          body.find((item) => item.id === createdSupplies[0].id)
         ).toBeUndefined()
       })
     })
@@ -869,16 +869,16 @@ describe('App (e2e)', () => {
 
       it('should be unauthorized when authorization token is not sent', () => {
         return request(app.getHttpServer())
-          .post('/products')
+          .post('/supplies')
           .send({
             name: 'Copo'
           })
           .expect(401)
       })
 
-      it('should create a new product', async () => {
+      it('should create a new supply', async () => {
         const response = await request(app.getHttpServer())
-          .post('/products')
+          .post('/supplies')
           .set('Authorization', `Bearer ${authorizationToken}`)
           .send({
             name: 'Copo'
@@ -889,17 +889,17 @@ describe('App (e2e)', () => {
         expect(response.body).toHaveProperty('id')
         expect(response.body).toHaveProperty('name', 'Copo')
 
-        const products = await findAllProducts(prisma)
+        const supplies = await findAllSupplies(prisma)
 
-        expect(products).toBeDefined()
-        expect(products).toHaveLength(1)
-        expect(products[0]).toHaveProperty('id', response.body.id)
-        expect(products[0]).toHaveProperty('name', response.body.name)
+        expect(supplies).toBeDefined()
+        expect(supplies).toHaveLength(1)
+        expect(supplies[0]).toHaveProperty('id', response.body.id)
+        expect(supplies[0]).toHaveProperty('name', response.body.name)
       })
 
       it('should fail when name is empty', async () => {
         const response = await request(app.getHttpServer())
-          .post('/products')
+          .post('/supplies')
           .set('Authorization', `Bearer ${authorizationToken}`)
           .send({
             name: ''
@@ -913,7 +913,7 @@ describe('App (e2e)', () => {
 
       it('should fail when name is a number', async () => {
         const response = await request(app.getHttpServer())
-          .post('/products')
+          .post('/supplies')
           .set('Authorization', `Bearer ${authorizationToken}`)
           .send({
             name: 10
@@ -926,9 +926,9 @@ describe('App (e2e)', () => {
       })
     })
 
-    describe('/:productId (GET)', () => {
-      it('should get a product', async () => {
-        const createdProduct = await prisma.product.create({
+    describe('/:supplyId (GET)', () => {
+      it('should get a supplies', async () => {
+        const createdSupply = await prisma.supply.create({
           data: {
             id: identifier.identify(),
             name: 'Copo',
@@ -937,23 +937,23 @@ describe('App (e2e)', () => {
         })
 
         const { status, body } = await request(app.getHttpServer()).get(
-          `/products/${createdProduct.id}`
+          `/supplies/${createdSupply.id}`
         )
         expect(status).toBe(200)
         expect(body).toBeDefined()
-        expect(body).toEqual(serialize(createdProduct))
+        expect(body).toEqual(serialize(createdSupply))
       })
 
-      it('should be not found if product not exists', async () => {
+      it('should be not found if supply not exists', async () => {
         const { status, body } = await request(app.getHttpServer()).get(
-          '/products/fakeId'
+          '/supplies/fakeId'
         )
         expect(status).toBe(404)
-        expect(body).toHaveProperty('message', 'product not found')
+        expect(body).toHaveProperty('message', 'supply not found')
       })
 
-      it('should be not found if product is deleted', async () => {
-        const product = await prisma.product.create({
+      it('should be not found if supply is deleted', async () => {
+        const supply = await prisma.supply.create({
           data: {
             id: identifier.identify(),
             name: 'Copo',
@@ -962,14 +962,14 @@ describe('App (e2e)', () => {
           }
         })
         const { status, body } = await request(app.getHttpServer()).get(
-          `/products/${product.id}`
+          `/supplies/${supply.id}`
         )
         expect(status).toBe(404)
-        expect(body).toHaveProperty('message', 'product not found')
+        expect(body).toHaveProperty('message', 'supply not found')
       })
     })
 
-    describe('/:productId (PUT)', () => {
+    describe('/:supplyId (PUT)', () => {
       let authorizationToken
 
       beforeEach(async () => {
@@ -992,7 +992,7 @@ describe('App (e2e)', () => {
 
       it('should be unauthorized when authorization token is not sent', () => {
         return request(app.getHttpServer())
-          .put('/products/fakeId')
+          .put('/supplies/fakeId')
           .set('Content-Type', 'application/json')
           .send({
             name: 'Copo'
@@ -1000,8 +1000,8 @@ describe('App (e2e)', () => {
           .expect(401)
       })
 
-      it('should update a exited product', async () => {
-        const createdProduct = await prisma.product.create({
+      it('should update a exited supply', async () => {
+        const createdSupply = await prisma.supply.create({
           data: {
             id: identifier.identify(),
             name: 'Copo',
@@ -1009,7 +1009,7 @@ describe('App (e2e)', () => {
           }
         })
         const { status } = await request(app.getHttpServer())
-          .put(`/products/${createdProduct.id}`)
+          .put(`/supplies/${createdSupply.id}`)
           .set('Authorization', `Bearer ${authorizationToken}`)
           .set('Content-Type', 'application/json')
           .send({
@@ -1018,23 +1018,20 @@ describe('App (e2e)', () => {
 
         expect(status).toBe(200)
 
-        const products = await findAllProducts(prisma)
-        expect(products).toHaveLength(1)
-        expect(products[0]).toHaveProperty('id', createdProduct.id)
-        expect(products[0]).toHaveProperty('name', 'Garfo')
-        expect(products[0]).toHaveProperty(
-          'createdAt',
-          createdProduct.createdAt
-        )
-        expect(products[0].updatedAt).toBeDefined()
-        expect(products[0].updatedAt.getTime()).toBeGreaterThan(
-          createdProduct.createdAt.getTime()
+        const supplies = await findAllSupplies(prisma)
+        expect(supplies).toHaveLength(1)
+        expect(supplies[0]).toHaveProperty('id', createdSupply.id)
+        expect(supplies[0]).toHaveProperty('name', 'Garfo')
+        expect(supplies[0]).toHaveProperty('createdAt', createdSupply.createdAt)
+        expect(supplies[0].updatedAt).toBeDefined()
+        expect(supplies[0].updatedAt.getTime()).toBeGreaterThan(
+          createdSupply.createdAt.getTime()
         )
       })
 
-      it('should be not found if product not exists', async () => {
+      it('should be not found if supply not exists', async () => {
         const { status, body } = await request(app.getHttpServer())
-          .put('/products/fakeId')
+          .put('/supplies/fakeId')
           .set('Authorization', `Bearer ${authorizationToken}`)
           .set('Content-Type', 'application/json')
           .send({
@@ -1042,11 +1039,11 @@ describe('App (e2e)', () => {
           })
 
         expect(status).toBe(404)
-        expect(body).toHaveProperty('message', 'product not found')
+        expect(body).toHaveProperty('message', 'supply not found')
       })
 
-      it('should be not found if product is deleted', async () => {
-        const product = await prisma.product.create({
+      it('should be not found if supply is deleted', async () => {
+        const supply = await prisma.supply.create({
           data: {
             id: identifier.identify(),
             name: 'Copo',
@@ -1055,7 +1052,7 @@ describe('App (e2e)', () => {
           }
         })
         const { status, body } = await request(app.getHttpServer())
-          .put(`/products/${product.id}`)
+          .put(`/supplies/${supply.id}`)
           .set('Authorization', `Bearer ${authorizationToken}`)
           .set('Content-Type', 'application/json')
           .send({
@@ -1063,11 +1060,11 @@ describe('App (e2e)', () => {
           })
 
         expect(status).toBe(404)
-        expect(body).toHaveProperty('message', 'product not found')
+        expect(body).toHaveProperty('message', 'supply not found')
       })
     })
 
-    describe('/:productId (DELETE)', () => {
+    describe('/:supplyId (DELETE)', () => {
       let authorizationToken
 
       beforeEach(async () => {
@@ -1090,28 +1087,28 @@ describe('App (e2e)', () => {
 
       it('should be unauthorized when authorization token is not sent', () => {
         return request(app.getHttpServer())
-          .delete('/products/fakeId')
+          .delete('/supplies/fakeId')
           .set('Content-Type', 'application/json')
           .expect(401)
       })
 
-      it('should delete a existed product', async () => {
-        const createdProducts = await prisma.$transaction([
-          prisma.product.create({
+      it('should delete a existed supply', async () => {
+        const createdSupplies = await prisma.$transaction([
+          prisma.supply.create({
             data: {
               id: identifier.identify(),
               name: 'Copo',
               createdAt: new Date()
             }
           }),
-          prisma.product.create({
+          prisma.supply.create({
             data: {
               id: identifier.identify(),
               name: 'Garfo',
               createdAt: new Date()
             }
           }),
-          prisma.product.create({
+          prisma.supply.create({
             data: {
               id: identifier.identify(),
               name: 'Prato',
@@ -1121,31 +1118,31 @@ describe('App (e2e)', () => {
         ])
 
         const { status, body } = await request(app.getHttpServer())
-          .delete(`/products/${createdProducts[0].id}`)
+          .delete(`/supplies/${createdSupplies[0].id}`)
           .set('Authorization', `Bearer ${authorizationToken}`)
 
         expect(status).toBe(200)
         expect(body).toEqual({})
 
-        const products = await findAllProducts(prisma)
-        const deletedProduct = products.find(
-          (product) => product.id === createdProducts[0].id
+        const supplies = await findAllSupplies(prisma)
+        const deletedSupply = supplies.find(
+          (supply) => supply.id === createdSupplies[0].id
         )
-        expect(deletedProduct).toBeDefined()
-        expect(deletedProduct.deletedAt).not.toBeNull()
+        expect(deletedSupply).toBeDefined()
+        expect(deletedSupply.deletedAt).not.toBeNull()
       })
 
-      it('should be not found if product not exists', async () => {
+      it('should be not found if supply not exists', async () => {
         const { status, body } = await request(app.getHttpServer())
-          .delete('/products/fakeId')
+          .delete('/supplies/fakeId')
           .set('Authorization', `Bearer ${authorizationToken}`)
 
         expect(status).toBe(404)
-        expect(body).toHaveProperty('message', 'product not found')
+        expect(body).toHaveProperty('message', 'supply not found')
       })
 
-      it('should be not found if product is deleted', async () => {
-        const product = await prisma.product.create({
+      it('should be not found if supply is deleted', async () => {
+        const supply = await prisma.supply.create({
           data: {
             id: identifier.identify(),
             name: 'Copo',
@@ -1154,11 +1151,11 @@ describe('App (e2e)', () => {
           }
         })
         const { status, body } = await request(app.getHttpServer())
-          .delete(`/products/${product.id}`)
+          .delete(`/supplies/${supply.id}`)
           .set('Authorization', `Bearer ${authorizationToken}`)
 
         expect(status).toBe(404)
-        expect(body).toHaveProperty('message', 'product not found')
+        expect(body).toHaveProperty('message', 'supply not found')
       })
     })
   })

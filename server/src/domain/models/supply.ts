@@ -1,4 +1,4 @@
-export type Product = {
+export type Supply = {
   id: string
   createdAt: Date
   updatedAt?: Date
