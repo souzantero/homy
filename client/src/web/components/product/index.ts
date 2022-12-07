@@ -1,6 +1,0 @@
-export * from './AddProduct'
-export * from './EditProduct'
-export * from './Product'
-export * from './ProductTable'
-export * from './ProductTableRow'
-export * from './RemoveProductButton'

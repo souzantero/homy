@@ -4,10 +4,10 @@ import { If, UnauthorizedUser, UnsignedUser } from './web'
 
 import { SignUpPage } from './app/pages/auth/sign-up'
 import { SignInPage } from './app/pages/auth/sign-in'
-import { AddProductPage } from './app/pages/manager/products/add'
-import { EditProductPage } from './app/pages/manager/products/edit'
-import { ProductsPage } from './app/pages/manager/products/index'
-import { ProductPage } from './app/pages/manager/products/show'
+import { AddSupplyPage } from './app/pages/manager/supplies/add'
+import { EditSupplyPage } from './app/pages/manager/supplies/edit'
+import { SuppliesPage } from './app/pages/manager/supplies/index'
+import { SupplyInfoPage } from './app/pages/manager/supplies/show'
 import { ConfirmUserEmailPage } from './app/pages/users/confirm-email'
 import { ForgetUserPasswordPage } from './app/pages/users/forget-password'
 import { ResetUserPasswordPage } from './app/pages/users/reset-password'
@@ -31,8 +31,8 @@ function App() {
         <Route path="reset-password" element={<ResetUserPasswordPage />} />
       </Route>
       <Route path="manager" element={<Manager />}>
-        <Route path="products">
-          <Route index element={<ProductsPage />} />
+        <Route path="supplies">
+          <Route index element={<SuppliesPage />} />
           <Route
             path="new"
             element={
@@ -41,13 +41,13 @@ function App() {
                 or={<UnsignedUser onSignIn={() => navigate('/auth/sign-in')} />}
               >
                 <If condition={isAuthorized} or={<UnauthorizedUser />}>
-                  <AddProductPage />
+                  <AddSupplyPage />
                 </If>
               </If>
             }
           />
-          <Route path=":productId">
-            <Route index element={<ProductPage />} />
+          <Route path=":supplyId">
+            <Route index element={<SupplyInfoPage />} />
             <Route
               path="edit"
               element={
@@ -58,7 +58,7 @@ function App() {
                   }
                 >
                   <If condition={isAuthorized} or={<UnauthorizedUser />}>
-                    <EditProductPage />
+                    <EditSupplyPage />
                   </If>
                 </If>
               }

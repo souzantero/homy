@@ -15,9 +15,9 @@ export function Sidebar({ onClose, ...rest }: SidebarProps) {
     <SidebarComponent title="Homylife" onClose={onClose} {...rest}>
       <NavItem
         icon={AiOutlineCoffee}
-        onClick={() => navigate('/manager/products')}
+        onClick={() => navigate('/manager/supplies')}
       >
-        Produtos
+        Suprimentos
       </NavItem>
     </SidebarComponent>
   )

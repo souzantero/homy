@@ -1,5 +1,5 @@
 export * from './auth'
 export * from './layout'
-export * from './product'
+export * from './supply'
 export * from './user'
 export * from './utils'
