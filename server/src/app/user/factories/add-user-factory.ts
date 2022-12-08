@@ -1,8 +1,8 @@
 import { PrismaClient } from '@prisma/client'
-import { AddUser } from '../../domain/usecases/add-user'
-import { BcryptAdapter } from '../adapters/bcrypt-adapter'
-import { UuidAdapter } from '../adapters/uuid-adapter'
-import { UserPrismaRepository } from '../repositories/prisma/user-prisma-repository'
+import { AddUser } from '../../../domain/usecases/add-user'
+import { BcryptAdapter } from '../../../infra/adapters/bcrypt-adapter'
+import { UuidAdapter } from '../../../infra/adapters/uuid-adapter'
+import { UserPrismaRepository } from '../../../infra/repositories/prisma/user-prisma-repository'
 import { makeCreateUserEmailConfirmationCode } from './create-user-email-confirmation-code-factory'
 import { makeLoadUser } from './load-user-factory'
 

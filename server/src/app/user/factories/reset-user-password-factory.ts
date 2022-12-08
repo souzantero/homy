@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
-import { ResetUserPassword } from '../../domain/usecases/reset-user-password'
-import { BcryptAdapter } from '../adapters/bcrypt-adapter'
+import { ResetUserPassword } from '../../../domain/usecases/reset-user-password'
+import { BcryptAdapter } from '../../../infra/adapters/bcrypt-adapter'
 import { makeUpdateUserById } from './update-user-by-id-factory'
 
 export const makeResetUserPassword = (

@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import { RefreshUserEmailConfirmationCode } from '../../domain/usecases/refresh-user-email-confirmation-code'
+import { RefreshUserEmailConfirmationCode } from '../../../domain/usecases/refresh-user-email-confirmation-code'
 import { makeLoadUser } from './load-user-factory'
 import { makeCreateUserEmailConfirmationCode } from './create-user-email-confirmation-code-factory'
 

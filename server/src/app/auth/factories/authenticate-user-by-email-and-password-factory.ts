@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client'
-import { AuthenticateUserByEmailAndPassword } from '../../domain/usecases/authenticate-user-by-email-and-password'
-import { BcryptAdapter } from '../adapters/bcrypt-adapter'
-import { makeLoadUser } from './load-user-factory'
+import { AuthenticateUserByEmailAndPassword } from '../../../domain/usecases/authenticate-user-by-email-and-password'
+import { BcryptAdapter } from '../../../infra/adapters/bcrypt-adapter'
+import { makeLoadUser } from '../../user/factories/load-user-factory'
 
 export const makeAuthenticateUserByEmailAndPassword = (
   prisma: PrismaClient,

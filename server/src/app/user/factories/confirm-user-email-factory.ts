@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import { ConfirmUserEmail } from '../../domain/usecases/confirm-user-email'
+import { ConfirmUserEmail } from '../../../domain/usecases/confirm-user-email'
 import { makeLoadUser } from './load-user-factory'
 import { makeUpdateUserById } from './update-user-by-id-factory'
 

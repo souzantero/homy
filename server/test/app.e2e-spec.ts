@@ -8,7 +8,7 @@ import { UuidAdapter } from '../src/infra/adapters/uuid-adapter'
 import { Identifier } from '../src/domain/protocols/identifier'
 import { BcryptAdapter } from '../src/infra/adapters/bcrypt-adapter'
 import { JwtAdapter } from '../src/infra/adapters/jwt-adapter'
-import { makeLoadUserById } from '../src/infra/factories/load-user-by-id-factory'
+import { makeLoadUserById } from '../src/app/user/factories/load-user-by-id-factory'
 import { HashComparer } from '../src/domain/protocols/hash-comparer'
 import { Hasher } from '../src/domain/protocols/hasher'
 import { Decrypter } from '../src/domain/protocols/decrypter'
@@ -666,7 +666,9 @@ describe('App (e2e)', () => {
         )
       })
 
-      it.skip('should be bad request when user email is not sent', () => {})
+      it.skip('should be bad request when user email is not sent', () => {
+        console.log('should be bad request when user email is not sent')
+      })
     })
 
     describe('/forget-password', () => {
@@ -746,7 +748,9 @@ describe('App (e2e)', () => {
         expect(body).toHaveProperty('message', 'user not found')
       })
 
-      it.skip('should be bad request when user email is not sent', () => {})
+      it.skip('should be bad request when user email is not sent', () => {
+        console.log('should be bad request when user email is not sent')
+      })
     })
 
     describe('/reset-password', () => {
@@ -798,7 +802,9 @@ describe('App (e2e)', () => {
         expect(body).toHaveProperty('message', 'Unauthorized')
       })
 
-      it.skip('should be bad request when user password is not sent', () => {})
+      it.skip('should be bad request when user password is not sent', () => {
+        console.log('should be bad request when user password is not sent')
+      })
     })
   })
 
