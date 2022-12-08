@@ -1,7 +1,4 @@
-export * from './confirm-user-email'
-export * from './forget-user-password'
 export * from './load-signed-user'
-export * from './refresh-user-email-confirmation-code'
 export * from './reset-user-password'
 export * from './sign-in'
 export * from './sign-me'

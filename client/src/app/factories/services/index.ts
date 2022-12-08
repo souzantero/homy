@@ -1,7 +1,4 @@
-export * from './confirm-user-email-factory'
-export * from './forget-user-password-factory'
 export * from './load-signed-user-factory'
-export * from './refresh-user-email-confirmation-code-factory'
 export * from './reset-user-password-factory'
 export * from './sign-in-factory'
 export * from './sign-me-factory'

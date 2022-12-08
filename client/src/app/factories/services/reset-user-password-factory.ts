@@ -1,11 +1,10 @@
 import { ResetUserPassword } from '../../../domain/services/reset-user-password'
-import { UserFetchRepository } from '../../../infra'
-import env from '../../config/env'
+import { makeResetUserPasswordRepository } from '../repositories'
 
-export const makeResetUserPassword = (authorizationToken: string) => {
-  const userFetchRepository = new UserFetchRepository(
-    env.serverHostAddress,
-    authorizationToken
+export function makeResetUserPassword(
+  authorizationToken: string
+): ResetUserPassword {
+  return new ResetUserPassword(
+    makeResetUserPasswordRepository(authorizationToken)
   )
-  return new ResetUserPassword(userFetchRepository)
 }

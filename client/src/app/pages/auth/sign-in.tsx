@@ -1,8 +1,7 @@
 import { useToast } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { User } from '../../../domain'
-import { SignIn, useSignIn } from '../../../web'
+import { SignIn } from '../../../web'
 import { useSignedUser } from '../../hooks'
 import { makeSignIn } from '../../factories'
 
@@ -11,23 +10,10 @@ export function SignInPage() {
   const navigate = useNavigate()
   const [signInWithUser, setSignInWithUser] = useState(makeSignIn(false))
   const { signedUser, isLoading } = useSignedUser()
-
-  const {
-    email,
-    setEmail,
-    password,
-    setPassword,
-    remindMe,
-    setRemindMe,
-    signIn,
-    isSigning
-  } = useSignIn({
-    signInWithUser,
-    onSigned: (signedUser: User) => {
-      navigate('/')
-    },
-    onNotify: notify
-  })
+  const [email, setEmail] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+  const [remindMe, setRemindMe] = useState<boolean>(false)
+  const [isSigning, setIsSigning] = useState(false)
 
   useEffect(() => {
     setSignInWithUser(makeSignIn(remindMe))
@@ -38,6 +24,40 @@ export function SignInPage() {
       navigate('/')
     }
   }, [signedUser])
+
+  const signIn = async () => {
+    try {
+      setIsSigning(true)
+
+      const signedUser = await signInWithUser.signIn({
+        email,
+        password
+      })
+
+      setEmail('')
+      setPassword('')
+
+      notify({
+        status: 'success',
+        title: 'Conectado.',
+        description: 'Conexão realizada com sucesso.'
+      })
+
+      navigate('/')
+
+      return signedUser
+    } catch (error) {
+      const status = 'error'
+      const title = 'Falha ao conectar-se a sua conta.'
+      const description =
+        error instanceof Error
+          ? error.message
+          : 'Não foi possível conectar-se a sua conta no momento, tente novamente mais tarde.'
+      notify({ status, title, description })
+    } finally {
+      setIsSigning(false)
+    }
+  }
 
   return (
     <SignIn

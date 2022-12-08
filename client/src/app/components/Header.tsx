@@ -1,19 +1,14 @@
 import { useNavigate } from 'react-router-dom'
-import { useToast } from '@chakra-ui/react'
-import { Header as HeaderComponent, UserMenu, useSignOut } from '../../web'
-import { useSignedUser } from '../hooks'
-import { makeSignOut } from '../factories/services'
+import { Header as HeaderComponent, UserMenu } from '../../web'
+import { useSignedUser, useSignOut } from '../hooks'
 
 export function Header({ onOpen }: { onOpen: () => void }) {
   const navigate = useNavigate()
-  const notify = useToast()
   const { signedUser, isLoading } = useSignedUser()
   const { signOut, isSigningOut } = useSignOut({
-    signOutFactory: () => makeSignOut(signedUser!),
     onSignedOut() {
       window.location.reload()
-    },
-    onNotify: notify
+    }
   })
 
   return (

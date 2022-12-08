@@ -1,35 +1,34 @@
+import { useToast } from '@chakra-ui/react'
 import { useState } from 'react'
-import { SignOut } from '../../domain'
-import { Notify } from '../../presentation'
+import { makeSignOut } from '../factories'
+import { useSignedUser } from './useSignedUser'
 
-export interface UseSignOutOptions {
-  signOutFactory: () => SignOut
-  onSignedOut: () => void
-  onNotify: Notify
+type Options = {
+  onSignedOut?: () => void
 }
 
-export function useSignOut({
-  signOutFactory,
-  onSignedOut,
-  onNotify
-}: UseSignOutOptions): {
+export function useSignOut({ onSignedOut }: Options): {
   isSigningOut: boolean
   signOut: () => Promise<void>
 } {
+  const notify = useToast()
+  const { signedUser } = useSignedUser()
   const [isSigningOut, setIsSigningOut] = useState(false)
 
   const signOut = async () => {
     try {
       setIsSigningOut(true)
-      const signOut = signOutFactory()
+      const signOut = makeSignOut(signedUser!)
       await signOut.signOut()
-      onNotify({
+      notify({
         status: 'success',
         title: 'Desconectado.',
         description: 'Desconexão realizada com sucesso.'
       })
 
-      onSignedOut()
+      if (onSignedOut) {
+        onSignedOut()
+      }
     } catch (error) {
       const status = 'error'
       const title = 'Falha ao desconectar da sua conta.'
@@ -37,7 +36,7 @@ export function useSignOut({
         error instanceof Error
           ? error.message
           : 'Não foi possível desconectar da sua conta no momento, tente novamente mais tarde.'
-      onNotify({ status, title, description })
+      notify({ status, title, description })
     } finally {
       setIsSigningOut(false)
     }
