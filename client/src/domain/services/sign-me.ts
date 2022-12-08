@@ -1,15 +1,15 @@
 import { SignMeRepository } from '../repositories/sign-me-repository'
-import { UpdateSignedUserRepository } from '../repositories/update-signed-user-repository'
+import { SignedUser } from './signed-user'
 
 export class SignMe {
   constructor(
     private readonly signMeRepository: SignMeRepository,
-    private readonly updateSignedUserRepository: UpdateSignedUserRepository
+    private readonly signedUser: SignedUser
   ) {}
 
   async signMe(): Promise<SignMe.Result> {
     const signedUser = await this.signMeRepository.signMe()
-    await this.updateSignedUserRepository.updateSignedUser(signedUser)
+    await this.signedUser.set(signedUser)
     return signedUser
   }
 }

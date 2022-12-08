@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useToast } from '@chakra-ui/react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { User } from '../../domain'
-import { makeLoadSignedUser, makeSignMe } from '../factories'
+import { makeSignedUser, makeSignMe } from '../factories'
 
 export function useSignedUser(): {
   signedUser?: User | null
@@ -10,7 +10,7 @@ export function useSignedUser(): {
   isSigned: boolean
 } {
   const notify = useToast()
-  const loadSignedUser = makeLoadSignedUser()
+  const loadSignedUser = makeSignedUser()
 
   const queryClient = useQueryClient()
 
@@ -18,7 +18,7 @@ export function useSignedUser(): {
     data: signedUser,
     isLoading,
     error
-  } = useQuery(['signed-user'], () => loadSignedUser.load(), {
+  } = useQuery(['signed-user'], () => loadSignedUser.get(), {
     refetchOnWindowFocus: true
   })
 

@@ -1,4 +1,4 @@
-export * from './load-signed-user-factory'
+export * from './signed-user-factory'
 export * from './reset-user-password-factory'
 export * from './sign-in-factory'
 export * from './sign-me-factory'

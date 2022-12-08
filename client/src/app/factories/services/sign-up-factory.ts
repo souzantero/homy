@@ -1,14 +1,11 @@
 import { SignUp } from '../../../domain'
-import {
-  AuthenticationFetchRepository,
-  SignedUserSessionStorageRepository
-} from '../../../infra'
+import { AuthenticationFetchRepository } from '../../../infra'
 import env from '../../config/env'
+import { makeSignedUser } from './signed-user-factory'
 
 export const makeSignUp = () => {
   const authenticationRepository = new AuthenticationFetchRepository(
     env.serverHostAddress
   )
-  const signedUserRepository = new SignedUserSessionStorageRepository()
-  return new SignUp(authenticationRepository, signedUserRepository)
+  return new SignUp(authenticationRepository, makeSignedUser())
 }

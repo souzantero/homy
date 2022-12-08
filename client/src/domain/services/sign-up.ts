@@ -1,11 +1,11 @@
 import { PasswordsDoesNotMatchError } from '../errors/passwords-does-not-match-error'
 import { SignUpRepository } from '../repositories/sign-up-repository'
-import { UpdateSignedUserRepository } from '../repositories/update-signed-user-repository'
+import { SignedUser } from './signed-user'
 
 export class SignUp {
   constructor(
     private readonly signUpRepository: SignUpRepository,
-    private readonly updateSignedUserRepository: UpdateSignedUserRepository
+    private readonly signedUser: SignedUser
   ) {}
 
   async signUp({
@@ -23,7 +23,7 @@ export class SignUp {
       email,
       password
     })
-    await this.updateSignedUserRepository.updateSignedUser(signedUser)
+    await this.signedUser.set(signedUser)
     return signedUser
   }
 }
