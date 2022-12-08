@@ -26,7 +26,7 @@ export class SupplyFetchRepository
       id: supply.id,
       name: supply.name,
       createdAt: new Date(supply.createdAt),
-      updatedAt: supply.updatedAt ? new Date(supply.createdAt) : undefined
+      updatedAt: supply.updatedAt ? new Date(supply.updatedAt) : undefined
       // expiresIn: parseIntOrZeroIfNaN(supply.expiresIn)
     }
   }
